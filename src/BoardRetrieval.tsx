@@ -1,30 +1,26 @@
-import React from "react";
+export async function retrieveBoard(dimension: String, difficulty: String, games: String): Promise<any> {
+    const url = "http://localhost:8080/generate";
 
-export async function retrieveBoard() {
-    const url = "http://127.0.0.1:8080/generate";
+    document.cookie = "dimension=" + dimension;
+    document.cookie = "difficulty=" + difficulty;
+    document.cookie = "games=" + games;
 
-    try {
-        const response = await fetch(url, {
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "same-origin"
-        });
+    const response = await fetch(url, {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Connection": "keep-alive"
+        },
+        method: "GET",
+        credentials: "include"
+    });
 
-        document.cookie = "dimension=NINE";
-        document.cookie = "difficulty=MASTER";
-        document.cookie = "games=KILLER,HYPER";
-
-        if (!response.ok) {
-            throw new Error("Response status: ${response.status}");
-        }
-
-        const json = await response.json();
-        
-        return (<h1>{json}</h1>);
+    if (!response.ok) {
+        throw new Error("Response status: " + response.status + " | ");
     }
-    catch (error) {
-        return (<h1>{error.message}</h1>)
-    }
+
+    const json = await response.json();
+    
+    return json;
 }
-
