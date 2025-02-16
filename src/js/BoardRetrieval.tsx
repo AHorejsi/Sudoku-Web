@@ -17,7 +17,7 @@ export async function retrieveBoard(dimension: String, difficulty: String, games
     });
 
     if (!response.ok) {
-        throw new Error("Response status: " + response.status + " | ");
+        throw new Error("Response status: " + response.status);
     }
 
     const json = await response.json();
