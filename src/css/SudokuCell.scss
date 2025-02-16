@@ -1,0 +1,16 @@
+@mixin cell {
+    width: 3em;
+    height: 3em;
+}
+
+.immutableCell {
+    @include cell;
+
+    font-weight: bold;
+    background-color: yellow;
+    
+}
+
+.mutableCell {
+    @include cell;
+}
