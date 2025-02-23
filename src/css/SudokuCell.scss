@@ -1,16 +1,26 @@
 @mixin cell {
     width: 3em;
     height: 3em;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    padding: auto;
+    margin: auto
 }
 
-.immutableCell {
+.immutable-cell {
     @include cell;
 
     font-weight: bold;
     background-color: yellow;
-    
 }
 
-.mutableCell {
+.mutable-cell {
     @include cell;
+}
+
+.cell-data {
+    border-width: 1px;
+    border-radius: 1px;
+    border-color: black;
 }

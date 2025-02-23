@@ -1,19 +1,9 @@
 import "../css/SudokuBoard.scss";
 import React, { ReactNode } from "react";
+import { Sudoku } from "./Sudoku";
 import SudokuCell from "./SudokuCell";
 
-export default function SudokuBoard(props): ReactNode {
-    const info = props.info;
-    const table = createTableOfCells(info);
-
-    return (
-        <div id="board">
-            {table}
-        </div>
-    );
-}
-
-function createTableOfCells(info): React.JSX.Element {
+function createTableOfCells(info: Sudoku): React.JSX.Element {
     const table = Array<React.JSX.Element>();
 
     for (let rowIndex = 0; rowIndex < info.length; ++rowIndex) {
@@ -26,5 +16,17 @@ function createTableOfCells(info): React.JSX.Element {
         table.push(<tr>{row}</tr>);
     }
 
-    return <table>{table}</table>;
+    return (
+        <table>
+            <tbody>{table}</tbody>
+        </table>
+    );
+}
+
+export default function SudokuBoard(props): ReactNode {
+    const table = createTableOfCells(props.info);
+
+    return (
+        <div id="board" className="container">{table}</div>
+    );
 }

@@ -7,7 +7,9 @@ const root = createRoot(container)
 
 retrieveBoard("NINE", "MASTER", "KILLER,HYPER").then((json) => {
     root.render(
-        <div><SudokuBoard info={json} /></div>
+        <div>
+            <SudokuBoard info={json} />
+        </div>
     );
 }).catch((error) => {
     root.render(error.message);
