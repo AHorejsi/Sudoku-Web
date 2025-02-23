@@ -8,11 +8,12 @@ interface SudokuCellProps {
 
     column: number;
 
-    maxLength: number;
+    boardLength: number;
+
+    maxCharLength: number;
 }
 
-function limitCharLength(ev: React.FormEvent<HTMLDivElement>, maxLength: number) {
-    const div = ev.currentTarget;
+function _limitCharLength(div: HTMLDivElement, maxLength: number) {
     const text = div.textContent!;
 
     if (text.length > maxLength) {
@@ -24,15 +25,40 @@ function limitCharLength(ev: React.FormEvent<HTMLDivElement>, maxLength: number)
     }
 }
 
+function _removeNonnumbers(div: HTMLDivElement) {
+    const text = div.textContent!;
+    const endIndex = text.length - 1;
+
+    const last = text.charAt(endIndex);
+    const containsDigits = /^\d+$/;
+
+    if (!containsDigits.test(last)) {
+        div.textContent = text.substring(0, endIndex);
+    }
+}
+
+function _checkInput(ev: React.FormEvent<HTMLDivElement>, maxLength: number) {
+    const div = ev.currentTarget;
+
+    _limitCharLength(div, maxLength);
+    _removeNonnumbers(div);
+}
+
 export default function SudokuCell(props: SudokuCellProps): ReactNode {
     const cellId = `cell_${props.row}_${props.column}`;
 
     const editable = null === props.value
+
     const cellType = editable ? "mutable-cell" : "immutable-cell";
 
     return (
         <td className="cell-data">
-            <div id={cellId} className={cellType} contentEditable={editable} onInput={(ev) => limitCharLength(ev, props.maxLength)}>
+            <div
+                id={cellId}
+                className={cellType}
+                contentEditable={editable}
+                onInput={(ev) => _checkInput(ev, props.maxCharLength)}
+            >
                 {props.value ?? ""}
             </div>
         </td>

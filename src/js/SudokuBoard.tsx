@@ -20,7 +20,8 @@ function createTableOfCells(info: Sudoku): React.JSX.Element {
                     value={info.board[rowIndex][colIndex]}
                     row={rowIndex}
                     column={colIndex}
-                    maxLength={maxCharLength}
+                    boardLength={info.length}
+                    maxCharLength={maxCharLength}
                 />
             );
         }
@@ -29,7 +30,7 @@ function createTableOfCells(info: Sudoku): React.JSX.Element {
     }
 
     return (
-        <table>
+        <table id="cell-table">
             <tbody>{table}</tbody>
         </table>
     );
