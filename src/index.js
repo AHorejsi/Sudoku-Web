@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { retrieveBoard } from "./js/BoardRetrieval";
+import retrieveBoard from "./js/BoardRetrieval";
 import SudokuBoard from "./js/SudokuBoard";
 
 const container = document.getElementById("app");
