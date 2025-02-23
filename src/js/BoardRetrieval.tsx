@@ -1,4 +1,6 @@
-export async function retrieveBoard(dimension: String, difficulty: String, games: String): Promise<any> {
+import { Sudoku } from "./Sudoku";
+
+export async function retrieveBoard(dimension: String, difficulty: String, games: String): Promise<Sudoku> {
     const url = "http://localhost:8080/generate";
 
     document.cookie = "dimension=" + dimension;
@@ -20,7 +22,7 @@ export async function retrieveBoard(dimension: String, difficulty: String, games
         throw new Error("Response status: " + response.status);
     }
 
-    const json = await response.json();
+    const json: Sudoku = await response.json();
     
     return json;
 }

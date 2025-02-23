@@ -7,14 +7,16 @@ interface SudokuCellProps {
     row: number;
 
     column: number;
+
+    maxLength: number;
 }
 
-function limitCharLength(ev: React.FormEvent<HTMLDivElement>) {
+function limitCharLength(ev: React.FormEvent<HTMLDivElement>, maxLength: number) {
     const div = ev.currentTarget;
     const text = div.textContent!;
 
-    if (text.length > 2) {
-        div.textContent = text.substring(0, 2);
+    if (text.length > maxLength) {
+        div.textContent = text.substring(0, maxLength);
         
         const sel = window.getSelection()!;
         sel.selectAllChildren(div);
@@ -30,7 +32,7 @@ export default function SudokuCell(props: SudokuCellProps): ReactNode {
 
     return (
         <td className="cell-data">
-            <div id={cellId} className={cellType} contentEditable={editable} onInput={limitCharLength}>
+            <div id={cellId} className={cellType} contentEditable={editable} onInput={(ev) => limitCharLength(ev, props.maxLength)}>
                 {props.value ?? ""}
             </div>
         </td>

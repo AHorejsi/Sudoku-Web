@@ -11,7 +11,7 @@ interface Cage {
 }
 
 interface Box {
-    isHyper: Boolean;
+    isHyper: boolean;
 
     positions: Position[];
 }
