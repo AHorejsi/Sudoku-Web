@@ -16,8 +16,28 @@
     @include cell;
 }
 
+.hyper-cell {
+    background-color: pink
+}
+
+.top-bordered {
+    border-top-width: medium;
+}
+
+.bottom-bordered {
+    border-bottom-width: medium;
+}
+
+.left-bordered {
+    border-left-width: medium;
+}
+
+.right-bordered {
+    border-right-width: medium;
+}
+
 .cell-data {
     border-width: 1px;
-    border-radius: 1px;
     border-color: black;
+    border-style: solid;
 }

@@ -10,6 +10,8 @@ interface SudokuCellProps {
 
     boardLength: number;
 
+    isHyper: boolean;
+
     maxCharLength: number;
 }
 
@@ -46,13 +48,13 @@ function _checkInput(ev: React.FormEvent<HTMLDivElement>, maxLength: number) {
 
 export default function SudokuCell(props: SudokuCellProps): ReactNode {
     const cellId = `cell_${props.row}_${props.column}`;
-
     const editable = null === props.value
-
     const cellType = editable ? "mutable-cell" : "immutable-cell";
 
+    const hyper = props.isHyper ? "hyper-cell" : "";
+
     return (
-        <td className="cell-data">
+        <td className={`cell-data ${hyper}`}>
             <div
                 id={cellId}
                 className={cellType}
