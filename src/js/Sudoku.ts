@@ -21,7 +21,7 @@ interface Sudoku {
 
     solved: number[][];
 
-    cages: Cage[];
+    cages: Cage[] | null;
 
     boxes: Box[];
 

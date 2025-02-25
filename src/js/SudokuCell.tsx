@@ -47,14 +47,14 @@ function _checkInput(ev: React.FormEvent<HTMLDivElement>, maxLength: number) {
 }
 
 export default function SudokuCell(props: SudokuCellProps): ReactNode {
-    const cellId = `cell_${props.row}_${props.column}`;
+    const cellId = `cell-${props.row}-${props.column}`;
     const editable = null === props.value
     const cellType = editable ? "mutable-cell" : "immutable-cell";
 
-    const hyper = props.isHyper ? "hyper-cell" : "";
+    const hyper = props.isHyper ? " hyper-cell" : "";
 
     return (
-        <td className={`cell-data ${hyper}`}>
+        <td className={`cell-data${hyper}`}>
             <div
                 id={cellId}
                 className={cellType}
