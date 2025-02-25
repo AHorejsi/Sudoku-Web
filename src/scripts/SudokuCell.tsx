@@ -1,4 +1,4 @@
-import "../css/SudokuCell.scss";
+import "../styles/SudokuCell.scss";
 import React, { ReactNode } from "react";
 
 interface SudokuCellProps {

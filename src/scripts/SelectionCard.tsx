@@ -1,4 +1,4 @@
-import "../css/SelectionCard.scss";
+import "../styles/SelectionCard.scss";
 import React, { ReactNode } from "react";
 
 interface SelectionCardProps {
@@ -9,7 +9,7 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
     const games = props.games.join(" : ");
 
     return (
-        <div id="card-main" className="container">
+        <div id="selection-card-main" className="container">
             <form>
                 <div className="game-selections">
                     <div id="dimension-selection" className="game-selection-row">

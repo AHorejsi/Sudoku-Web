@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
-import { retrieveBoard } from "./js/Sudoku";
-import SudokuBoard from "./js/SudokuBoard";
+import { retrieveBoard } from "./scripts/Sudoku";
+import SudokuBoard from "./scripts/SudokuBoard";
 
 const container = document.getElementById("app");
 const root = createRoot(container)

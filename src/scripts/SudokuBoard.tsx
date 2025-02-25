@@ -1,4 +1,4 @@
-import "../css/SudokuBoard.scss";
+import "../styles/SudokuBoard.scss";
 import React, { ReactNode } from "react";
 import { Sudoku, Position } from "./Sudoku";
 import SudokuCell from "./SudokuCell";
