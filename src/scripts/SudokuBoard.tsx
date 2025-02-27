@@ -58,7 +58,6 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
 
     return (
         <div className="container">
-            <SelectionCard games={info.games} />
             <div id="board">{table}</div>
         </div>
     );

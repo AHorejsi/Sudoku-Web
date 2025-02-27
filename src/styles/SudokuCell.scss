@@ -17,27 +17,53 @@
 }
 
 .hyper-cell {
-    background-color: pink
+    background-color: pink;
 }
 
-.top-bordered {
+.thick-top-bordered {
     border-top-width: medium;
+    border-top-color: black;
+    border-top-style: solid;
 }
 
-.bottom-bordered {
+.thin-top-bordered {
+    border-top-width: thin;
+    border-top-color: black;
+    border-top-style: solid;
+}
+
+.thick-bottom-bordered {
     border-bottom-width: medium;
+    border-bottom-color: black;
+    border-bottom-style: solid;
 }
 
-.left-bordered {
+.thin-bottom-bordered {
+    border-bottom-width: thin;
+    border-bottom-color: black;
+    border-bottom-style: solid;
+}
+
+.thick-left-bordered {
     border-left-width: medium;
+    border-left-color: black;
+    border-left-style: solid;
 }
 
-.right-bordered {
+.thin-left-bordered {
+    border-left-width: thin;
+    border-left-color: black;
+    border-left-style: solid;
+}
+
+.thick-right-bordered {
     border-right-width: medium;
+    border-right-color: black;
+    border-right-style: solid;
 }
 
-.cell-data {
-    border-width: 1px;
-    border-color: black;
-    border-style: solid;
+.thin-right-bordered {
+    border-right-width: thin;
+    border-right-color: black;
+    border-right-style: solid;
 }

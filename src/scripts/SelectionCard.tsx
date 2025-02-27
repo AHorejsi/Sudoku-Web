@@ -1,14 +1,7 @@
 import "../styles/SelectionCard.scss";
 import React, { ReactNode } from "react";
 
-interface SelectionCardProps {
-    games: string[];
-}
-
-export default function SelectionCard(props: SelectionCardProps): ReactNode {
-    const games = props.games.join(" : ");
-
-    return (
+export default function SelectionCard(): ReactNode {    return (
         <div id="selection-card-main" className="container">
             <form>
                 <div className="game-selections">

@@ -5,7 +5,7 @@ import SudokuBoard from "./scripts/SudokuBoard";
 const container = document.getElementById("app");
 const root = createRoot(container)
 
-retrieveBoard("NINE", "MASTER", "").then((json) => {
+retrieveBoard("NINE", "BEGINNER", "HYPER").then((json) => {
     root.render(<SudokuBoard info={json} />);
 }).catch((error) => {
     root.render(error.message);

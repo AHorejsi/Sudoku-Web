@@ -15,7 +15,65 @@ interface SudokuCellProps {
     maxCharLength: number;
 }
 
-function _limitCharLength(div: HTMLDivElement, maxLength: number) {
+interface _CellBorderThickness {
+    top: string;
+
+    bottom: string;
+
+    left: string;
+
+    right: string;
+}
+
+function _decideThickness(props: SudokuCellProps): _CellBorderThickness {
+    const boxLength = Math.sqrt(props.boardLength);
+    const borderThickness = {
+        top: "thin",
+        bottom: "thin",
+        left: "thin",
+        right: "thin"
+    };
+
+    switch (props.row % boxLength) {
+    case 0:
+        borderThickness.top = "thick";
+
+        break;
+    case boxLength - 1:
+        borderThickness.bottom = "thick";
+
+        break;
+    }
+
+    switch (props.column % boxLength) {
+    case 0:
+        borderThickness.left = "thick";
+
+        break;
+    case boxLength - 1:
+        borderThickness.right = " thick";
+
+        break;
+    }
+
+    return borderThickness;
+}
+
+function _determineBorders(props: SudokuCellProps): string {
+    const borders = _decideThickness(props);
+
+    let css = "";
+
+    for (const side in borders) {
+        const value: string = borders[side];
+
+        css += `${value}-${side}-bordered `;
+    }
+
+    return css;
+}
+
+function _limitCharLength(div: HTMLDivElement, maxLength: number): boolean {
     const text = div.textContent!;
 
     if (text.length > maxLength) {
@@ -24,10 +82,14 @@ function _limitCharLength(div: HTMLDivElement, maxLength: number) {
         const sel = window.getSelection()!;
         sel.selectAllChildren(div);
         sel.collapseToEnd();
+
+        return true;
     }
+
+    return false;
 }
 
-function _removeNonnumbers(div: HTMLDivElement) {
+function _removeNonNumbers(div: HTMLDivElement) {
     const text = div.textContent!;
     const endIndex = text.length - 1;
 
@@ -42,22 +104,24 @@ function _removeNonnumbers(div: HTMLDivElement) {
 function _checkInput(ev: React.FormEvent<HTMLDivElement>, maxLength: number) {
     const div = ev.currentTarget;
 
-    _limitCharLength(div, maxLength);
-    _removeNonnumbers(div);
+    const finalCharRemoved = _limitCharLength(div, maxLength);
+
+    if (!finalCharRemoved) {
+        _removeNonNumbers(div);
+    }
 }
 
 export default function SudokuCell(props: SudokuCellProps): ReactNode {
-    const cellId = `cell-${props.row}-${props.column}`;
-    const editable = null === props.value
+    const editable = null === props.value;
     const cellType = editable ? "mutable-cell" : "immutable-cell";
-
-    const hyper = props.isHyper ? " hyper-cell" : "";
+    const hyper = props.isHyper ? "hyper-cell" : "";
+    const cellBorders = _determineBorders(props);
 
     return (
-        <td className={`cell-data${hyper}`}>
+        <td className={`${hyper} ${cellBorders}`}>
             <div
-                id={cellId}
-                className={cellType}
+                id={`cell-${props.row}-${props.column}`}
+                className={`${cellType}`}
                 contentEditable={editable}
                 onInput={(ev) => _checkInput(ev, props.maxCharLength)}
             >
