@@ -2,7 +2,6 @@ import "../styles/SudokuBoard.scss";
 import React, { ReactNode } from "react";
 import { Sudoku, Position } from "./Sudoku";
 import SudokuCell from "./SudokuCell";
-import SelectionCard from "./SelectionCard";
 
 interface SudokuBoardProps {
     info: Sudoku;
@@ -52,9 +51,7 @@ function createTableOfCells(info: Sudoku): React.JSX.Element {
 }
 
 export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
-    const info = props.info;
-
-    const table = createTableOfCells(info);
+    const table = createTableOfCells(props.info);
 
     return (
         <div className="container">

@@ -46,6 +46,7 @@ async function retrieveBoard(dimension: string, difficulty: string, games: strin
 
     const response = await fetch(url, {
         headers: {
+            "X-Request-ID": "Sudoku-Generate",
             "Authorization": "Bearer " + jwt,
             "Accept": "application/json; charset=UTF-8",
             "Accept-Encoding": "gzip, deflate, br",
