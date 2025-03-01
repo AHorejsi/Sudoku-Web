@@ -4,7 +4,7 @@ import { Sudoku, Position } from "./Sudoku";
 import SudokuCell from "./SudokuCell";
 
 interface SudokuBoardProps {
-    info: Sudoku;
+    info: Sudoku | Error;
 }
 
 function checkIfHyperCell(hyperPos: Position[], rowIndex: number, colIndex: number): boolean {
@@ -51,11 +51,16 @@ function createTableOfCells(info: Sudoku): React.JSX.Element {
 }
 
 export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
-    const table = createTableOfCells(props.info);
+    const info = props.info;
 
-    return (
-        <div className="container">
-            <div id="board">{table}</div>
-        </div>
-    );
+    if (info instanceof Error) {
+        return <div>{info.message}</div>
+    }
+    else {
+        const table = createTableOfCells(info);
+
+        return (
+            <div id="board" className="container">{table}</div>
+        );
+    }
 }

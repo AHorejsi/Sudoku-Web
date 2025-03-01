@@ -1,5 +1,7 @@
 #selection-card-main {
     text-align: center;
+    display: inline-block;
+    width: fit-content;
 }
 
 #game-selections {
@@ -21,5 +23,5 @@
 }
 
 #generate-button {
-    margin-top: 8em;
+    margin-top: 5em;
 }
