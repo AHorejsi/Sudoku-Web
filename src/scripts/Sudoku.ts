@@ -32,13 +32,8 @@ interface Sudoku {
     games: string[];
 }
 
-function _generateJwt(): string {
-    return "Test";
-}
-
 async function retrieveBoard(dimension: string, difficulty: string, games: string): Promise<Sudoku> {
     const url = "http://localhost:8080/generate";
-    const jwt = _generateJwt();
 
     document.cookie = "dimension=" + dimension;
     document.cookie = "difficulty=" + difficulty;
@@ -47,7 +42,6 @@ async function retrieveBoard(dimension: string, difficulty: string, games: strin
     const response = await fetch(url, {
         headers: {
             "X-Request-ID": "Sudoku-Generate",
-            "Authorization": "Bearer " + jwt,
             "Accept": "application/json; charset=UTF-8",
             "Accept-Encoding": "gzip, deflate, br",
             "Content-Type": "application/json",
