@@ -6,20 +6,19 @@ import { LoginInfo } from "./LoginInfo";
 function _checkLogin(info: LoginInfo, nav: NavigateFunction) {
     const user = info.user;
 
-    if (user) {
-        const options = {
-            state: user,
-            replace: true
-        };
-
-        nav("/gameplay", options);
-    }
-    else {
+    if (!user) {
         throw new Error("Unable to login");
     }
+    
+    const options = {
+        state: user,
+        replace: false
+    };
+
+    nav("/gameplay", options);
 }
 
-function _unexpectedLoginError(error: Error) {
+function _loginError(error: Error) {
     throw error;
 }
 
@@ -29,7 +28,7 @@ function _attemptUserLogin(usernameOrEmail: string, password: string, nav: Navig
     loginResult.then((info: LoginInfo) => {
         _checkLogin(info, nav);
     }).catch((error: Error) => {
-        _unexpectedLoginError(error);
+        _loginError(error);
     });
 }
 
@@ -42,7 +41,7 @@ export default function LoginPage(): ReactNode {
         <div id="login">
             <form>
                 <div>
-                    Username or Email: 
+                    Username/Email: 
 
                     <label htmlFor="usernameOrEmail" />
                     <input type="text" name="usernameOrEmail" onInput={(ev) => setUsernameOrEmail(ev.currentTarget.value)}/>

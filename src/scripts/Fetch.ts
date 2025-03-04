@@ -1,5 +1,6 @@
 import { Sudoku } from "./Sudoku";
 import { LoginInfo } from "./LoginInfo";
+import { SignupInfo } from "./SignupInfo";
 
 function _ensureOkResponse(response: Response) {
     if (!response.ok) {
@@ -31,6 +32,30 @@ async function retrieveBoard(dimension: string, difficulty: string, games: strin
     return json;
 }
 
+async function signup(username: string, email: string, password: string): Promise<SignupInfo> {
+    const url = "http://localhost:8080/createUser";
+
+    const response = await fetch(url, {
+        headers: {
+            "X-Request-ID": "Create-User",
+            "Accept": "application/json; charset=UTF-8",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Connection": "keep-alive"
+        },
+        method: "PUT",
+        body: JSON.stringify({ username, email, password }),
+        credentials: "include"
+    });
+
+    _ensureOkResponse(response);
+
+    const signup: SignupInfo = await response.json();
+
+    return signup;
+}
+
 async function login(usernameOrEmail: string, password: string): Promise<LoginInfo> {
     const url = "http://localhost:8080/readUser";
 
@@ -55,4 +80,4 @@ async function login(usernameOrEmail: string, password: string): Promise<LoginIn
     return login;
 }
 
-export { retrieveBoard, login };
+export { retrieveBoard, signup, login };
