@@ -54,7 +54,7 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
     const info = props.info;
 
     if (info instanceof Error) {
-        return <div>{info.message}</div>
+        return <p id="error-text">{info.message}</p>
     }
     else {
         const table = createTableOfCells(info);

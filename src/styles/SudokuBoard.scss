@@ -3,6 +3,13 @@
     display: inline-block;
 }
 
+#error-text {
+    color: red;
+    text-align: center;
+    padding-left: 10em;
+    padding-right: 10em;
+}
+
 #cell-table {
     width: fit-content;
     height: fit-content;

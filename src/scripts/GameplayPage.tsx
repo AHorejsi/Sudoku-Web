@@ -2,7 +2,6 @@ import "../styles/GameplayPage.scss";
 import React, { ReactNode, useState } from "react";
 import { useLocation } from "react-router";
 import { Sudoku } from "./Sudoku";
-import { User } from "./LoginInfo";
 import SelectionCard from "./SelectionCard";
 import SudokuBoard from "./SudokuBoard";
 
@@ -11,11 +10,13 @@ export default function GameplayPage(): ReactNode {
     const loc = useLocation();
 
     return (
-        <div id="gameplay">
-            Hello, { loc.state.username }!
+        <div className="container">
+            <h1>Hello, { loc.state.username }!</h1>
 
-            <SelectionCard creator={setBoard} />
-            <SudokuBoard info={board} />
+            <div id="gameplay">
+                <SelectionCard creator={setBoard} />
+                <SudokuBoard info={board} />
+            </div>
         </div>
     );
 }
