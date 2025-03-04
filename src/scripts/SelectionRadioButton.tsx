@@ -14,9 +14,9 @@ export default function SelectionRadioButton(props: SelectionRadioButtonProps): 
     return (
         <div>
             {`${props.text}:    `}
+            
             <label htmlFor={props.name} />
-            <input type="radio" name={props.name} onClick={(ev) => props.setter(props.value)} />
-            <br />
+            <input type="radio" name={props.name} onClick={(ev) => { props.setter(props.value) }} />
         </div>
     );
 }

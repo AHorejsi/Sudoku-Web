@@ -2,7 +2,8 @@ import "../styles/SelectionCard.scss";
 import React, { ReactNode, useState } from "react";
 import SelectionRadioButton from "./SelectionRadioButton";
 import SelectionCheckbox from "./SelectionCheckbox";
-import { retrieveBoard, Sudoku } from "./Sudoku";
+import { Sudoku } from "./Sudoku";
+import { retrieveBoard } from "./Fetch";
 
 interface SelectionCardProps {
     creator: React.Dispatch<React.SetStateAction<Sudoku | Error>>
@@ -11,7 +12,7 @@ interface SelectionCardProps {
 function _generateButton(
     dimension: string,
     difficulty: string,
-    games: string,
+    games: string[],
     creator: React.Dispatch<React.SetStateAction<Sudoku | Error>>
 ) {
     const sudoku = retrieveBoard(dimension, difficulty, games);
@@ -26,17 +27,17 @@ function _generateButton(
 function _clearButton(
     setDimension: React.Dispatch<React.SetStateAction<string>>,
     setDifficulty: React.Dispatch<React.SetStateAction<string>>,
-    setGames: React.Dispatch<React.SetStateAction<string>>,
+    setGames: React.Dispatch<React.SetStateAction<string[]>>,
 ) {
     setDimension("");
     setDifficulty("");
-    setGames("");
+    setGames([]);
 }
 
 export default function SelectionCard(props: SelectionCardProps): ReactNode {
     const [dimension, setDimension] = useState("");
     const [difficulty, setDifficulty] = useState("");
-    const [games, setGames] = useState("");
+    const [games, setGames] = useState(Array<string>());
 
     return (
         <div id="selection-card-main" className="container">

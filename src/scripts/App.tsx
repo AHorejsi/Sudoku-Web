@@ -1,16 +1,15 @@
-import "../styles/App.scss";
-import React, { ReactNode, useState } from "react";
-import { Sudoku } from "./Sudoku";
-import SelectionCard from "./SelectionCard";
-import SudokuBoard from "./SudokuBoard";
+import React, { ReactNode } from "react";
+import { BrowserRouter, Routes, Route } from "react-router";
+import GameplayPage from "./GameplayPage";
+import LoginPage from "./LoginPage";
 
 export default function App(): ReactNode {
-    const [board, setBoard] = useState<Sudoku | Error>(new Error("No Puzzle"));
-
     return (
-        <div id="main">
-            <SelectionCard creator={setBoard} />
-            <SudokuBoard info={board} />
-        </div>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/gameplay" element={<GameplayPage />} />
+            </Routes>
+        </BrowserRouter>
     );
 }
