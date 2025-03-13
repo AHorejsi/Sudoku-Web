@@ -1,19 +1,19 @@
 import "../styles/SelectionCard.scss";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useState, Dispatch, SetStateAction } from "react";
 import SelectionRadioButton from "./SelectionRadioButton";
 import SelectionCheckbox from "./SelectionCheckbox";
 import { Sudoku } from "./Sudoku";
 import { retrieveBoard } from "./Fetch";
 
 interface SelectionCardProps {
-    creator: React.Dispatch<React.SetStateAction<Sudoku | Error>>
+    creator: Dispatch<SetStateAction<Sudoku | Error>>
 }
 
 function _generateButton(
     dimension: string,
     difficulty: string,
     games: string[],
-    creator: React.Dispatch<React.SetStateAction<Sudoku | Error>>
+    creator: Dispatch<SetStateAction<Sudoku | Error>>
 ) {
     const sudoku = retrieveBoard(dimension, difficulty, games);
 
@@ -25,10 +25,12 @@ function _generateButton(
 }
 
 function _clearButton(
-    setDimension: React.Dispatch<React.SetStateAction<string>>,
-    setDifficulty: React.Dispatch<React.SetStateAction<string>>,
-    setGames: React.Dispatch<React.SetStateAction<string[]>>,
+    setDimension: Dispatch<SetStateAction<string>>,
+    setDifficulty: Dispatch<SetStateAction<string>>,
+    setGames: Dispatch<SetStateAction<string[]>>,
 ) {
+    // TODO: Clear button not working. Need to update input field values
+
     setDimension("");
     setDifficulty("");
     setGames([]);
@@ -46,26 +48,26 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
                     <div className="game-selection-row">
                         <p className="game-selection-title">Dimension</p>
 
-                        <SelectionRadioButton name="dimension" value="FOUR" text="4x4" setter={setDimension} />
-                        <SelectionRadioButton name="dimension" value="NINE" text="9x9" setter={setDimension} />
-                        <SelectionRadioButton name="dimension" value="SIXTEEN" text="16x16" setter={setDimension} />
+                        <SelectionRadioButton name="dimension" value="FOUR" prompt="4x4" setter={setDimension} />
+                        <SelectionRadioButton name="dimension" value="NINE" prompt="9x9" setter={setDimension} />
+                        <SelectionRadioButton name="dimension" value="SIXTEEN" prompt="16x16" setter={setDimension} />
                     </div>
 
                     <div className="game-selection-row">
                         <p className="game-selection-title">Difficulty</p>
 
-                        <SelectionRadioButton name="difficulty" value="BEGINNER" text="Beginner" setter={setDifficulty} />
-                        <SelectionRadioButton name="difficulty" value="EASY" text="Easy" setter={setDifficulty} />
-                        <SelectionRadioButton name="difficulty" value="MEDIUM" text="Medium" setter={setDifficulty} />
-                        <SelectionRadioButton name="difficulty" value="HARD" text="Hard" setter={setDifficulty} />
-                        <SelectionRadioButton name="difficulty" value="MASTER" text="Master" setter={setDifficulty} />
+                        <SelectionRadioButton name="difficulty" value="BEGINNER" prompt="Beginner" setter={setDifficulty} />
+                        <SelectionRadioButton name="difficulty" value="EASY" prompt="Easy" setter={setDifficulty} />
+                        <SelectionRadioButton name="difficulty" value="MEDIUM" prompt="Medium" setter={setDifficulty} />
+                        <SelectionRadioButton name="difficulty" value="HARD" prompt="Hard" setter={setDifficulty} />
+                        <SelectionRadioButton name="difficulty" value="MASTER" prompt="Master" setter={setDifficulty} />
                     </div>
 
                     <div className="game-selection-row">
                         <p className="game-selection-title">Game Types</p>
 
-                        <SelectionCheckbox name="game-type" value="KILLER" text="Killer" getter={games} setter={setGames} />
-                        <SelectionCheckbox name="game-type" value="HYPER" text="Hyper" getter={games} setter={setGames} />
+                        <SelectionCheckbox name="game-type" value="KILLER" prompt="Killer" getter={games} setter={setGames} />
+                        <SelectionCheckbox name="game-type" value="HYPER" prompt="Hyper" getter={games} setter={setGames} />
                     </div>
                 </div>
 
@@ -73,12 +75,9 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
                     <p className="game-selection-title">Generate</p>
 
                     <label htmlFor="generate" />
-                    <input type="button" value="Generate" onClick={(_) => _generateButton(dimension, difficulty, games, props.creator)} />
-
-                    <br />
-
-                    <label htmlFor="clear" />
-                    <input type="button" value="Clear" onClick={(_) => _clearButton(setDimension, setDifficulty, setGames)} />
+                    <input type="button" name="generate" value="Generate"
+                        onClick={(ev) => _generateButton(dimension, difficulty, games, props.creator)}
+                    />
                 </div>
             </form>
         </div>

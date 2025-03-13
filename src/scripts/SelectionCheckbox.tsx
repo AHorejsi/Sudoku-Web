@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 
 interface SelectionCheckboxProps {
-    text: string;
+    prompt: string;
 
     name: string;
 
@@ -29,7 +29,7 @@ function _changeSelection(ev: React.FormEvent<HTMLInputElement>, props: Selectio
 export default function SelectionCheckbox(props: SelectionCheckboxProps): ReactNode {
     return (
         <div>
-            {`${props.text}:    `}
+            {`${props.prompt}:    `}
 
             <label htmlFor={props.name} />
             <input type="checkbox" name={props.name} onClick={(ev) => _changeSelection(ev, props)}/>

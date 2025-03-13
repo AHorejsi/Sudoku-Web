@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import GameplayPage from "./GameplayPage";
 import LoginPage from "./LoginPage";
 import SignUpPage from "./SignUpPage";
+import UserSettingsPage from "./UserSettingsPage";
 
 export default function App(): ReactNode {
     return (
@@ -11,6 +12,7 @@ export default function App(): ReactNode {
                 <Route path="/signup" element={<SignUpPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/gameplay" element={<GameplayPage />} />
+                <Route path="/settings" element={<UserSettingsPage />} />
             </Routes>
         </BrowserRouter>
     );

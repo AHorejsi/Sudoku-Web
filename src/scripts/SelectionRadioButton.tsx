@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 
 interface SelectionRadioButtonProps {
-    text: string;
+    prompt: string;
 
     name: string;
 
@@ -13,10 +13,10 @@ interface SelectionRadioButtonProps {
 export default function SelectionRadioButton(props: SelectionRadioButtonProps): ReactNode {
     return (
         <div>
-            {`${props.text}:    `}
+            {`${props.prompt}:    `}
             
             <label htmlFor={props.name} />
-            <input type="radio" name={props.name} onClick={(ev) => { props.setter(props.value) }} />
+            <input type="radio" name={props.name} onClick={(_) => { props.setter(props.value) }} />
         </div>
     );
 }

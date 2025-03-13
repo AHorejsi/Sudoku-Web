@@ -35,6 +35,7 @@ function _attemptUserLogin(usernameOrEmail: string, password: string, nav: Navig
 export default function LoginPage(): ReactNode {
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
     const [password, setPassword] = useState("");
+    
     const nav = useNavigate();
 
     return (
