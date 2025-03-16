@@ -18,17 +18,13 @@ function _checkLogin(info: LoginInfo, nav: NavigateFunction) {
     nav("/gameplay", options);
 }
 
-function _loginError(error: Error) {
-    throw error;
-}
-
 function _attemptUserLogin(usernameOrEmail: string, password: string, nav: NavigateFunction) {
     const loginResult = login(usernameOrEmail, password);
 
     loginResult.then((info: LoginInfo) => {
         _checkLogin(info, nav);
     }).catch((error: Error) => {
-        _loginError(error);
+        throw error;
     });
 }
 
@@ -45,7 +41,7 @@ export default function LoginPage(): ReactNode {
                     Username/Email: 
 
                     <label htmlFor="usernameOrEmail" />
-                    <input type="text" name="usernameOrEmail" onInput={(ev) => setUsernameOrEmail(ev.currentTarget.value)}/>
+                    <input type="text" name="usernameOrEmail" onInput={(ev) => setUsernameOrEmail(ev.currentTarget.value)} />
                 </div>
 
                 <div>

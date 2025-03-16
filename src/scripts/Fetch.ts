@@ -1,4 +1,4 @@
-import { Sudoku } from "./Sudoku";
+import { GenerateInfo } from "./GenerateInfo";
 import { LoginInfo } from "./LoginInfo";
 import { SignupInfo } from "./SignupInfo";
 import { UpdateInfo } from "./UpdateInfo"; 
@@ -9,7 +9,7 @@ function _ensureOkResponse(response: Response) {
     }
 }
 
-async function retrieveBoard(dimension: string, difficulty: string, games: string[]): Promise<Sudoku> {
+async function retrieveBoard(dimension: string, difficulty: string, games: string[]): Promise<GenerateInfo> {
     const url = "http://127.0.0.1:8080/generate";
 
     const response = await fetch(url, {
@@ -28,7 +28,7 @@ async function retrieveBoard(dimension: string, difficulty: string, games: strin
 
     _ensureOkResponse(response);
 
-    const json: Sudoku = await response.json();
+    const json: GenerateInfo = await response.json();
     
     return json;
 }

@@ -2,23 +2,23 @@ import "../styles/SelectionCard.scss";
 import React, { ReactNode, useState, Dispatch, SetStateAction } from "react";
 import SelectionRadioButton from "./SelectionRadioButton";
 import SelectionCheckbox from "./SelectionCheckbox";
-import { Sudoku } from "./Sudoku";
+import { GenerateInfo } from "./GenerateInfo";
 import { retrieveBoard } from "./Fetch";
 
 interface SelectionCardProps {
-    creator: Dispatch<SetStateAction<Sudoku | Error>>
+    creator: Dispatch<SetStateAction<GenerateInfo | Error>>
 }
 
 function _generateButton(
     dimension: string,
     difficulty: string,
     games: string[],
-    creator: Dispatch<SetStateAction<Sudoku | Error>>
+    creator: Dispatch<SetStateAction<GenerateInfo | Error>>
 ) {
-    const sudoku = retrieveBoard(dimension, difficulty, games);
+    const generation = retrieveBoard(dimension, difficulty, games);
 
-    sudoku.then((json: Sudoku) => {
-        creator(json);
+    generation.then((info: GenerateInfo) => {
+        creator(info);
     }).catch((error: Error) => {
         creator(error);
     });

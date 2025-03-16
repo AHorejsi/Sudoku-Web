@@ -1,10 +1,10 @@
 import "../styles/SudokuBoard.scss";
 import React, { ReactNode } from "react";
-import { Sudoku, Position } from "./Sudoku";
+import { GenerateInfo, Position } from "./GenerateInfo";
 import SudokuCell from "./SudokuCell";
 
 interface SudokuBoardProps {
-    info: Sudoku | Error;
+    info: GenerateInfo | Error;
 }
 
 function checkIfHyperCell(hyperPos: Position[], rowIndex: number, colIndex: number): boolean {
@@ -17,23 +17,25 @@ function checkIfHyperCell(hyperPos: Position[], rowIndex: number, colIndex: numb
     return false;
 }
 
-function createTableOfCells(info: Sudoku): React.JSX.Element {
-    const tableBody = Array<React.JSX.Element>();
-    const maxCharLength = info.length.toString().length;
-    const hyperPos = info.boxes.filter((box) => box.isHyper).map((box, _i, _a) => box.positions).flat();
+function createTableOfCells(info: GenerateInfo): React.JSX.Element {
+    const puzzle = info.puzzle;
 
-    for (let rowIndex = 0; rowIndex < info.length; ++rowIndex) {
+    const tableBody = Array<React.JSX.Element>();
+    const maxCharLength = puzzle.length.toString().length;
+    const hyperPos = puzzle.boxes.filter((box) => box.isHyper).map((box, _i, _a) => box.positions).flat();
+
+    for (let rowIndex = 0; rowIndex < puzzle.length; ++rowIndex) {
         const tableRow = Array<React.JSX.Element>();
 
-        for (let colIndex = 0; colIndex < info.length; ++colIndex) {
+        for (let colIndex = 0; colIndex < puzzle.length; ++colIndex) {
             const isHyper = checkIfHyperCell(hyperPos, rowIndex, colIndex);
 
             tableRow.push(
                 <SudokuCell
-                    value={info.board[rowIndex][colIndex]}
+                    value={puzzle.board[rowIndex][colIndex]}
                     row={rowIndex}
                     column={colIndex}
-                    boardLength={info.length}
+                    boardLength={puzzle.length}
                     isHyper={isHyper}
                     maxCharLength={maxCharLength}
                 />

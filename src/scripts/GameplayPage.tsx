@@ -1,7 +1,7 @@
 import "../styles/GameplayPage.scss";
 import React, { ReactNode, useState } from "react";
 import { NavigateFunction, useLocation, useNavigate } from "react-router";
-import { Sudoku } from "./Sudoku";
+import { GenerateInfo } from "./GenerateInfo";
 import SelectionCard from "./SelectionCard";
 import SudokuBoard from "./SudokuBoard";
 
@@ -20,7 +20,7 @@ function _moveToUserSettings(state: any, nav: NavigateFunction) {
 }
 
 export default function GameplayPage(): ReactNode {
-    const [board, setBoard] = useState<Sudoku | Error>(new Error("No Puzzle"));
+    const [board, setBoard] = useState<GenerateInfo | Error>(new Error("No Puzzle"));
 
     const loc = useLocation();
     const nav = useNavigate();

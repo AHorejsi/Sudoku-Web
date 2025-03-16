@@ -32,4 +32,8 @@ interface Sudoku {
     games: string[];
 }
 
-export { Position, Cage, Box, Sudoku };
+interface GenerateInfo {
+    puzzle: Sudoku;
+}
+
+export { Position, Cage, Box, Sudoku, GenerateInfo };

@@ -3,32 +3,36 @@ import { update } from "./Fetch";
 import { NavigateFunction, useLocation, useNavigate } from "react-router";
 import { UpdateInfo } from "./UpdateInfo";
 
-// TODO: Location state not being updated
+function _checkUpdate(info: UpdateInfo, state: any, newUsername: string, newEmail: string, nav: NavigateFunction) {
+    if (!info.type.endsWith("Success")) {
+        throw new Error("Failed to update");
+    }
+
+    const options = {
+        state: {
+            id: state.userId,
+            username: newUsername,
+            email: newEmail,
+            puzzles: state.puzzles
+        },
+        replace: false
+    };
+
+    nav("/gameplay", options);
+}
 
 function _attemptUpdate(state: any, newUsername: string, newEmail: string, nav: NavigateFunction) {
-    if (state.oldUsername !== newUsername || state.oldEmail !== newEmail) {
-        const updateResult = update(state.userId, state.oldUsername, state.oldEmail, newUsername, newEmail);
-
-        updateResult.then((info: UpdateInfo) => {
-            if (!info.type.endsWith("Success")) {
-                throw new Error("Failed to update");
-            }
-        }).catch((error: Error) => {
-            throw error
-        }).finally(() => {
-            const options = {
-                state: {
-                    id: state.userId,
-                    username: newUsername,
-                    email: newEmail,
-                    puzzles: state.puzzles
-                },
-                replace: false
-            };
-
-            nav("/gameplay", options);
-        });
+    if (state.oldUsername === newUsername && state.oldEmail === newEmail) {
+        return;
     }
+
+    const updateResult = update(state.userId, state.oldUsername, state.oldEmail, newUsername, newEmail);
+
+    updateResult.then((info: UpdateInfo) => {
+        _checkUpdate(info, state, newUsername, newEmail, nav);
+    }).catch((error: Error) => {
+        throw error;
+    });
 }
 
 export default function UserSettingsPage(): ReactNode {
@@ -58,7 +62,7 @@ export default function UserSettingsPage(): ReactNode {
                 <div>
                     <label htmlFor="update" />
                     <input type="button" name="update" value="Update Info"
-                        onClick={(ev) => _attemptUpdate(loc.state, newUsername, newEmail, nav)}
+                        onClick={(_) => _attemptUpdate(loc.state, newUsername, newEmail, nav)}
                     />
                 </div>
             </form>
