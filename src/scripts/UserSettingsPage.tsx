@@ -53,7 +53,7 @@ function _attemptDelete(userId: number, nav: NavigateFunction) {
         _checkDelete(info, nav);
     }).catch((error: Error) => {
         throw error;
-    })
+    });
 }
 
 export default function UserSettingsPage(): ReactNode {
