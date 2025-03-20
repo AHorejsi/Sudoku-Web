@@ -24,18 +24,6 @@ function _generateButton(
     });
 }
 
-function _clearButton(
-    setDimension: Dispatch<SetStateAction<string>>,
-    setDifficulty: Dispatch<SetStateAction<string>>,
-    setGames: Dispatch<SetStateAction<string[]>>,
-) {
-    // TODO: Clear button not working. Need to update input field values
-
-    setDimension("");
-    setDifficulty("");
-    setGames([]);
-}
-
 export default function SelectionCard(props: SelectionCardProps): ReactNode {
     const [dimension, setDimension] = useState("");
     const [difficulty, setDifficulty] = useState("");
@@ -76,7 +64,7 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
 
                     <label htmlFor="generate" />
                     <input type="button" name="generate" value="Generate"
-                        onClick={(ev) => _generateButton(dimension, difficulty, games, props.creator)}
+                        onClick={(_) => _generateButton(dimension, difficulty, games, props.creator)}
                     />
                 </div>
             </form>

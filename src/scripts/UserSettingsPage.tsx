@@ -1,7 +1,8 @@
 import React, { ReactNode, useState } from "react";
-import { update } from "./Fetch";
+import { updateUser, deleteUser } from "./Fetch";
 import { NavigateFunction, useLocation, useNavigate } from "react-router";
 import { UpdateInfo } from "./UpdateInfo";
+import { DeleteInfo } from "./DeleteInfo";
 
 function _checkUpdate(info: UpdateInfo, state: any, newUsername: string, newEmail: string, nav: NavigateFunction) {
     if (!info.type.endsWith("Success")) {
@@ -21,18 +22,38 @@ function _checkUpdate(info: UpdateInfo, state: any, newUsername: string, newEmai
     nav("/gameplay", options);
 }
 
+function _checkDelete(info: DeleteInfo, nav: NavigateFunction) {
+    if (!info.type.endsWith("Success")) {
+        throw new Error("Failed to delete");
+    }
+
+    const options = { replace: false };
+
+    nav("/signup", options);
+}
+
 function _attemptUpdate(state: any, newUsername: string, newEmail: string, nav: NavigateFunction) {
     if (state.oldUsername === newUsername && state.oldEmail === newEmail) {
         return;
     }
 
-    const updateResult = update(state.userId, state.oldUsername, state.oldEmail, newUsername, newEmail);
+    const updateResult = updateUser(state.userId, state.oldUsername, state.oldEmail, newUsername, newEmail);
 
     updateResult.then((info: UpdateInfo) => {
         _checkUpdate(info, state, newUsername, newEmail, nav);
     }).catch((error: Error) => {
         throw error;
     });
+}
+
+function _attemptDelete(userId: number, nav: NavigateFunction) {
+    const deleteResult = deleteUser(userId);
+
+    deleteResult.then((info: DeleteInfo) => {
+        _checkDelete(info, nav);
+    }).catch((error: Error) => {
+        throw error;
+    })
 }
 
 export default function UserSettingsPage(): ReactNode {
@@ -68,7 +89,8 @@ export default function UserSettingsPage(): ReactNode {
             </form>
 
             <div>
-
+                <label htmlFor="delete" />
+                <button name="delete" onClick={(_) => _attemptDelete(loc.state.userId, nav)}>Delete Account</button>
             </div>
         </div>
     )

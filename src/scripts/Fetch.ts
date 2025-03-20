@@ -1,7 +1,8 @@
 import { GenerateInfo } from "./GenerateInfo";
 import { LoginInfo } from "./LoginInfo";
 import { SignupInfo } from "./SignupInfo";
-import { UpdateInfo } from "./UpdateInfo"; 
+import { UpdateInfo } from "./UpdateInfo";
+import { DeleteInfo } from "./DeleteInfo";
 
 function _ensureOkResponse(response: Response) {
     if (!response.ok) {
@@ -81,7 +82,7 @@ async function login(usernameOrEmail: string, password: string): Promise<LoginIn
     return login;
 }
 
-async function update(
+async function updateUser(
     userId: number,
     oldUsername: string,
     oldEmail: string,
@@ -111,4 +112,28 @@ async function update(
     return update;
 }
 
-export { retrieveBoard, signup, login, update };
+async function deleteUser(userId: number): Promise<DeleteInfo> {
+    const url = "http://127.0.0.1:8080/deleteUser";
+
+    const response = await fetch(url, {
+        headers: {
+            "X-Request-ID": "Delete-User",
+            "Accept": "application/json; charset=UTF-8",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Connection": "keep-alive"
+        },
+        method: "DELETE",
+        body: JSON.stringify({ userId }),
+        credentials: "include"
+    });
+
+    _ensureOkResponse(response);
+
+    const info: DeleteInfo = await response.json();
+
+    return info;
+}
+
+export { retrieveBoard, signup, login, updateUser, deleteUser };
