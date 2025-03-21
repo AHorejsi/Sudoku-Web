@@ -1,0 +1,20 @@
+#login {
+    display: flex;
+    justify-content: center;
+}
+
+.login-not-attempted {
+    border-color: gray;
+}
+
+.failed-login {
+    border-color: red;
+}
+
+.login-text {
+    color: black;
+}
+
+.failed-login-text {
+    color: red;
+}
