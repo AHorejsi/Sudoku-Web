@@ -1,33 +1,46 @@
 import "../styles/SignupPage.scss";
-import React, { ReactNode, useState } from "react";
+import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { signup } from "./Fetch";
 import { SignupInfo } from "./SignupInfo";
 import { NavigateFunction, useNavigate } from "react-router";
 
-function _checkSignup(info: SignupInfo, nav: NavigateFunction) {
+interface _SignupState {
+    borders: string;
+
+    text: string;
+
+    color: string;
+}
+
+function _checkSignup(info: SignupInfo, setSignup: Dispatch<SetStateAction<_SignupState>>, nav: NavigateFunction) {
     if (!info.type.endsWith("Success")) {
-        throw new Error("Unable to sign up");
+        setSignup({ borders: "failed-signup" , text: "Username/Email or Password not valid", color: "failed-signup-text" })
     }
-
-    const options: any = {
-        state: { success: true },
-        replace: false
-    };
-
-    nav("/login", options);
+    else {
+        const options = {
+            state: { success: true },
+            replace: false
+        };
+    
+        nav("/login", options);
+    }
 }
 
-function _signupError(error: Error) {
-    throw error;
-}
+function _attemptSignup(
+    username: string,
+    email: string,
+    password: string,
+    setSignup: Dispatch<SetStateAction<_SignupState>>,
+    nav: NavigateFunction
+) {
+    setSignup({ borders: "signup-not-attempted", text: "Registering...", color: "signup-text" });
 
-function _attemptSignup(username: string, email: string, password: string, nav: NavigateFunction) {
     const signupResult = signup(username, email, password);
 
     signupResult.then((info: SignupInfo) => {
-        _checkSignup(info, nav);
+        _checkSignup(info, setSignup, nav);
     }).catch((error: Error) => {
-        _signupError(error);
+        throw error;
     })
 }
 
@@ -35,35 +48,60 @@ export default function SignUpPage(): ReactNode {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const [signup, setSignup] = useState<_SignupState>({ borders: "signup-not-attempted", text: "", color: "" });
+
     const nav = useNavigate();
 
     return (
         <div id="signup">
             <form>
+                <p className={signup.color}>{signup.text}</p>
+
                 <div>
                     Username: 
 
                     <label htmlFor="username" />
-                    <input type="text" name="username" onInput={(ev) => setUsername(ev.currentTarget.value)} />
+                    <input
+                        className={signup.borders}
+                        type="text"
+                        name="username"
+                        onInput={(ev) => setUsername(ev.currentTarget.value)}
+                    />
                 </div>
 
                 <div>
                     Email: 
 
                     <label htmlFor="email" />
-                    <input type="text" name="email" onInput={(ev) => setEmail(ev.currentTarget.value)} />
+                    <input
+                        className={signup.borders}
+                        type="text"
+                        name="email"
+                        onInput={(ev) => setEmail(ev.currentTarget.value)}
+                    />
                 </div>
 
                 <div>
                     Password: 
 
                     <label htmlFor="password" />
-                    <input type="password" name="password" onInput={(ev) => setPassword(ev.currentTarget.value)} />
+                    <input
+                        className={signup.borders}
+                        type="password"
+                        name="password"
+                        onInput={(ev) => setPassword(ev.currentTarget.value)}
+                    />
                 </div>
 
                 <div>
                     <label htmlFor="signup" />
-                    <input type="button" name="signup" value="Sign Up" onClick={(ev) => _attemptSignup(username, email, password, nav)} />
+                    <input
+                        type="button"
+                        name="signup"
+                        value="Sign Up"
+                        onClick={(_) => _attemptSignup(username, email, password, setSignup, nav)}
+                    />
                 </div>
             </form>
         </div>

@@ -2,3 +2,19 @@
     display: flex;
     justify-content: center;
 }
+
+.signup-not-attempted {
+    border-color: gray;
+}
+
+.failed-signup {
+    border-color: red;
+}
+
+.signup-text {
+    color: black;
+}
+
+.failed-signup-text {
+    color: red;
+}
