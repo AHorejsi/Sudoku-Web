@@ -1,3 +1,4 @@
+import "../styles/SignupPage.scss";
 import React, { ReactNode, useState } from "react";
 import { signup } from "./Fetch";
 import { SignupInfo } from "./SignupInfo";
