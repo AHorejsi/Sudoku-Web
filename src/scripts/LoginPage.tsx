@@ -20,7 +20,7 @@ function _checkLogin(info: LoginInfo, setLogin: Dispatch<SetStateAction<_LoginAt
     }
     else {
         const options = {
-            state: user,
+            state: user!,
             replace: false
         };
     
