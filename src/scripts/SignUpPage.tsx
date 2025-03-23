@@ -14,7 +14,7 @@ interface _SignupState {
 
 function _checkSignup(info: SignupInfo, setSignup: Dispatch<SetStateAction<_SignupState>>, nav: NavigateFunction) {
     if (!info.type.endsWith("Success")) {
-        setSignup({ borders: "failed-signup" , text: "Username/Email or Password not valid", color: "failed-signup-text" })
+        setSignup({ borders: "failed-signup" , text: "Username/Email or Password not valid", color: "failed-signup-text" });
     }
     else {
         const options = {
