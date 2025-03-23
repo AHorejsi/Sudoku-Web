@@ -1,10 +1,10 @@
 import React, { ReactNode, useState } from "react";
 import { updateUser, deleteUser } from "./Fetch";
 import { NavigateFunction, useLocation, useNavigate } from "react-router";
-import { UpdateInfo } from "./UpdateInfo";
-import { DeleteInfo } from "./DeleteInfo";
+import { UpdateUserInfo } from "./UpdateUserInfo";
+import { DeleteUserInfo } from "./DeleteUserInfo";
 
-function _checkUpdate(info: UpdateInfo, state: any, newUsername: string, newEmail: string, nav: NavigateFunction) {
+function _checkUpdate(info: UpdateUserInfo, state: any, newUsername: string, newEmail: string, nav: NavigateFunction) {
     if (!info.type.endsWith("Success")) {
         throw new Error("Failed to update");
     }
@@ -22,7 +22,7 @@ function _checkUpdate(info: UpdateInfo, state: any, newUsername: string, newEmai
     nav("/gameplay", options);
 }
 
-function _checkDelete(info: DeleteInfo, nav: NavigateFunction) {
+function _checkDelete(info: DeleteUserInfo, nav: NavigateFunction) {
     if (!info.type.endsWith("Success")) {
         throw new Error("Failed to delete");
     }
@@ -39,7 +39,7 @@ function _attemptUpdate(state: any, newUsername: string, newEmail: string, nav: 
 
     const updateResult = updateUser(state.userId, state.oldUsername, state.oldEmail, newUsername, newEmail);
 
-    updateResult.then((info: UpdateInfo) => {
+    updateResult.then((info: UpdateUserInfo) => {
         _checkUpdate(info, state, newUsername, newEmail, nav);
     }).catch((error: Error) => {
         throw error;
@@ -49,7 +49,7 @@ function _attemptUpdate(state: any, newUsername: string, newEmail: string, nav: 
 function _attemptDelete(userId: number, nav: NavigateFunction) {
     const deleteResult = deleteUser(userId);
 
-    deleteResult.then((info: DeleteInfo) => {
+    deleteResult.then((info: DeleteUserInfo) => {
         _checkDelete(info, nav);
     }).catch((error: Error) => {
         throw error;

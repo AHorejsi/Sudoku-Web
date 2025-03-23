@@ -1,8 +1,8 @@
 import { GenerateInfo } from "./GenerateInfo";
 import { LoginInfo } from "./LoginInfo";
 import { SignupInfo } from "./SignupInfo";
-import { UpdateInfo } from "./UpdateInfo";
-import { DeleteInfo } from "./DeleteInfo";
+import { UpdateUserInfo } from "./UpdateUserInfo";
+import { DeleteUserInfo } from "./DeleteUserInfo";
 
 function _ensureOkResponse(response: Response) {
     if (!response.ok) {
@@ -88,7 +88,7 @@ async function updateUser(
     oldEmail: string,
     newUsername: string,
     newEmail: string
-): Promise<UpdateInfo> {
+): Promise<UpdateUserInfo> {
     const url = "http://127.0.0.1:8080/updateUser";
 
     const response = await fetch(url, {
@@ -107,12 +107,12 @@ async function updateUser(
 
     _ensureOkResponse(response);
 
-    const update: UpdateInfo = await response.json();
+    const update: UpdateUserInfo = await response.json();
 
     return update;
 }
 
-async function deleteUser(userId: number): Promise<DeleteInfo> {
+async function deleteUser(userId: number): Promise<DeleteUserInfo> {
     const url = "http://127.0.0.1:8080/deleteUser";
 
     const response = await fetch(url, {
@@ -131,7 +131,7 @@ async function deleteUser(userId: number): Promise<DeleteInfo> {
 
     _ensureOkResponse(response);
 
-    const info: DeleteInfo = await response.json();
+    const info: DeleteUserInfo = await response.json();
 
     return info;
 }
