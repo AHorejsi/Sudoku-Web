@@ -15,7 +15,7 @@ interface _LoginAttemptState {
 function _checkLogin(info: LoginInfo, setLogin: Dispatch<SetStateAction<_LoginAttemptState>>, nav: NavigateFunction) {
     const user = info.user;
 
-    if (!user) {
+    if (!info.type.endsWith("Success")) {
         setLogin({ borders: "failed-login" , text: "Username or Password not authenticated", color: "failed-login-text" });
     }
     else {
