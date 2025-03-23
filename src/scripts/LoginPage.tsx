@@ -15,12 +15,12 @@ interface _LoginAttemptState {
 function _checkLogin(info: LoginInfo, setLogin: Dispatch<SetStateAction<_LoginAttemptState>>, nav: NavigateFunction) {
     const user = info.user;
 
-    if (!info.type.endsWith("Success")) {
+    if (!user) {
         setLogin({ borders: "failed-login" , text: "Username or Password not authenticated", color: "failed-login-text" });
     }
     else {
         const options = {
-            state: user!,
+            state: user,
             replace: false
         };
     
