@@ -29,7 +29,7 @@ function _checkDelete(info: DeleteUserInfo, nav: NavigateFunction) {
 
     const options = { replace: false };
 
-    nav("/signup", options);
+    nav("/", options);
 }
 
 function _attemptUpdate(state: any, newUsername: string, newEmail: string, nav: NavigateFunction) {
