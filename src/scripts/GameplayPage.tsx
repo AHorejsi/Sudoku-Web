@@ -28,15 +28,14 @@ export default function GameplayPage(): ReactNode {
     return (
         <div className="container">
             <div>
-                <h1>Hello, { loc.state.username }!</h1>
+                <div>
+                    <h1>Hello, { loc.state.username }!</h1>
+                    <button onClick={(_) => _moveToUserSettings(loc.state, nav)}>User Settings</button>
+                </div>
 
                 <div id="gameplay">
                     <SelectionCard creator={setBoard} />
                     <SudokuBoard info={board} />
-                </div>
-
-                <div>
-                    <button onClick={(_) => _moveToUserSettings(loc.state, nav)}>User Settings</button>
                 </div>
             </div>
         </div>
