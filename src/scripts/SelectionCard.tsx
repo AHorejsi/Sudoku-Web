@@ -18,7 +18,12 @@ function _generateButton(
     const generation = retrieveBoard(dimension, difficulty, games);
 
     generation.then((info: GenerateInfo) => {
-        creator(info);
+        if (info.type.endsWith("Success")) {
+            creator(info);
+        }
+        else {
+            creator(new Error("PLEASE FILL FIELDS"));
+        }
     }).catch((error: Error) => {
         creator(error);
     });

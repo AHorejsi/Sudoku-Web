@@ -33,6 +33,8 @@ interface Sudoku {
 }
 
 interface GenerateInfo {
+    type: string;
+
     puzzle: Sudoku;
 }
 
