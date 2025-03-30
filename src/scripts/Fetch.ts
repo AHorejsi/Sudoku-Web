@@ -3,6 +3,7 @@ import { LoginInfo } from "./LoginInfo";
 import { SignupInfo } from "./SignupInfo";
 import { UpdateUserInfo } from "./UpdateUserInfo";
 import { DeleteUserInfo } from "./DeleteUserInfo";
+import { Endpoints, XRequestIds } from "./StringConstants" 
 
 function _ensureOkResponse(response: Response) {
     if (!response.ok) {
@@ -11,11 +12,9 @@ function _ensureOkResponse(response: Response) {
 }
 
 async function retrieveBoard(dimension: string, difficulty: string, games: string[]): Promise<GenerateInfo> {
-    const url = "http://127.0.0.1:8080/generate";
-
-    const response = await fetch(url, {
+    const response = await fetch(Endpoints.generate, {
         headers: {
-            "X-Request-ID": "Generate-Sudoku",
+            "X-Request-ID": XRequestIds.generate,
             "Accept": "application/json; charset=UTF-8",
             "Accept-Encoding": "gzip, deflate, br",
             "Content-Type": "application/json",
@@ -35,11 +34,9 @@ async function retrieveBoard(dimension: string, difficulty: string, games: strin
 }
 
 async function signup(username: string, email: string, password: string): Promise<SignupInfo> {
-    const url = "http://127.0.0.1:8080/createUser";
-
-    const response = await fetch(url, {
+    const response = await fetch(Endpoints.createUser, {
         headers: {
-            "X-Request-ID": "Create-User",
+            "X-Request-ID": XRequestIds.createUser,
             "Accept": "application/json; charset=UTF-8",
             "Accept-Encoding": "gzip, deflate, br",
             "Content-Type": "application/json",
@@ -59,11 +56,9 @@ async function signup(username: string, email: string, password: string): Promis
 }
 
 async function login(usernameOrEmail: string, password: string): Promise<LoginInfo> {
-    const url = "http://127.0.0.1:8080/readUser";
-
-    const response = await fetch(url, {
+    const response = await fetch(Endpoints.readUser, {
         headers: {
-            "X-Request-ID": "Read-User",
+            "X-Request-ID": XRequestIds.readUser,
             "Accept": "application/json; charset=UTF-8",
             "Accept-Encoding": "gzip, deflate, br",
             "Content-Type": "application/json",
@@ -89,11 +84,9 @@ async function updateUser(
     newUsername: string,
     newEmail: string
 ): Promise<UpdateUserInfo> {
-    const url = "http://127.0.0.1:8080/updateUser";
-
-    const response = await fetch(url, {
+    const response = await fetch(Endpoints.updateUser, {
         headers: {
-            "X-Request-ID": "Update-User",
+            "X-Request-ID": XRequestIds.updateUser,
             "Accept": "application/json; charset=UTF-8",
             "Accept-Encoding": "gzip, deflate, br",
             "Content-Type": "application/json",
@@ -113,11 +106,9 @@ async function updateUser(
 }
 
 async function deleteUser(userId: number): Promise<DeleteUserInfo> {
-    const url = "http://127.0.0.1:8080/deleteUser";
-
-    const response = await fetch(url, {
+    const response = await fetch(Endpoints.deleteUser, {
         headers: {
-            "X-Request-ID": "Delete-User",
+            "X-Request-ID": XRequestIds.deleteUser,
             "Accept": "application/json; charset=UTF-8",
             "Accept-Encoding": "gzip, deflate, br",
             "Content-Type": "application/json",
