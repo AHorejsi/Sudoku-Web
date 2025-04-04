@@ -20,7 +20,7 @@ function _moveToUserSettings(state: any, nav: NavigateFunction) {
 }
 
 export default function GameplayPage(): ReactNode {
-    const [board, setBoard] = useState<GenerateInfo | Error>(new Error("No Puzzle"));
+    const [board, setBoard] = useState<GenerateInfo | string | Error>("No Puzzle");
 
     const loc = useLocation();
     const nav = useNavigate();

@@ -4,7 +4,7 @@ import { GenerateInfo, Position } from "./GenerateInfo";
 import SudokuCell from "./SudokuCell";
 
 interface SudokuBoardProps {
-    info: GenerateInfo | Error;
+    info: GenerateInfo | string | Error;
 }
 
 function checkIfHyperCell(hyperPos: Position[], rowIndex: number, colIndex: number): boolean {
@@ -17,15 +17,15 @@ function checkIfHyperCell(hyperPos: Position[], rowIndex: number, colIndex: numb
     return false;
 }
 
-function createTableOfCells(info: GenerateInfo): React.JSX.Element {
+function createTableOfCells(info: GenerateInfo): ReactNode {
     const puzzle = info.puzzle;
 
-    const tableBody = Array<React.JSX.Element>();
+    const tableBody = Array<ReactNode>();
     const maxCharLength = puzzle.length.toString().length;
     const hyperPos = puzzle.boxes.filter((box) => box.isHyper).map((box, _i, _a) => box.positions).flat();
 
     for (let rowIndex = 0; rowIndex < puzzle.length; ++rowIndex) {
-        const tableRow = Array<React.JSX.Element>();
+        const tableRow = Array<ReactNode>();
 
         for (let colIndex = 0; colIndex < puzzle.length; ++colIndex) {
             const isHyper = checkIfHyperCell(hyperPos, rowIndex, colIndex);
@@ -58,11 +58,12 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
     if (info instanceof Error) {
         return <p id="error-text">{info.message}</p>
     }
+    else if ("string" === typeof info) {
+        return <p id="info-text">{info}</p>
+    }
     else {
         const table = createTableOfCells(info);
 
-        return (
-            <div id="board" className="container">{table}</div>
-        );
+        return <div id="board" className="container">{table}</div>;
     }
 }

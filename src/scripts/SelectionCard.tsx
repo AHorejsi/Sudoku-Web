@@ -6,15 +6,17 @@ import { GenerateInfo } from "./GenerateInfo";
 import { retrieveBoard } from "./Fetch";
 
 interface SelectionCardProps {
-    creator: Dispatch<SetStateAction<GenerateInfo | Error>>
+    creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>
 }
 
 function _generateButton(
     dimension: string,
     difficulty: string,
     games: string[],
-    creator: Dispatch<SetStateAction<GenerateInfo | Error>>
+    creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>
 ) {
+    creator("Retrieving...");
+
     const generation = retrieveBoard(dimension, difficulty, games);
 
     generation.then((info: GenerateInfo) => {
@@ -22,7 +24,7 @@ function _generateButton(
             creator(info);
         }
         else {
-            creator(new Error("PLEASE FILL FIELDS"));
+            creator("PLEASE FILL FIELDS");
         }
     }).catch((error: Error) => {
         creator(error);

@@ -1,13 +1,25 @@
+@mixin text {
+    text-align: center;
+    padding-left: 10em;
+    padding-right: 10em;
+}
+
 #board {
     width: fit-content;
     display: inline-block;
 }
 
 #error-text {
+    @include text;
+
     color: red;
-    text-align: center;
-    padding-left: 10em;
-    padding-right: 10em;
+    
+}
+
+#info-text {
+    @include text;
+
+    color: black;
 }
 
 #cell-table {
