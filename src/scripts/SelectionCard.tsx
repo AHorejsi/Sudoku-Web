@@ -43,7 +43,6 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
                     <div className="game-selection-row">
                         <p className="game-selection-title">Dimension</p>
 
-                        <SelectionRadioButton name="dimension" value="FOUR" prompt="4x4" setter={setDimension} />
                         <SelectionRadioButton name="dimension" value="NINE" prompt="9x9" setter={setDimension} />
                         <SelectionRadioButton name="dimension" value="SIXTEEN" prompt="16x16" setter={setDimension} />
                     </div>
