@@ -12,9 +12,9 @@ function _ensureOkResponse(response: Response) {
 }
 
 async function retrieveBoard(dimension: string, difficulty: string, games: string[]): Promise<GenerateInfo> {
-    const response = await fetch(Endpoints.generate, {
+    const response = await fetch(Endpoints.GENERATE, {
         headers: {
-            "X-Request-ID": XRequestIds.generate,
+            "X-Request-ID": XRequestIds.GENERATE,
             "Accept": "application/json; charset=UTF-8",
             "Accept-Encoding": "gzip, deflate, br",
             "Content-Type": "application/json",
@@ -34,9 +34,9 @@ async function retrieveBoard(dimension: string, difficulty: string, games: strin
 }
 
 async function signup(username: string, email: string, password: string): Promise<SignupInfo> {
-    const response = await fetch(Endpoints.createUser, {
+    const response = await fetch(Endpoints.CREATE_USER, {
         headers: {
-            "X-Request-ID": XRequestIds.createUser,
+            "X-Request-ID": XRequestIds.CREATE_USER,
             "Accept": "application/json; charset=UTF-8",
             "Accept-Encoding": "gzip, deflate, br",
             "Content-Type": "application/json",
@@ -56,9 +56,9 @@ async function signup(username: string, email: string, password: string): Promis
 }
 
 async function login(usernameOrEmail: string, password: string): Promise<LoginInfo> {
-    const response = await fetch(Endpoints.readUser, {
+    const response = await fetch(Endpoints.READ_USER, {
         headers: {
-            "X-Request-ID": XRequestIds.readUser,
+            "X-Request-ID": XRequestIds.READ_USER,
             "Accept": "application/json; charset=UTF-8",
             "Accept-Encoding": "gzip, deflate, br",
             "Content-Type": "application/json",
@@ -84,9 +84,9 @@ async function updateUser(
     newUsername: string,
     newEmail: string
 ): Promise<UpdateUserInfo> {
-    const response = await fetch(Endpoints.updateUser, {
+    const response = await fetch(Endpoints.UPDATE_USER, {
         headers: {
-            "X-Request-ID": XRequestIds.updateUser,
+            "X-Request-ID": XRequestIds.UPDATE_USER,
             "Accept": "application/json; charset=UTF-8",
             "Accept-Encoding": "gzip, deflate, br",
             "Content-Type": "application/json",
@@ -106,9 +106,9 @@ async function updateUser(
 }
 
 async function deleteUser(userId: number): Promise<DeleteUserInfo> {
-    const response = await fetch(Endpoints.deleteUser, {
+    const response = await fetch(Endpoints.DELETE_USER, {
         headers: {
-            "X-Request-ID": XRequestIds.deleteUser,
+            "X-Request-ID": XRequestIds.DELETE_USER,
             "Accept": "application/json; charset=UTF-8",
             "Accept-Encoding": "gzip, deflate, br",
             "Content-Type": "application/json",
