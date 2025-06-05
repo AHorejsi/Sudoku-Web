@@ -32,7 +32,7 @@ function _generateButton(
 }
 
 export default function SelectionCard(props: SelectionCardProps): ReactNode {
-    const [dimension, setDimension] = useState("");
+    const dimension = "NINE";
     const [difficulty, setDifficulty] = useState("");
     const [games, setGames] = useState(Array<string>());
 
@@ -40,13 +40,6 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
         <div id="selection-card-main" className="container">
             <form>
                 <div className="game-selections">
-                    <div className="game-selection-row">
-                        <p className="game-selection-title">Dimension</p>
-
-                        <SelectionRadioButton name="dimension" value="NINE" prompt="9x9" setter={setDimension} />
-                        <SelectionRadioButton name="dimension" value="SIXTEEN" prompt="16x16" setter={setDimension} />
-                    </div>
-
                     <div className="game-selection-row">
                         <p className="game-selection-title">Difficulty</p>
 

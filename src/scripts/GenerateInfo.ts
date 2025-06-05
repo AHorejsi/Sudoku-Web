@@ -16,8 +16,14 @@ interface Box {
     positions: Position[];
 }
 
+interface Cell {
+    value: number | null;
+
+    editable: boolean;
+}
+
 interface Sudoku {
-    board: (number | null)[][];
+    board: Cell[][];
 
     solved: number[][];
 
@@ -38,4 +44,4 @@ interface GenerateInfo {
     puzzle: Sudoku;
 }
 
-export { Position, Cage, Box, Sudoku, GenerateInfo };
+export { Position, Cage, Box, Cell, Sudoku, GenerateInfo };

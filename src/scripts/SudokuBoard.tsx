@@ -29,10 +29,11 @@ function createTableOfCells(info: GenerateInfo): ReactNode {
 
         for (let colIndex = 0; colIndex < puzzle.length; ++colIndex) {
             const isHyper = checkIfHyperCell(hyperPos, rowIndex, colIndex);
+            const cell = puzzle.board[rowIndex][colIndex];
 
             tableRow.push(
                 <SudokuCell
-                    value={puzzle.board[rowIndex][colIndex]}
+                    cell={cell}
                     row={rowIndex}
                     column={colIndex}
                     boardLength={puzzle.length}
