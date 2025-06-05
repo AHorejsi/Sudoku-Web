@@ -1,5 +1,5 @@
 import "../styles/LoginPage.scss";
-import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
 import { login } from "./Fetch";
 import { LoginInfo } from "./LoginInfo";

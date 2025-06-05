@@ -1,5 +1,5 @@
 import "../styles/SelectionCard.scss";
-import React, { ReactNode, useState, Dispatch, SetStateAction } from "react";
+import { ReactNode, useState, Dispatch, SetStateAction } from "react";
 import SelectionRadioButton from "./SelectionRadioButton";
 import SelectionCheckbox from "./SelectionCheckbox";
 import { GenerateInfo } from "./GenerateInfo";

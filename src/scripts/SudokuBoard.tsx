@@ -1,5 +1,5 @@
 import "../styles/SudokuBoard.scss";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { GenerateInfo, Position } from "./GenerateInfo";
 import SudokuCell from "./SudokuCell";
 

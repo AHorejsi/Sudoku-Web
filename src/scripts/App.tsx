@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
 import GameplayPage from "./GameplayPage";
 import LoginPage from "./LoginPage";

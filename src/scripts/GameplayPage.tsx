@@ -1,5 +1,5 @@
 import "../styles/GameplayPage.scss";
-import React, { ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 import { NavigateFunction, useLocation, useNavigate } from "react-router";
 import { GenerateInfo } from "./GenerateInfo";
 import SelectionCard from "./SelectionCard";

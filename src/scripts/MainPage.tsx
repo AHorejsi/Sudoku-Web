@@ -1,5 +1,5 @@
 import "../styles/MainPage.scss";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { useNavigate } from "react-router";
 
 export default function MainPage(): ReactNode {
