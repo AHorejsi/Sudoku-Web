@@ -1,6 +1,7 @@
 import { ReactNode, useState } from "react";
-import { updateUser, deleteUser } from "./Fetch";
 import { NavigateFunction, useLocation, useNavigate } from "react-router";
+import { Endpoints } from "./StringConstants";
+import { updateUser, deleteUser } from "./Fetch";
 import { UpdateUserInfo } from "./UpdateUserInfo";
 import { DeleteUserInfo } from "./DeleteUserInfo";
 
@@ -19,7 +20,7 @@ function _checkUpdate(info: UpdateUserInfo, state: any, newUsername: string, new
         replace: false
     };
 
-    nav("/gameplay", options);
+    nav(Endpoints.GAMEPLAY, options);
 }
 
 function _checkDelete(info: DeleteUserInfo, nav: NavigateFunction) {
@@ -29,7 +30,7 @@ function _checkDelete(info: DeleteUserInfo, nav: NavigateFunction) {
 
     const options = { replace: false };
 
-    nav("/", options);
+    nav(Endpoints.MAIN, options);
 }
 
 function _attemptUpdate(state: any, newUsername: string, newEmail: string, nav: NavigateFunction) {

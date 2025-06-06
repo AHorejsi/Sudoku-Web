@@ -1,5 +1,6 @@
 import "../styles/SignupPage.scss";
 import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { Endpoints } from "./StringConstants";
 import { signup } from "./Fetch";
 import { SignupInfo } from "./SignupInfo";
 import { NavigateFunction, useNavigate } from "react-router";
@@ -22,7 +23,7 @@ function _checkSignup(info: SignupInfo, setSignup: Dispatch<SetStateAction<_Sign
             replace: false
         };
     
-        nav("/login", options);
+        nav(Endpoints.LOGIN, options);
     }
 }
 

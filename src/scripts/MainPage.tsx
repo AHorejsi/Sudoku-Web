@@ -1,17 +1,20 @@
 import "../styles/MainPage.scss";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router";
+import { Endpoints } from "./StringConstants";
 
 export default function MainPage(): ReactNode {
     const nav = useNavigate();
 
     return (
-        <div id="top-card" className="container">
-            <button className="btn btn-primary" onClick={(_) => nav("/login")}>Login</button>
+        <div>
+            <div id="top-card" className="container">
+                <button className="btn btn-primary" onClick={(_) => nav(Endpoints.LOGIN)}>Login</button>
 
-            <span id="divider" />
+                <span className="divider" />
 
-            <button className="btn btn-primary" onClick={(_) => nav("/signup")}>Sign Up</button>
+                <button className="btn btn-primary" onClick={(_) => nav(Endpoints.SIGNUP)}>Sign Up</button>
+            </div>
         </div>
     );
 }

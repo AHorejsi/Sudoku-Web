@@ -1,6 +1,7 @@
 import "../styles/GameplayPage.scss";
 import { ReactNode, useState } from "react";
 import { NavigateFunction, useLocation, useNavigate } from "react-router";
+import { Endpoints } from "./StringConstants";
 import { GenerateInfo } from "./GenerateInfo";
 import SelectionCard from "./SelectionCard";
 import SudokuBoard from "./SudokuBoard";
@@ -16,7 +17,7 @@ function _moveToUserSettings(state: any, nav: NavigateFunction) {
         replace: false
     };
 
-    nav("/settings", options);
+    nav(Endpoints.SETTINGS, options);
 }
 
 export default function GameplayPage(): ReactNode {

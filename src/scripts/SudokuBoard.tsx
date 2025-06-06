@@ -22,7 +22,7 @@ function createTableOfCells(info: GenerateInfo): ReactNode {
 
     const tableBody = Array<ReactNode>();
     const maxCharLength = puzzle.length.toString().length;
-    const hyperPos = puzzle.boxes.filter((box) => box.isHyper).map((box, _i, _a) => box.positions).flat();
+    const hyperPos = puzzle.boxes.filter((box) => box.isHyper).map((box, _0, _1) => box.positions).flat();
 
     for (let rowIndex = 0; rowIndex < puzzle.length; ++rowIndex) {
         const tableRow = Array<ReactNode>();

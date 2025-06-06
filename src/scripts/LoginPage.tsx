@@ -1,6 +1,7 @@
 import "../styles/LoginPage.scss";
 import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
+import { Endpoints } from "./StringConstants";
 import { login } from "./Fetch";
 import { LoginInfo } from "./LoginInfo";
 
@@ -24,7 +25,7 @@ function _checkLogin(info: LoginInfo, setLogin: Dispatch<SetStateAction<_LoginAt
             replace: false
         };
     
-        nav("/gameplay", options);
+        nav(Endpoints.GAMEPLAY, options);
     }
 }
 
