@@ -35,7 +35,7 @@ export default function GameplayPage(): ReactNode {
 
             <div id="gameplay">
                 <SelectionCard creator={setBoard} />
-                <SudokuBoard info={board} />
+                <SudokuBoard info={board} userId={loc.state.id} />
             </div>
         </div>
     );

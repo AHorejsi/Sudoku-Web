@@ -3,6 +3,8 @@ import { LoginInfo } from "./LoginInfo";
 import { SignupInfo } from "./SignupInfo";
 import { UpdateUserInfo } from "./UpdateUserInfo";
 import { DeleteUserInfo } from "./DeleteUserInfo";
+import { CreatePuzzleInfo } from "./CreatePuzzleInfo";
+import { UpdatePuzzleInfo } from "./UpdatePuzzleInfo";
 import { URLs, XRequestIds } from "./StringConstants" 
 
 function _ensureOkResponse(response: Response) {
@@ -127,4 +129,48 @@ async function deleteUser(userId: number): Promise<DeleteUserInfo> {
     return info;
 }
 
-export { retrieveBoard, signup, login, updateUser, deleteUser };
+async function createPuzzle(json: string, userId: number): Promise<CreatePuzzleInfo> {
+    const response = await fetch(URLs.CREATE_PUZZLE, {
+        headers: {
+            "X-Request-ID": XRequestIds.CREATE_PUZZLE,
+            "Accept": "application/json; charset=UTF-8",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Connection": "keep-alive"
+        },
+        method: "PUT",
+        body: JSON.stringify({ json, userId }),
+        credentials: "include"
+    });
+
+    _ensureOkResponse(response)
+
+    const info: CreatePuzzleInfo = await response.json();
+
+    return info;
+}
+
+async function updatePuzzle(puzzleId: number, json: string): Promise<UpdatePuzzleInfo> {
+    const response = await fetch(URLs.UPDATE_PUZZLE, {
+        headers: {
+            "X-Request-ID": XRequestIds.UPDATE_PUZZLE,
+            "Accept": "application/json; charset=UTF-8",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Connection": "keep-alive"
+        },
+        method: "PUT",
+        body: JSON.stringify({ puzzleId, json }),
+        credentials: "include"
+    });
+
+    _ensureOkResponse(response);
+
+    const info: UpdatePuzzleInfo = await response.json();
+
+    return info;
+}
+
+export { retrieveBoard, signup, login, updateUser, deleteUser, createPuzzle, updatePuzzle };

@@ -1,6 +1,6 @@
 import "../styles/SudokuCell.scss";
-import React, { ReactNode } from "react";
-import { Cell } from "./GenerateInfo";
+import React, { ReactNode, Dispatch, SetStateAction } from "react";
+import { Cell, Sudoku } from "./GenerateInfo";
 
 interface SudokuCellProps {
     cell: Cell;
@@ -14,6 +14,10 @@ interface SudokuCellProps {
     isHyper: boolean;
 
     maxCharLength: number;
+
+    whole: Sudoku;
+
+    setWhole: Dispatch<SetStateAction<Sudoku>>;
 }
 
 interface _CellBorderThickness {
@@ -102,13 +106,17 @@ function _removeNonNumbers(div: HTMLDivElement) {
     }
 }
 
-function _checkInput(ev: React.FormEvent<HTMLDivElement>, maxLength: number) {
+function _checkInput(ev: React.FormEvent<HTMLDivElement>, props: SudokuCellProps) {
     const div = ev.currentTarget;
 
-    const finalCharRemoved = _limitCharLength(div, maxLength);
+    const finalCharRemoved = _limitCharLength(div, props.maxCharLength);
 
     if (!finalCharRemoved) {
         _removeNonNumbers(div);
+    }
+    else {
+        props.whole.board[props.row][props.column].value = Number(div.textContent!);
+        props.setWhole(props.whole);
     }
 }
 
@@ -124,7 +132,7 @@ export default function SudokuCell(props: SudokuCellProps): ReactNode {
                 id={`cell-${props.row}-${props.column}`}
                 className={`${cellType}`}
                 contentEditable={cell.editable}
-                onInput={(ev) => _checkInput(ev, props.maxCharLength)}
+                onInput={(ev) => _checkInput(ev, props)}
             >
                 {cell.value ?? ""}
             </div>

@@ -1,10 +1,13 @@
 import "../styles/SudokuBoard.scss";
-import { ReactNode } from "react";
-import { GenerateInfo, Position } from "./GenerateInfo";
+import { ReactNode, RefObject, Dispatch, SetStateAction, useState, useRef } from "react";
+import { GenerateInfo, Position, Sudoku } from "./GenerateInfo";
+import { createPuzzle, updatePuzzle } from "./Fetch";
 import SudokuCell from "./SudokuCell";
 
 interface SudokuBoardProps {
     info: GenerateInfo | string | Error;
+
+    userId: number;
 }
 
 function checkIfHyperCell(hyperPos: Position[], rowIndex: number, colIndex: number): boolean {
@@ -17,7 +20,7 @@ function checkIfHyperCell(hyperPos: Position[], rowIndex: number, colIndex: numb
     return false;
 }
 
-function createTableOfCells(info: GenerateInfo): ReactNode {
+function createTableOfCells(info: GenerateInfo, setPuzzle: Dispatch<SetStateAction<Sudoku>>): ReactNode {
     const puzzle = info.puzzle;
 
     const tableBody = Array<ReactNode>();
@@ -39,6 +42,8 @@ function createTableOfCells(info: GenerateInfo): ReactNode {
                     boardLength={puzzle.length}
                     isHyper={isHyper}
                     maxCharLength={maxCharLength}
+                    whole={puzzle}
+                    setWhole={setPuzzle}
                 />
             );
         }
@@ -53,8 +58,45 @@ function createTableOfCells(info: GenerateInfo): ReactNode {
     );
 }
 
+function _savePuzzle(
+    puzzle: Sudoku,
+    data: any,
+    userId: number,
+    button: RefObject<HTMLButtonElement | null>
+) {
+    const json = JSON.stringify(puzzle);
+
+    button.current!.disabled = true;
+
+    if (!data.puzzleId) {
+        createPuzzle(json, userId).then((info) => {
+            data.puzzleId = info.puzzleId;
+
+            _saveCleanup(button, info.type);
+        }).catch((error) => {
+            throw error;
+        });
+    }
+    else {
+        updatePuzzle(data.puzzleId, json).then((info) => {
+            _saveCleanup(button, info.type);
+        }).catch((error) => {
+            throw error;
+        });
+    }
+}
+
+function _saveCleanup(button: RefObject<HTMLButtonElement | null>, message: string) {
+    button.current!.disabled = false;
+
+    if (!message.endsWith("Success")) {
+        alert("Sudoku Failed to Save");
+    }
+}
+
 export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
     const info = props.info;
+    const userId = props.userId;
 
     if (info instanceof Error) {
         return <p id="error-text">{info.message}</p>
@@ -63,8 +105,26 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
         return <p id="info-text">{info}</p>
     }
     else {
-        const table = createTableOfCells(info);
+        const [puzzle, setPuzzle] = useState(info.puzzle);
+        const button = useRef<HTMLButtonElement>(null);
 
-        return <div id="board" className="container">{table}</div>;
+        const data = {};
+        const table = createTableOfCells(info, setPuzzle);
+
+        return (
+            <div>
+                <div id="board" className="container">{table}</div>
+
+                <div>
+                    <button
+                        className="btn btn-primary"
+                        ref={button}
+                        onClick={(_) => _savePuzzle(puzzle, data, userId, button)}
+                    >
+                        Save
+                    </button>
+                </div>
+            </div>
+        );
     }
 }
