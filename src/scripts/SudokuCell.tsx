@@ -113,8 +113,7 @@ function _checkInput(ev: React.FormEvent<HTMLDivElement>, props: SudokuCellProps
 
     if (!finalCharRemoved) {
         _removeNonNumbers(div);
-    }
-    else {
+
         props.whole.board[props.row][props.column].value = Number(div.textContent!);
         props.setWhole(props.whole);
     }
