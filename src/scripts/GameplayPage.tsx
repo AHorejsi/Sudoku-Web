@@ -6,6 +6,15 @@ import { GenerateInfo } from "./GenerateInfo";
 import SelectionCard from "./SelectionCard";
 import SudokuBoard from "./SudokuBoard";
 
+function _loadExistingPuzzles(state: any, nav: NavigateFunction) {
+    const options = {
+        state,
+        replace: false
+    };
+
+    nav(Endpoints.LOADER, options);
+}
+
 function _moveToUserSettings(state: any, nav: NavigateFunction) {
     const options = {
         state: {
@@ -30,6 +39,8 @@ export default function GameplayPage(): ReactNode {
         <div className="container">
             <div>
                 <h1>Hello, { loc.state.username }!</h1>
+
+                <button onClick={(_) => _loadExistingPuzzles(loc.state, nav)}>Load</button>
                 <button onClick={(_) => _moveToUserSettings(loc.state, nav)}>User Settings</button>
             </div>
 

@@ -1,5 +1,5 @@
 import "../styles/SudokuBoard.scss";
-import { ReactNode, RefObject, Dispatch, SetStateAction, useState, useRef } from "react";
+import { ReactNode, Dispatch, SetStateAction, useState, useRef } from "react";
 import { GenerateInfo, Position, Sudoku } from "./GenerateInfo";
 import { createPuzzle, updatePuzzle } from "./Fetch";
 import SudokuCell from "./SudokuCell";
@@ -60,17 +60,17 @@ function createTableOfCells(info: GenerateInfo, setPuzzle: Dispatch<SetStateActi
 
 function _savePuzzle(
     puzzle: Sudoku,
-    data: any,
+    current: any,
     userId: number,
-    button: RefObject<HTMLButtonElement | null>
+    button: HTMLButtonElement
 ) {
     const json = JSON.stringify(puzzle);
 
-    button.current!.disabled = true;
+    button.disabled = true;
 
-    if (!data.puzzleId) {
+    if (!current.puzzleId) {
         createPuzzle(json, userId).then((info) => {
-            data.puzzleId = info.puzzleId;
+            current.puzzleId = info.puzzleId;
 
             _saveCleanup(button, info.type);
         }).catch((error) => {
@@ -78,7 +78,7 @@ function _savePuzzle(
         });
     }
     else {
-        updatePuzzle(data.puzzleId, json).then((info) => {
+        updatePuzzle(current.puzzleId, json).then((info) => {
             _saveCleanup(button, info.type);
         }).catch((error) => {
             throw error;
@@ -86,8 +86,8 @@ function _savePuzzle(
     }
 }
 
-function _saveCleanup(button: RefObject<HTMLButtonElement | null>, message: string) {
-    button.current!.disabled = false;
+function _saveCleanup(button: HTMLButtonElement, message: string) {
+    button.disabled = false;
 
     if (!message.endsWith("Success")) {
         alert("Sudoku Failed to Save");
@@ -108,7 +108,7 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
         const [puzzle, setPuzzle] = useState(info.puzzle);
         const button = useRef<HTMLButtonElement>(null);
 
-        const data = {};
+        const currentPuzzle = {};
         const table = createTableOfCells(info, setPuzzle);
 
         return (
@@ -119,7 +119,7 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
                     <button
                         className="btn btn-primary"
                         ref={button}
-                        onClick={(_) => _savePuzzle(puzzle, data, userId, button)}
+                        onClick={(_) => _savePuzzle(puzzle, currentPuzzle, userId, button.current!)}
                     >
                         Save
                     </button>

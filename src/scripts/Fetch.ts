@@ -6,6 +6,7 @@ import { DeleteUserInfo } from "./DeleteUserInfo";
 import { CreatePuzzleInfo } from "./CreatePuzzleInfo";
 import { UpdatePuzzleInfo } from "./UpdatePuzzleInfo";
 import { URLs, XRequestIds } from "./StringConstants" 
+import { DeletePuzzleInfo } from "./DeletePuzzleInfo";
 
 function _ensureOkResponse(response: Response) {
     if (!response.ok) {
@@ -173,4 +174,26 @@ async function updatePuzzle(puzzleId: number, json: string): Promise<UpdatePuzzl
     return info;
 }
 
-export { retrieveBoard, signup, login, updateUser, deleteUser, createPuzzle, updatePuzzle };
+async function deletePuzzle(puzzleId: number): Promise<DeletePuzzleInfo> {
+    const response = await fetch(URLs.DELETE_PUZZLE, {
+        headers: {
+            "X-Request-ID": XRequestIds.DELETE_PUZZLE,
+            "Accept": "application/json; charset=UTF-8",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Connection": "keep-alive"
+        },
+        method: "DELETE",
+        body: JSON.stringify({ puzzleId }),
+        credentials: "include"
+    });
+
+    _ensureOkResponse(response);
+
+    const info: DeletePuzzleInfo = await response.json();
+
+    return info;
+}
+
+export { retrieveBoard, signup, login, updateUser, deleteUser, createPuzzle, updatePuzzle, deletePuzzle };

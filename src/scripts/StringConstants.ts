@@ -3,6 +3,7 @@ const Endpoints = {
     SIGNUP: "/signup",
     LOGIN: "/login",
     GAMEPLAY: "/gameplay",
+    LOADER: "/loader",
     SETTINGS: "/settings"
 };
 
