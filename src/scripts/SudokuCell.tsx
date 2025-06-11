@@ -16,8 +16,6 @@ interface SudokuCellProps {
     maxCharLength: number;
 
     whole: Sudoku;
-
-    setWhole: Dispatch<SetStateAction<Sudoku>>;
 }
 
 interface _CellBorderThickness {
@@ -115,7 +113,6 @@ function _checkInput(ev: React.FormEvent<HTMLDivElement>, props: SudokuCellProps
         _removeNonNumbers(div);
 
         props.whole.board[props.row][props.column].value = Number(div.textContent!);
-        props.setWhole(props.whole);
     }
 }
 

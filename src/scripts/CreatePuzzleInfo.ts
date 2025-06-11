@@ -1,7 +1,9 @@
+import { Puzzle } from "./LoginInfo";
+
 interface CreatePuzzleInfo {
     type: string;
 
-    puzzleId: number;
+    puzzle: Puzzle;
 }
 
 export { CreatePuzzleInfo };

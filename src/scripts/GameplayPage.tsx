@@ -21,7 +21,7 @@ function _moveToUserSettings(state: any, nav: NavigateFunction) {
             userId: state.id,
             oldUsername: state.username,
             oldEmail: state.email,
-            puzzles: state.puzzles
+            puzzle: state.puzzles
         },
         replace: false
     };
@@ -30,10 +30,16 @@ function _moveToUserSettings(state: any, nav: NavigateFunction) {
 }
 
 export default function GameplayPage(): ReactNode {
-    const [board, setBoard] = useState<GenerateInfo | string | Error>("No Puzzle");
-
     const loc = useLocation();
     const nav = useNavigate();
+
+    let loaded: GenerateInfo | undefined;
+
+    if (loc.state.loaded) {
+        loaded = { type: "Success", puzzle: loc.state.loaded };
+    }
+
+    const [board, setBoard] = useState<GenerateInfo | string | Error>(loaded ?? "No Puzzle");
 
     return (
         <div className="container">
@@ -46,7 +52,7 @@ export default function GameplayPage(): ReactNode {
 
             <div id="gameplay">
                 <SelectionCard creator={setBoard} />
-                <SudokuBoard info={board} userId={loc.state.id} />
+                <SudokuBoard info={board} userId={loc.state.id} saved={loc.state.puzzles} />
             </div>
         </div>
     );
