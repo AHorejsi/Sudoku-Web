@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode, Dispatch, SetStateAction } from "react";
 
 interface SelectionCheckboxProps {
     prompt: string;
@@ -9,7 +9,7 @@ interface SelectionCheckboxProps {
 
     getter: string[];
 
-    setter: React.Dispatch<React.SetStateAction<string[]>>;
+    setter: Dispatch<SetStateAction<string[]>>;
 }
 
 function _changeSelection(ev: React.FormEvent<HTMLInputElement>, props: SelectionCheckboxProps) {
