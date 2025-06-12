@@ -13,14 +13,16 @@ interface SelectionCheckboxProps {
 }
 
 function _changeSelection(ev: React.FormEvent<HTMLInputElement>, props: SelectionCheckboxProps) {
-    let selected = props.getter;
+    const selected = props.getter;
     const value = props.value;
 
     if (ev.currentTarget.checked) {
         selected.push(value);
     }
     else {
-        selected = selected.filter((item) => item === value);
+        const index = selected.indexOf(value);
+
+        selected.splice(index, 1);
     }
 
     props.setter(selected);
