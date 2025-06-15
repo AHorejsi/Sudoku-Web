@@ -33,17 +33,11 @@ export default function GameplayPage(): ReactNode {
     const loc = useLocation();
     const nav = useNavigate();
 
-    let loaded: GenerateInfo | undefined;
-
-    if (loc.state.loaded) {
-        loaded = { type: "Success", puzzle: loc.state.loaded };
-    }
-
-    const [board, setBoard] = useState<GenerateInfo | string | Error>(loaded ?? "No Puzzle");
+    const [board, setBoard] = useState<GenerateInfo | string | Error>(loc.state.loaded ?? "No Puzzle");
 
     return (
         <div className="container">
-            <div>
+            <div id="title-card">
                 <h1>Hello, { loc.state.username }!</h1>
 
                 <button onClick={(_) => _loadExistingPuzzles(loc.state, nav)}>Load</button>

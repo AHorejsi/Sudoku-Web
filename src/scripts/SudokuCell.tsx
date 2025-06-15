@@ -1,5 +1,5 @@
 import "../styles/SudokuCell.scss";
-import React, { ReactNode, Dispatch, SetStateAction } from "react";
+import { ReactNode, useRef } from "react";
 import { Cell, Sudoku } from "./GenerateInfo";
 
 interface SudokuCellProps {
@@ -15,7 +15,7 @@ interface SudokuCellProps {
 
     maxCharLength: number;
 
-    whole: Sudoku;
+    whole: Cell[][];
 }
 
 interface _CellBorderThickness {
@@ -30,7 +30,7 @@ interface _CellBorderThickness {
 
 function _decideThickness(props: SudokuCellProps): _CellBorderThickness {
     const boxLength = Math.sqrt(props.boardLength);
-    const borderThickness = {
+    const borderThickness: _CellBorderThickness = {
         top: "thin",
         bottom: "thin",
         left: "thin",
@@ -92,27 +92,18 @@ function _limitCharLength(div: HTMLDivElement, maxLength: number): boolean {
     return false;
 }
 
-function _removeNonNumbers(div: HTMLDivElement) {
-    const text = div.textContent!;
-    const endIndex = text.length - 1;
-
-    const last = text.charAt(endIndex);
-    const containsDigits = /^\d+$/;
-
-    if (!containsDigits.test(last)) {
-        div.textContent = text.substring(0, endIndex);
+function _checkInput(key: string, div: HTMLDivElement, props: SudokuCellProps) {
+    if (key < "1" || key > "9") {
+        return;
     }
-}
 
-function _checkInput(ev: React.FormEvent<HTMLDivElement>, props: SudokuCellProps) {
-    const div = ev.currentTarget;
-
-    const finalCharRemoved = _limitCharLength(div, props.maxCharLength);
-
-    if (!finalCharRemoved) {
-        _removeNonNumbers(div);
-
-        props.whole.board[props.row][props.column].value = Number(div.textContent!);
+    if ("Backspace" === key || "Delete" === key) {
+        props.whole[props.row][props.column].value = null;
+    }
+    else {
+        if (!_limitCharLength(div, props.maxCharLength)) {
+            props.whole[props.row][props.column].value = Number(div.textContent!);
+        }
     }
 }
 
@@ -122,13 +113,15 @@ export default function SudokuCell(props: SudokuCellProps): ReactNode {
     const hyper = props.isHyper ? "hyper-cell" : "";
     const cellBorders = _determineBorders(props);
 
+    const div = useRef<HTMLDivElement>(null);
+
     return (
         <td className={`${hyper} ${cellBorders}`}>
             <div
-                id={`cell-${props.row}-${props.column}`}
                 className={`${cellType}`}
+                ref={div}
                 contentEditable={cell.editable}
-                onInput={(ev) => _checkInput(ev, props)}
+                onKeyUp={(ev) => _checkInput(ev.key, div.current!, props)}
             >
                 {cell.value ?? ""}
             </div>

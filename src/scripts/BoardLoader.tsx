@@ -5,13 +5,15 @@ import { Sudoku } from "./GenerateInfo";
 import { Endpoints } from "./StringConstants";
 
 interface BoardLoaderProps {
-    puzzle: Sudoku;
+    puzzleId: number;
+
+    sudoku: Sudoku;
 
     userState: any;
 }
 
 function _reloadSudoku(props: BoardLoaderProps, nav: NavigateFunction) {
-    props.userState.loaded = props.puzzle;
+    props.userState.loaded = { puzzleId: props.puzzleId, sudoku: props.sudoku };
 
     const options = {
         state: props.userState,
@@ -24,7 +26,7 @@ function _reloadSudoku(props: BoardLoaderProps, nav: NavigateFunction) {
 export default function BoardLoader(props: BoardLoaderProps): ReactNode {
     const nav = useNavigate();
 
-    const sudoku = props.puzzle;
+    const sudoku = props.sudoku;
 
     return (
         <div className="border" onClick={(_) => _reloadSudoku(props, nav)}>

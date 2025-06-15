@@ -14,7 +14,7 @@ export default function LoaderPage(): ReactNode {
     for (const puzzle of puzzleSet) {
         const sudoku: Sudoku = JSON.parse(puzzle.json);
 
-        selection.push(<BoardLoader puzzle={sudoku} userState ={loc.state} />);
+        selection.push(<BoardLoader puzzleId={puzzle.id} sudoku={sudoku} userState={loc.state} />);
     }    
 
     return (

@@ -1,9 +1,13 @@
 import "../styles/SudokuBoard.scss";
 import { ReactNode, useRef } from "react";
-import { GenerateInfo, Position, Sudoku } from "./GenerateInfo";
 import { createPuzzle, updatePuzzle } from "./Fetch";
+import { GenerateInfo, Position, Sudoku } from "./GenerateInfo";
 import SudokuCell from "./SudokuCell";
 import { Puzzle } from "./LoginInfo";
+import { save } from "./SaveState";
+import { useAppDispatch, useAppSelector } from "./Hooks";
+import { AppDispatch, RootState } from "./Store";
+
 
 interface SudokuBoardProps {
     info: GenerateInfo | string | Error;
@@ -23,29 +27,27 @@ function checkIfHyperCell(hyperPos: Position[], rowIndex: number, colIndex: numb
     return false;
 }
 
-function createTableOfCells(info: GenerateInfo): ReactNode {
-    const puzzle = info.puzzle;
-
+function createTableOfCells(sudoku: Sudoku): ReactNode {
     const tableBody = Array<ReactNode>();
-    const maxCharLength = puzzle.length.toString().length;
-    const hyperPos = puzzle.boxes.filter((box) => box.isHyper).map((box, _0, _1) => box.positions).flat();
+    const maxCharLength = sudoku.length.toString().length;
+    const hyperPos = sudoku.boxes.filter((box) => box.isHyper).map((box, _0, _1) => box.positions).flat();
 
-    for (let rowIndex = 0; rowIndex < puzzle.length; ++rowIndex) {
+    for (let rowIndex = 0; rowIndex < sudoku.length; ++rowIndex) {
         const tableRow = Array<ReactNode>();
 
-        for (let colIndex = 0; colIndex < puzzle.length; ++colIndex) {
+        for (let colIndex = 0; colIndex < sudoku.length; ++colIndex) {
             const isHyper = checkIfHyperCell(hyperPos, rowIndex, colIndex);
-            const cell = puzzle.board[rowIndex][colIndex];
+            const cell = sudoku.board[rowIndex][colIndex];
 
             tableRow.push(
                 <SudokuCell
                     cell={cell}
                     row={rowIndex}
                     column={colIndex}
-                    boardLength={puzzle.length}
+                    boardLength={sudoku.length}
                     isHyper={isHyper}
                     maxCharLength={maxCharLength}
-                    whole={puzzle}
+                    whole={sudoku.board}
                 />
             );
         }
@@ -61,19 +63,22 @@ function createTableOfCells(info: GenerateInfo): ReactNode {
 }
 
 function _savePuzzle(
-    saved: Puzzle[],
+    puzzleId: number | null,
+    dispatch: AppDispatch,
+    props: SudokuBoardProps,
     sudoku: Sudoku,
-    current: any,
-    userId: number,
     button: HTMLButtonElement
 ) {
+    const userId = props.userId;
+    const saved = props.saved;
+
     const json = JSON.stringify(sudoku);
 
     button.disabled = true;
 
-    if (!current.puzzle) {
+    if (!puzzleId) {
         createPuzzle(json, userId).then((info) => {
-            current.puzzle = info.puzzle;
+            dispatch(save(info.puzzle.id));
             saved.push(info.puzzle);
 
             _saveCleanup(button, info.type);
@@ -82,7 +87,15 @@ function _savePuzzle(
         });
     }
     else {
-        updatePuzzle(current.puzzleId, json).then((info) => {
+        updatePuzzle(puzzleId, json).then((info) => {
+            for (const puzzle of saved) {
+                if (puzzle.id === puzzleId) {
+                    puzzle.json = json;
+
+                    break;
+                }
+            }
+
             _saveCleanup(button, info.type);
         }).catch((error) => {
             throw error;
@@ -108,24 +121,21 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
         return <p id="info-text">{info}</p>
     }
     else {
-        const userId = props.userId;
-        const saved = props.saved;
-
-        const puzzle = info.puzzle;
+        const sudoku = info.sudoku;
         const button = useRef<HTMLButtonElement>(null);
 
-        const current = {};
-        const table = createTableOfCells(info);
+        const puzzleId = useAppSelector((state: RootState) => state.saver.puzzleId);
+        const dispatch = useAppDispatch();
+        
+        const table = createTableOfCells(sudoku);
 
         return (
             <div>
                 <div id="board" className="container">{table}</div>
 
                 <div>
-                    <button
-                        className="btn btn-primary"
-                        ref={button}
-                        onClick={(_) => _savePuzzle(saved, puzzle, current, userId, button.current!)}
+                    <button className="btn btn-primary" ref={button}
+                        onClick={(_) => _savePuzzle(puzzleId, dispatch, props, sudoku, button.current!)}
                     >
                         Save
                     </button>

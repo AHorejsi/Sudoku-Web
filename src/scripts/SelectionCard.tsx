@@ -1,9 +1,12 @@
 import "../styles/SelectionCard.scss";
 import { ReactNode, useState, Dispatch, SetStateAction } from "react";
+import { retrieveBoard } from "./Fetch";
+import { GenerateInfo } from "./GenerateInfo";
 import SelectionRadioButton from "./SelectionRadioButton";
 import SelectionCheckbox from "./SelectionCheckbox";
-import { GenerateInfo } from "./GenerateInfo";
-import { retrieveBoard } from "./Fetch";
+import { save } from "./SaveState";
+import { useAppDispatch } from "./Hooks";
+import { AppDispatch } from "./Store";
 
 interface SelectionCardProps {
     creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>
@@ -13,7 +16,8 @@ function _generateButton(
     dimension: string,
     difficulty: string,
     games: string[],
-    creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>
+    creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>,
+    dispatch: AppDispatch
 ) {
     creator("Retrieving...");
 
@@ -28,6 +32,8 @@ function _generateButton(
         }
     }).catch((error: Error) => {
         creator(error);
+    }).finally(() => {
+        dispatch(save(null));
     });
 }
 
@@ -35,6 +41,8 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
     const dimension = "NINE";
     const [difficulty, setDifficulty] = useState("");
     const [games, setGames] = useState(Array<string>());
+
+    const dispatch = useAppDispatch();
 
     return (
         <div id="selection-card-main" className="container">
@@ -63,7 +71,7 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
 
                     <label htmlFor="generate" />
                     <input type="button" name="generate" value="Generate"
-                        onClick={(_) => _generateButton(dimension, difficulty, games, props.creator)}
+                        onClick={(_) => _generateButton(dimension, difficulty, games, props.creator, dispatch)}
                     />
                 </div>
             </form>
