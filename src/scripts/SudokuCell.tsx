@@ -1,5 +1,5 @@
 import "../styles/SudokuCell.scss";
-import { ReactNode, useRef } from "react";
+import { ReactNode, FormEvent, useRef } from "react";
 import { Cell } from "./GenerateInfo";
 
 interface SudokuCellProps {
@@ -76,7 +76,7 @@ function _determineBorders(props: SudokuCellProps): string {
     return css;
 }
 
-function _deleteLastChar(div: HTMLDivElement, text: string) {
+function _deleteLastChars(div: HTMLDivElement, text: string) {
     div.textContent = text.substring(0, text.length - 1);
     
     const sel = window.getSelection()!;
@@ -84,16 +84,20 @@ function _deleteLastChar(div: HTMLDivElement, text: string) {
     sel.collapseToEnd();
 }
 
-function _validChar(key: string): boolean {
+function _validChar(key: string | undefined): boolean {
+    if (!key) {
+        return true;
+    }
+
     return key.localeCompare("1") >= 0 && key.localeCompare("9") <= 0;
 }
 
 function _checkInput(div: HTMLDivElement, props: SudokuCellProps) {
     const text = div.textContent!;
-    const last = text[text.length - 1];
+    const last: string | undefined = text[text.length - 1]; // undefined means that the text is empty
 
     if (text.length > props.maxCharLength || !_validChar(last)) {
-        _deleteLastChar(div, text);
+        _deleteLastChars(div, text);
 
         return;
     }
@@ -120,7 +124,7 @@ export default function SudokuCell(props: SudokuCellProps): ReactNode {
                 className={`${cellType}`}
                 ref={div}
                 contentEditable={cell.editable}
-                onKeyUp={(_) => _checkInput(div.current!, props)}
+                onInput={(_) => _checkInput(div.current!, props)}
             >
                 {cell.value ?? ""}
             </div>
