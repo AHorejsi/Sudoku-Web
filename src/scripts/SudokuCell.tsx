@@ -92,18 +92,14 @@ function _limitCharLength(div: HTMLDivElement, maxLength: number): boolean {
     return false;
 }
 
-function _checkInput(key: string, div: HTMLDivElement, props: SudokuCellProps) {
-    if (key < "1" || key > "9") {
-        return;
-    }
+function _checkInput(div: HTMLDivElement, props: SudokuCellProps) {
+    const text = div.textContent!;
 
-    if ("Backspace" === key || "Delete" === key) {
-        props.whole[props.row][props.column].value = null;
+    if ("1" <= text && text <= "9") {
+        props.whole[props.row][props.column].value = Number(text);
     }
-    else {
-        if (!_limitCharLength(div, props.maxCharLength)) {
-            props.whole[props.row][props.column].value = Number(div.textContent!);
-        }
+    else if ("" === text) {
+        props.whole[props.row][props.column].value = null;
     }
 }
 
@@ -121,7 +117,7 @@ export default function SudokuCell(props: SudokuCellProps): ReactNode {
                 className={`${cellType}`}
                 ref={div}
                 contentEditable={cell.editable}
-                onKeyUp={(ev) => _checkInput(ev.key, div.current!, props)}
+                onKeyUp={(_) => _checkInput(div.current!, props)}
             >
                 {cell.value ?? ""}
             </div>
