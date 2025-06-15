@@ -1,6 +1,6 @@
 import "../styles/SudokuCell.scss";
 import { ReactNode, useRef } from "react";
-import { Cell, Sudoku } from "./GenerateInfo";
+import { Cell } from "./GenerateInfo";
 
 interface SudokuCellProps {
     cell: Cell;
@@ -76,30 +76,33 @@ function _determineBorders(props: SudokuCellProps): string {
     return css;
 }
 
-function _limitCharLength(div: HTMLDivElement, maxLength: number): boolean {
-    const text = div.textContent!;
+function _deleteLastChar(div: HTMLDivElement, text: string) {
+    div.textContent = text.substring(0, text.length - 1);
+    
+    const sel = window.getSelection()!;
+    sel.selectAllChildren(div);
+    sel.collapseToEnd();
+}
 
-    if (text.length > maxLength) {
-        div.textContent = text.substring(0, maxLength);
-        
-        const sel = window.getSelection()!;
-        sel.selectAllChildren(div);
-        sel.collapseToEnd();
-
-        return true;
-    }
-
-    return false;
+function _validChar(key: string): boolean {
+    return key.localeCompare("1") >= 0 && key.localeCompare("9") <= 0;
 }
 
 function _checkInput(div: HTMLDivElement, props: SudokuCellProps) {
     const text = div.textContent!;
+    const last = text[text.length - 1];
 
-    if ("1" <= text && text <= "9") {
-        props.whole[props.row][props.column].value = Number(text);
+    if (text.length > props.maxCharLength || !_validChar(last)) {
+        _deleteLastChar(div, text);
+
+        return;
     }
-    else if ("" === text) {
+
+    if (0 === text.length) {
         props.whole[props.row][props.column].value = null;
+    }
+    else if ("1" <= text && text <= "9") {
+        props.whole[props.row][props.column].value = Number(text);
     }
 }
 
