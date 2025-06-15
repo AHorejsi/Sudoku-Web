@@ -1,5 +1,5 @@
 import "../styles/BoardLoader.scss";
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
 import { Sudoku } from "./GenerateInfo";
 import { Endpoints } from "./StringConstants";
@@ -27,11 +27,14 @@ export default function BoardLoader(props: BoardLoaderProps): ReactNode {
     const nav = useNavigate();
 
     const sudoku = props.sudoku;
+    const div = useRef<HTMLDivElement>(null);
 
     return (
-        <div className="border" onClick={(_) => _reloadSudoku(props, nav)}>
+        <div className="border" ref={div}>
             <div>{sudoku.difficulty}</div>
             <div>{sudoku.games.join(", ")}</div>
+
+            <button onClick={(_) => _reloadSudoku(props, nav)}>Reload</button>
         </div>
     );
 }
