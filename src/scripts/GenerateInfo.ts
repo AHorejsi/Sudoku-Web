@@ -42,8 +42,6 @@ interface GenerateInfo {
     type: string;
 
     sudoku: Sudoku;
-
-    reloadedId?: number;
 }
 
 export { Position, Cage, Box, Cell, Sudoku, GenerateInfo };

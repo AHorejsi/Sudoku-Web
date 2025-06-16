@@ -2,9 +2,27 @@ import "../styles/GameplayPage.scss";
 import { ReactNode, useState } from "react";
 import { NavigateFunction, useLocation, useNavigate } from "react-router";
 import { Endpoints } from "./StringConstants";
-import { GenerateInfo } from "./GenerateInfo";
+import { GenerateInfo, Sudoku } from "./GenerateInfo";
+import { Puzzle } from "./LoginInfo";
 import SelectionCard from "./SelectionCard";
 import SudokuBoard from "./SudokuBoard";
+import { RootState } from "./Store";
+import { useAppSelector } from "./Hooks";
+
+function _findSudoku(puzzleSet: Puzzle[]): Sudoku | null {
+    const puzzleId = useAppSelector((state: RootState) => state.saver.puzzleId);
+
+    alert(puzzleId);
+    alert(JSON.stringify(puzzleSet));
+
+    for (const puzzle of puzzleSet) {
+        if (puzzle.id === puzzleId) {
+            return JSON.parse(puzzle.json);
+        }
+    }
+
+    return null;
+}
 
 function _loadExistingPuzzles(state: any, nav: NavigateFunction) {
     const options = {
@@ -33,7 +51,16 @@ export default function GameplayPage(): ReactNode {
     const loc = useLocation();
     const nav = useNavigate();
 
-    const [board, setBoard] = useState<GenerateInfo | string | Error>(loc.state.loaded ?? "No Puzzle");
+    const sudoku = _findSudoku(loc.state.puzzles);
+    let info: GenerateInfo | undefined;
+
+    if (sudoku) {
+        info = { type: "Success", sudoku };
+    }
+
+    alert(JSON.stringify(info));
+
+    const [board, setBoard] = useState<GenerateInfo | string | Error>(info ?? "No Puzzle");
 
     return (
         <div className="container">
