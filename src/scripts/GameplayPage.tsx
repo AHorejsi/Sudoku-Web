@@ -12,9 +12,6 @@ import { useAppSelector } from "./Hooks";
 function _findSudoku(puzzleSet: Puzzle[]): Sudoku | null {
     const puzzleId = useAppSelector((state: RootState) => state.saver.puzzleId);
 
-    alert(puzzleId);
-    alert(JSON.stringify(puzzleSet));
-
     for (const puzzle of puzzleSet) {
         if (puzzle.id === puzzleId) {
             return JSON.parse(puzzle.json);
@@ -57,8 +54,6 @@ export default function GameplayPage(): ReactNode {
     if (sudoku) {
         info = { type: "Success", sudoku };
     }
-
-    alert(JSON.stringify(info));
 
     const [board, setBoard] = useState<GenerateInfo | string | Error>(info ?? "No Puzzle");
 
