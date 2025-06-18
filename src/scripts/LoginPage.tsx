@@ -4,6 +4,7 @@ import { NavigateFunction, useNavigate } from "react-router";
 import { Endpoints } from "./StringConstants";
 import { login } from "./Fetch";
 import { LoginInfo } from "./LoginInfo";
+import InputField from "./InputField";
 
 interface _LoginAttemptState {
     borders: string;
@@ -55,33 +56,19 @@ export default function LoginPage(): ReactNode {
     const nav = useNavigate();
 
     return (
-        <div id="login" className="container-fluid">
+        <div id="login">
             <form>
                 <p className={login.color}>{login.text}</p>
 
-                <div>
-                    Username/Email: 
+                <InputField
+                    label="usernameOrEmail" prompt="Username/Email:" classes={login.borders} covered={false}
+                    inputEvent={(ev) => setUsernameOrEmail(ev.currentTarget.value)}
+                />
 
-                    <label htmlFor="usernameOrEmail" />
-                    <input
-                        className={login.borders}
-                        type="text"
-                        name="usernameOrEmail"
-                        onInput={(ev) => setUsernameOrEmail(ev.currentTarget.value)}
-                    />
-                </div>
-
-                <div>
-                    Password: 
-
-                    <label htmlFor="password" />
-                    <input
-                        className={login.borders}
-                        type="password"
-                        name="password"
-                        onInput={(ev) => setPassword(ev.currentTarget.value)}
-                    />
-                </div>
+                <InputField
+                    label="password" prompt="Password:" classes={login.borders} covered={true}
+                    inputEvent={(ev) => setPassword(ev.currentTarget.value)}
+                />
 
                 <div>
                     <label htmlFor="login" />

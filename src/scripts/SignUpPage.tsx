@@ -4,6 +4,7 @@ import { Endpoints } from "./StringConstants";
 import { signup } from "./Fetch";
 import { SignupInfo } from "./SignupInfo";
 import { NavigateFunction, useNavigate } from "react-router";
+import InputField from "./InputField";
 
 interface _SignupState {
     borders: string;
@@ -59,41 +60,20 @@ export default function SignUpPage(): ReactNode {
             <form>
                 <p className={signup.color}>{signup.text}</p>
 
-                <div>
-                    Username: 
+                <InputField
+                    label="username" prompt="Username:" classes={signup.borders} covered={false}
+                    inputEvent={(ev) => setUsername(ev.currentTarget.value)}
+                />
 
-                    <label htmlFor="username" />
-                    <input
-                        className={signup.borders}
-                        type="text"
-                        name="username"
-                        onInput={(ev) => setUsername(ev.currentTarget.value)}
-                    />
-                </div>
+                <InputField
+                    label="email" prompt="Email:" classes={signup.borders} covered={false}
+                    inputEvent={(ev) => setEmail(ev.currentTarget.value)}
+                />
 
-                <div>
-                    Email: 
-
-                    <label htmlFor="email" />
-                    <input
-                        className={signup.borders}
-                        type="text"
-                        name="email"
-                        onInput={(ev) => setEmail(ev.currentTarget.value)}
-                    />
-                </div>
-
-                <div>
-                    Password: 
-
-                    <label htmlFor="password" />
-                    <input
-                        className={signup.borders}
-                        type="password"
-                        name="password"
-                        onInput={(ev) => setPassword(ev.currentTarget.value)}
-                    />
-                </div>
+                <InputField
+                    label="password" prompt="Password:" classes={signup.borders} covered={true}
+                    inputEvent={(ev) => setPassword(ev.currentTarget.value)}
+                />
 
                 <div>
                     <label htmlFor="signup" />
