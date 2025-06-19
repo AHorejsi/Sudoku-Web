@@ -18,13 +18,8 @@ function _checkSignup(info: SignupInfo, setSignup: Dispatch<SetStateAction<_Sign
     if (!info.type.endsWith("Success")) {
         setSignup({ borders: "failed-signup" , text: "Username/Email or Password not valid", color: "failed-signup-text" });
     }
-    else {
-        const options = {
-            state: { success: true },
-            replace: false
-        };
-    
-        nav(Endpoints.LOGIN, options);
+    else {    
+        nav(Endpoints.LOGIN);
     }
 }
 

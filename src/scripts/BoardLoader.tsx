@@ -5,25 +5,18 @@ import { Sudoku } from "./GenerateInfo";
 import { Endpoints } from "./StringConstants";
 import { useAppDispatch } from "./Hooks";
 import { AppDispatch } from "./Store";
-import { save } from "./SaveState";
+import { load } from "./LoadState";
 
 interface BoardLoaderProps {
     puzzleId: number;
 
     sudoku: Sudoku;
-
-    userState: any;
 }
 
 function _reloadSudoku(props: BoardLoaderProps, nav: NavigateFunction, dispatch: AppDispatch) {
-    dispatch(save(props.puzzleId));
+    dispatch(load(props.puzzleId));
 
-    const options = {
-        state: props.userState,
-        replace: false
-    }
-
-    nav(Endpoints.GAMEPLAY, options);
+    nav(Endpoints.GAMEPLAY);
 }
 
 export default function BoardLoader(props: BoardLoaderProps): ReactNode {
@@ -31,10 +24,9 @@ export default function BoardLoader(props: BoardLoaderProps): ReactNode {
     const dispatch = useAppDispatch();
 
     const sudoku = props.sudoku;
-    const div = useRef<HTMLDivElement>(null);
 
     return (
-        <div className="border" ref={div}>
+        <div className="border">
             <div>{sudoku.difficulty}</div>
             <div>{sudoku.games.join(", ")}</div>
 

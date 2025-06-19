@@ -4,7 +4,7 @@ import { retrieveBoard } from "./Fetch";
 import { GenerateInfo } from "./GenerateInfo";
 import SelectionRadioButton from "./SelectionRadioButton";
 import SelectionCheckbox from "./SelectionCheckbox";
-import { save } from "./SaveState";
+import { load } from "./LoadState";
 import { useAppDispatch } from "./Hooks";
 import { AppDispatch } from "./Store";
 
@@ -33,7 +33,7 @@ function _generateButton(
     }).catch((error: Error) => {
         creator(error);
     }).finally(() => {
-        dispatch(save(null));
+        dispatch(load(null));
     });
 }
 

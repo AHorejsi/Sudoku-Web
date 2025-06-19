@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import saveReducer from "./SaveState";
+import saveReducer from "./LoadState";
+import userReducer from "./UserState";
 
 const store = configureStore({
     reducer: {
-        saver: saveReducer
+        reloaded: saveReducer,
+        login: userReducer
     }
 });
 

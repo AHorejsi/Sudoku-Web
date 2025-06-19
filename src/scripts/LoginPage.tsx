@@ -5,6 +5,9 @@ import { Endpoints } from "./StringConstants";
 import { login } from "./Fetch";
 import { LoginInfo } from "./LoginInfo";
 import InputField from "./InputField";
+import { useAppDispatch } from "./Hooks";
+import { user } from "./UserState";
+import { AppDispatch } from "./Store";
 
 interface _LoginAttemptState {
     borders: string;
@@ -14,19 +17,15 @@ interface _LoginAttemptState {
     color: string;
 }
 
-function _checkLogin(info: LoginInfo, setLogin: Dispatch<SetStateAction<_LoginAttemptState>>, nav: NavigateFunction) {
-    const user = info.user;
+function _checkLogin(info: LoginInfo, setLogin: Dispatch<SetStateAction<_LoginAttemptState>>, nav: NavigateFunction, dispatch: AppDispatch) {
+    const dbUser = info.user;
 
-    if (!user) {
+    if (!dbUser) {
         setLogin({ borders: "failed-login" , text: "Username or Password not authenticated", color: "failed-login-text" });
     }
-    else {
-        const options = {
-            state: user,
-            replace: false
-        };
-    
-        nav(Endpoints.GAMEPLAY, options);
+    else {    
+        dispatch(user(dbUser));
+        nav(Endpoints.GAMEPLAY);
     }
 }
 
@@ -34,14 +33,15 @@ function _attemptUserLogin(
     usernameOrEmail: string,
     password: string,
     setLogin: Dispatch<SetStateAction<_LoginAttemptState>>,
-    nav: NavigateFunction
+    nav: NavigateFunction,
+    dispatch: AppDispatch
 ) {
     setLogin({ borders: "login-not-attempted", text: "Authenticating...", color: "login-text" });
 
     const loginResult = login(usernameOrEmail, password);
 
     loginResult.then((info: LoginInfo) => {
-        _checkLogin(info, setLogin, nav);
+        _checkLogin(info, setLogin, nav, dispatch);
     }).catch((error: Error) => {
         throw error;
     });
@@ -54,6 +54,7 @@ export default function LoginPage(): ReactNode {
     const [login, setLogin] = useState<_LoginAttemptState>({ borders: "login-not-attempted", text: "", color: "" });
     
     const nav = useNavigate();
+    const dispatch = useAppDispatch();
 
     return (
         <div id="login">
@@ -76,7 +77,7 @@ export default function LoginPage(): ReactNode {
                         type="button"
                         name="login"
                         value="Login"
-                        onClick={(_) => _attemptUserLogin(usernameOrEmail, password, setLogin, nav) }
+                        onClick={(_) => _attemptUserLogin(usernameOrEmail, password, setLogin, nav, dispatch) }
                     />
                 </div>
             </form>
