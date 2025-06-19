@@ -36,7 +36,7 @@ export const userSlice = createSlice({
                 state.user!.puzzles[indexToUpdate].json = payload.json;
 
                 break;
-            case "REMOVE_ITEM":
+            case "DELETE_ITEM":
                 const indexToRemove = _findById(state.user!.puzzles, payload.puzzleId);
                 state.user!.puzzles.splice(indexToRemove, 1);
 

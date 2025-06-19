@@ -1,5 +1,5 @@
 import "../styles/BoardLoader.scss";
-import { ReactNode, useRef } from "react";
+import { ReactNode } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
 import { Sudoku } from "./GenerateInfo";
 import { Endpoints } from "./StringConstants";
@@ -21,11 +21,10 @@ function _reloadSudoku(props: BoardLoaderProps, nav: NavigateFunction, dispatch:
     nav(Endpoints.GAMEPLAY);
 }
 
-function _deleteSudoku(props: BoardLoaderProps, div: HTMLDivElement, dispatch: AppDispatch) {
+function _deleteSudoku(props: BoardLoaderProps, dispatch: AppDispatch) {
     deletePuzzle(props.puzzleId).then((info) => {
         if (info.type.endsWith("Success")) {
             dispatch(update({ operation: "DELETE_ITEM", puzzleId: props.puzzleId }));
-            div.remove();
         }
         else {
             throw new Error("Failed to delete");
@@ -38,17 +37,16 @@ function _deleteSudoku(props: BoardLoaderProps, div: HTMLDivElement, dispatch: A
 export default function BoardLoader(props: BoardLoaderProps): ReactNode {
     const nav = useNavigate();
     const dispatch = useAppDispatch();
-    const div = useRef<HTMLDivElement>(null);
 
     const sudoku = props.sudoku;
 
     return (
-        <div className="border" ref={div}>
+        <div className="border">
             <div>{sudoku.difficulty}</div>
             <div>{sudoku.games.join(", ")}</div>
 
             <button onClick={(_) => _reloadSudoku(props, nav, dispatch)}>Reload</button>
-            <button onClick={(_) => _deleteSudoku(props, div.current!, dispatch)}>Delete</button>
+            <button onClick={(_) => _deleteSudoku(props, dispatch)}>Delete</button>
         </div>
     );
 }
