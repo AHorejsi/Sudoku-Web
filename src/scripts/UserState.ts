@@ -1,6 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./Store";
-import { User } from "./LoginInfo";
+import { Puzzle, User } from "./LoginInfo";
+
+function _findById(puzzleSet: Puzzle[], id: number): number {
+    let index = 0;
+
+    for (const puzzle of puzzleSet) {
+        if (id === puzzle.id) {
+            return index;
+        }
+
+        ++index;
+    }
+
+    return -1;
+}
 
 export const userSlice = createSlice({
     name: "user",
@@ -18,11 +32,13 @@ export const userSlice = createSlice({
 
                 break;
             case "UPDATE_ITEM":
-                state.user!.puzzles[payload.index].json = payload.json;
+                const indexToUpdate = _findById(state.user!.puzzles, payload.puzzleId);
+                state.user!.puzzles[indexToUpdate].json = payload.json;
 
                 break;
             case "REMOVE_ITEM":
-                state.user!.puzzles.splice(payload.index, 1);
+                const indexToRemove = _findById(state.user!.puzzles, payload.puzzleId);
+                state.user!.puzzles.splice(indexToRemove, 1);
 
                 break;
             }
