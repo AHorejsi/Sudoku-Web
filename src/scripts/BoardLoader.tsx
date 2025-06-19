@@ -28,7 +28,7 @@ function _deleteSudoku(props: BoardLoaderProps, div: HTMLDivElement, dispatch: A
             div.remove();
         }
         else {
-            throw new Error();
+            throw new Error("Failed to delete");
         }
     }).catch((error) => {
         throw error;
