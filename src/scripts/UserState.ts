@@ -6,9 +6,6 @@ function _findById(puzzleSet: Puzzle[], id: number): number | null {
     let index = 0;
 
     for (const puzzle of puzzleSet) {
-        alert(id);
-        alert(puzzle);
-
         if (id === puzzle.id) {
             return index;
         }
