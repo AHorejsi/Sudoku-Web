@@ -1,3 +1,4 @@
+import { URLs, XRequestIds } from "./StringConstants";
 import { GenerateInfo } from "./GenerateInfo";
 import { LoginInfo } from "./LoginInfo";
 import { SignupInfo } from "./SignupInfo";
@@ -5,7 +6,6 @@ import { UpdateUserInfo } from "./UpdateUserInfo";
 import { DeleteUserInfo } from "./DeleteUserInfo";
 import { CreatePuzzleInfo } from "./CreatePuzzleInfo";
 import { UpdatePuzzleInfo } from "./UpdatePuzzleInfo";
-import { URLs, XRequestIds } from "./StringConstants" 
 import { DeletePuzzleInfo } from "./DeletePuzzleInfo";
 
 function _ensureOkResponse(response: Response) {
