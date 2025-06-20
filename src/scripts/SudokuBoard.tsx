@@ -3,7 +3,7 @@ import { ReactNode, useRef } from "react";
 import { createPuzzle, updatePuzzle } from "./Fetch";
 import { GenerateInfo, Position, Sudoku } from "./GenerateInfo";
 import SudokuCell from "./SudokuCell";
-import { Puzzle, User } from "./LoginInfo";
+import { User } from "./LoginInfo";
 import { load } from "./LoadState";
 import { useAppDispatch, useAppSelector } from "./Hooks";
 import { AppDispatch, RootState } from "./Store";
