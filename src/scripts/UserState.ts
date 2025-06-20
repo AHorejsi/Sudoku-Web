@@ -25,20 +25,21 @@ export const userSlice = createSlice({
         },
         update: (state, actions) => {
             const payload = actions.payload;
+            const puzzles = state.user!.puzzles;
 
             switch (payload.operation) {
             case "ADD_ITEM":
-                state.user!.puzzles.push(payload.newPuzzle);
+                puzzles.push(payload.newPuzzle);
 
                 break;
             case "UPDATE_ITEM":
-                const indexToUpdate = _findById(state.user!.puzzles, payload.puzzleId);
-                state.user!.puzzles[indexToUpdate].json = payload.json;
+                const indexToUpdate = _findById(puzzles, payload.puzzleId);
+                puzzles[indexToUpdate].json = payload.json;
 
                 break;
             case "DELETE_ITEM":
-                const indexToRemove = _findById(state.user!.puzzles, payload.puzzleId);
-                state.user!.puzzles.splice(indexToRemove, 1);
+                const indexToRemove = _findById(puzzles, payload.puzzleId);
+                puzzles.splice(indexToRemove, 1);
 
                 break;
             }

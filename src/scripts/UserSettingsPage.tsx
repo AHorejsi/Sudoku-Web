@@ -1,26 +1,21 @@
 import { ReactNode, useState } from "react";
-import { NavigateFunction, useLocation, useNavigate } from "react-router";
+import { NavigateFunction, useNavigate } from "react-router";
 import { Endpoints } from "./StringConstants";
 import { updateUser, deleteUser } from "./Fetch";
+import { User } from "./LoginInfo";
 import { UpdateUserInfo } from "./UpdateUserInfo";
 import { DeleteUserInfo } from "./DeleteUserInfo";
+import { useAppDispatch, useAppSelector } from "./Hooks";
+import { AppDispatch, RootState } from "./Store";
+import { user } from "./UserState";
+import { load } from "./LoadState";
 
-function _checkUpdate(info: UpdateUserInfo, state: any, newUsername: string, newEmail: string, nav: NavigateFunction) {
+function _checkUpdate(info: UpdateUserInfo, nav: NavigateFunction) {
     if (!info.type.endsWith("Success")) {
         throw new Error("Failed to update");
     }
 
-    const options = {
-        state: {
-            id: state.userId,
-            username: newUsername,
-            email: newEmail,
-            puzzles: state.puzzles
-        },
-        replace: false
-    };
-
-    nav(Endpoints.GAMEPLAY, options);
+    nav(Endpoints.GAMEPLAY);
 }
 
 function _checkDelete(info: DeleteUserInfo, nav: NavigateFunction) {
@@ -28,29 +23,33 @@ function _checkDelete(info: DeleteUserInfo, nav: NavigateFunction) {
         throw new Error("Failed to delete");
     }
 
-    const options = { replace: false };
-
-    nav(Endpoints.MAIN, options);
+    nav(Endpoints.MAIN);
 }
 
-function _attemptUpdate(state: any, newUsername: string, newEmail: string, nav: NavigateFunction) {
-    if (state.oldUsername === newUsername && state.oldEmail === newEmail) {
+function _attemptUpdate(dbUser: User, newUsername: string, newEmail: string, dispatch: AppDispatch, nav: NavigateFunction) {
+    if (dbUser.username === newUsername && dbUser.email === newEmail) {
         return;
     }
 
-    const updateResult = updateUser(state.userId, state.oldUsername, state.oldEmail, newUsername, newEmail);
-
-    updateResult.then((info: UpdateUserInfo) => {
-        _checkUpdate(info, state, newUsername, newEmail, nav);
+    updateUser(dbUser.id, newUsername, newEmail).then((info: UpdateUserInfo) => {
+        dispatch(user({
+            id: dbUser.id,
+            username: newUsername,
+            email: newEmail,
+            puzzles: dbUser.puzzles
+        }));
+        
+        _checkUpdate(info, nav);
     }).catch((error: Error) => {
         throw error;
     });
 }
 
-function _attemptDelete(userId: number, nav: NavigateFunction) {
-    const deleteResult = deleteUser(userId);
+function _attemptDelete(userId: number, dispatch: AppDispatch, nav: NavigateFunction) {
+    deleteUser(userId).then((info: DeleteUserInfo) => {
+        dispatch(user(null));
+        dispatch(load(null));
 
-    deleteResult.then((info: DeleteUserInfo) => {
         _checkDelete(info, nav);
     }).catch((error: Error) => {
         throw error;
@@ -58,11 +57,12 @@ function _attemptDelete(userId: number, nav: NavigateFunction) {
 }
 
 export default function UserSettingsPage(): ReactNode {
-    const loc = useLocation();
     const nav = useNavigate();
+    const user = useAppSelector((state: RootState) => state.login.user)!;
+    const dispatch = useAppDispatch();
 
-    const [newUsername, setUsername] = useState(loc.state.oldUsername);
-    const [newEmail, setEmail] = useState(loc.state.oldEmail);
+    const [newUsername, setUsername] = useState(user.username);
+    const [newEmail, setEmail] = useState(user.email);
 
     return (
         <div id="settings">
@@ -84,14 +84,14 @@ export default function UserSettingsPage(): ReactNode {
                 <div>
                     <label htmlFor="update" />
                     <input type="button" name="update" value="Update Info"
-                        onClick={(_) => _attemptUpdate(loc.state, newUsername, newEmail, nav)}
+                        onClick={(_) => _attemptUpdate(user, newUsername, newEmail, dispatch, nav)}
                     />
                 </div>
             </form>
 
             <div>
                 <label htmlFor="delete" />
-                <button name="delete" onClick={(_) => _attemptDelete(loc.state.userId, nav)}>Delete Account</button>
+                <button name="delete" onClick={(_) => _attemptDelete(user.id, dispatch, nav)}>Delete Account</button>
             </div>
         </div>
     )

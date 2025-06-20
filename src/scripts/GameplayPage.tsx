@@ -1,9 +1,9 @@
 import "../styles/GameplayPage.scss";
 import { ReactNode, useState } from "react";
-import { NavigateFunction, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { Endpoints } from "./StringConstants";
 import { GenerateInfo, Sudoku } from "./GenerateInfo";
-import { Puzzle, User } from "./LoginInfo";
+import { Puzzle } from "./LoginInfo";
 import SelectionCard from "./SelectionCard";
 import SudokuBoard from "./SudokuBoard";
 import { RootState } from "./Store";
@@ -21,29 +21,6 @@ function _findSudoku(puzzleSet: Puzzle[], targetId: number | null): Sudoku | nul
     }
 
     return null;
-}
-
-function _loadExistingPuzzles(state: User, nav: NavigateFunction) {
-    const options = {
-        state,
-        replace: false
-    };
-
-    nav(Endpoints.LOADER, options);
-}
-
-function _moveToUserSettings(state: User, nav: NavigateFunction) {
-    const options = {
-        state: {
-            userId: state.id,
-            oldUsername: state.username,
-            oldEmail: state.email,
-            puzzle: state.puzzles
-        },
-        replace: false
-    };
-
-    nav(Endpoints.SETTINGS, options);
 }
 
 export default function GameplayPage(): ReactNode {
@@ -66,8 +43,8 @@ export default function GameplayPage(): ReactNode {
             <div id="title-card">
                 <h1>Hello, { user.username }!</h1>
 
-                <button onClick={(_) => _loadExistingPuzzles(user, nav)}>Load</button>
-                <button onClick={(_) => _moveToUserSettings(user, nav)}>User Settings</button>
+                <button onClick={(_) => nav(Endpoints.LOADER)}>Load</button>
+                <button onClick={(_) => nav(Endpoints.SETTINGS)}>User Settings</button>
             </div>
 
             <div id="gameplay">

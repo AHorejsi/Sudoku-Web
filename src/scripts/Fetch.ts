@@ -82,8 +82,6 @@ async function login(usernameOrEmail: string, password: string): Promise<LoginIn
 
 async function updateUser(
     userId: number,
-    oldUsername: string,
-    oldEmail: string,
     newUsername: string,
     newEmail: string
 ): Promise<UpdateUserInfo> {
@@ -97,7 +95,7 @@ async function updateUser(
             "Connection": "keep-alive"
         },
         method: "PUT",
-        body: JSON.stringify({ userId, oldUsername, newUsername, oldEmail, newEmail }),
+        body: JSON.stringify({ userId, newUsername, newEmail }),
         credentials: "include"
     });
 
