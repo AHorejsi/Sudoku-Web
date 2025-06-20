@@ -86,7 +86,7 @@ function _savePuzzle(
         updatePuzzle(puzzleId, json).then((info) => {
             const saved = user.puzzles;
 
-            for (const [index, puzzle] of Object.entries(saved)) {
+            for (const puzzle of saved) {
                 if (puzzle.id === puzzleId) {
                     dispatch(update({ operation: "UPDATE_ITEM", json, puzzleId }));
 
