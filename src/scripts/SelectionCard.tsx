@@ -21,14 +21,12 @@ function _generateButton(
 ) {
     creator("Retrieving...");
 
-    const generation = retrieveBoard(dimension, difficulty, games);
-
-    generation.then((info: GenerateInfo) => {
+    retrieveBoard(dimension, difficulty, games).then((info: GenerateInfo) => {
         if (info.type.endsWith("Success")) {
             creator(info);
         }
         else {
-            creator("PLEASE FILL FIELDS");
+            creator(new Error("PLEASE FILL FIELDS"));
         }
     }).catch((error: Error) => {
         creator(error);

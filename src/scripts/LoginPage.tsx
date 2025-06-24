@@ -56,29 +56,34 @@ export default function LoginPage(): ReactNode {
 
     return (
         <div id="login">
-            <form onSubmit={(_) => false}>
-                <p className={login.color}>{login.text}</p>
+            <h1 id="login-title">Login</h1>
 
-                <InputField
-                    label="usernameOrEmail" prompt="Username/Email:" classes={login.borders} covered={false}
-                    inputEvent={(ev) => setUsernameOrEmail(ev.currentTarget.value)}
-                />
+            <div id="login-box">
+                <form onSubmit={(_) => false}>
+                    <p className={login.color}>{login.text}</p>
 
-                <InputField
-                    label="password" prompt="Password:" classes={login.borders} covered={true}
-                    inputEvent={(ev) => setPassword(ev.currentTarget.value)}
-                />
-
-                <div>
-                    <label htmlFor="login" />
-                    <input
-                        type="button"
-                        name="login"
-                        value="Login"
-                        onClick={(_) => _attemptUserLogin(usernameOrEmail, password, setLogin, nav, dispatch) }
+                    <InputField
+                        label="usernameOrEmail" prompt="Username/Email:" classes={login.borders} covered={false}
+                        inputEvent={(ev) => setUsernameOrEmail(ev.currentTarget.value)}
                     />
-                </div>
-            </form>
+
+                    <InputField
+                        label="password" prompt="Password:" classes={login.borders} covered={true}
+                        inputEvent={(ev) => setPassword(ev.currentTarget.value)}
+                    />
+
+                    <div id="login-button">
+                        <label htmlFor="login" />
+                        <input
+                            className="btn btn-primary"
+                            type="button"
+                            name="login"
+                            value="Login"
+                            onClick={(_) => _attemptUserLogin(usernameOrEmail, password, setLogin, nav, dispatch) }
+                        />
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }

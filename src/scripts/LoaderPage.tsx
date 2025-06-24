@@ -22,11 +22,11 @@ export default function LoaderPage(): ReactNode {
 
     return (
         <div>
-            <div>{selection}</div>
+            <h1 id="title-card">Previously Saved Sudoku Puzzles</h1>
 
-            <div>
-                <button onClick={(_) => nav(Endpoints.GAMEPLAY)}>Back</button>
-            </div>
+            <div id="select-card">{selection}</div>
+
+            <button onClick={(_) => nav(Endpoints.GAMEPLAY)}>Back</button>
         </div>
     );
 }

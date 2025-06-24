@@ -1,13 +1,26 @@
 #login {
-    display: flex;
-    justify-content: center;
+    width: 50%;
+    margin: auto;
+}
+
+#login-title {
+    text-align: left;
+}
+
+#login-box {
+    min-width: 15em;
+    max-width: 30em;
     border-style: solid;
+    border-radius: 5px;
     border-width: 1px;
     border-color: black;
     margin-top: 2em;
     margin-bottom: 2em;
-    margin-left: 30em;
-    margin-right: 30em;
+    padding-bottom: 1em;
+}
+
+#login-button {
+    padding-left: 0.75em;
 }
 
 .login-not-attempted {
