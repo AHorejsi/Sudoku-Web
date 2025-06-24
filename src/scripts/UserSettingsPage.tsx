@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
 import { Endpoints } from "./StringConstants";
 import { updateUser, deleteUser } from "./Fetch";
@@ -9,19 +9,30 @@ import { useAppDispatch, useAppSelector } from "./Hooks";
 import { AppDispatch, RootState } from "./Store";
 import { user } from "./UserState";
 import { load } from "./LoadState";
+import InputField from "./InputField";
 
-function _checkUpdate(info: UpdateUserInfo, nav: NavigateFunction) {
+function _checkUpdate(info: UpdateUserInfo, dbUser: User, newUsername: string, newEmail: string, nav: NavigateFunction, dispatch: AppDispatch) {
     if (!info.type.endsWith("Success")) {
         throw new Error("Failed to update");
     }
 
+    dispatch(user({
+        id: dbUser.id,
+        username: newUsername,
+        email: newEmail,
+        puzzles: dbUser.puzzles
+    }));
+
     nav(Endpoints.GAMEPLAY);
 }
 
-function _checkDelete(info: DeleteUserInfo, nav: NavigateFunction) {
+function _checkDelete(info: DeleteUserInfo, nav: NavigateFunction, dispatch: AppDispatch) {
     if (!info.type.endsWith("Success")) {
         throw new Error("Failed to delete");
     }
+
+    dispatch(user(null));
+    dispatch(load(null));
 
     nav(Endpoints.MAIN);
 }
@@ -32,67 +43,55 @@ function _attemptUpdate(dbUser: User, newUsername: string, newEmail: string, dis
     }
 
     updateUser(dbUser.id, newUsername, newEmail).then((info: UpdateUserInfo) => {
-        dispatch(user({
-            id: dbUser.id,
-            username: newUsername,
-            email: newEmail,
-            puzzles: dbUser.puzzles
-        }));
-        
-        _checkUpdate(info, nav);
-    }).catch((error: Error) => {
+        _checkUpdate(info, dbUser, newUsername, newEmail, nav, dispatch);
+    }).catch((error) => {
         throw error;
     });
 }
 
 function _attemptDelete(userId: number, dispatch: AppDispatch, nav: NavigateFunction) {
     deleteUser(userId).then((info: DeleteUserInfo) => {
-        dispatch(user(null));
-        dispatch(load(null));
-
-        _checkDelete(info, nav);
-    }).catch((error: Error) => {
+        _checkDelete(info, nav, dispatch);
+    }).catch((error) => {
         throw error;
     });
 }
 
 export default function UserSettingsPage(): ReactNode {
     const nav = useNavigate();
-    const user = useAppSelector((state: RootState) => state.login.user)!;
+    const dbUser = useAppSelector((state: RootState) => state.login.user)!;
     const dispatch = useAppDispatch();
 
-    const [newUsername, setUsername] = useState(user.username);
-    const [newEmail, setEmail] = useState(user.email);
+    let newUsername = dbUser.username;
+    let newEmail = dbUser.email;
 
     return (
-        <div id="settings">
-            <form>
-                <div>
-                    Username: 
+        <div>
+            <form onSubmit={(_) => false}>
+                <InputField 
+                    label="username" prompt="New Username:" covered={false}
+                    inputEvent={(ev) => { newUsername = ev.currentTarget.value; }}
+                />
 
-                    <label htmlFor="username" />
-                    <input type="text" name="username" value={newUsername} onInput={(ev) => setUsername(ev.currentTarget.value)} />
-                </div>
-
-                <div>
-                    Email: 
-
-                    <label htmlFor="email" />
-                    <input type="text" name="email" value={newEmail} onInput={(ev) => setEmail(ev.currentTarget.value)} />
-                </div>
-
-                <div>
-                    <label htmlFor="update" />
-                    <input type="button" name="update" value="Update Info"
-                        onClick={(_) => _attemptUpdate(user, newUsername, newEmail, dispatch, nav)}
-                    />
-                </div>
+                <InputField
+                    label="email" prompt="New Email:" covered={false}
+                    inputEvent={(ev) => { newEmail = ev.currentTarget.value; }}
+                />
             </form>
 
-            <div>
-                <label htmlFor="delete" />
-                <button name="delete" onClick={(_) => _attemptDelete(user.id, dispatch, nav)}>Delete Account</button>
-            </div>
+            <span>
+                <button className="btn btn-info"
+                    onClick={(_) => _attemptUpdate(dbUser, newUsername, newEmail, dispatch, nav)}
+                >
+                    Update
+                </button>
+
+                <button className="btn btn-danger"
+                    onClick={(_) => _attemptDelete(dbUser.id, dispatch, nav)}
+                >
+                    Delete Account
+                </button>
+            </span>
         </div>
     )
 }

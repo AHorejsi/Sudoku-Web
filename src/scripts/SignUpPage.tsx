@@ -52,7 +52,7 @@ export default function SignUpPage(): ReactNode {
 
     return (
         <div id="signup">
-            <form>
+            <form onSubmit={(_) => false}>
                 <p className={signup.color}>{signup.text}</p>
 
                 <InputField

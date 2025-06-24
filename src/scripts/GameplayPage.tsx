@@ -27,9 +27,9 @@ export default function GameplayPage(): ReactNode {
     const nav = useNavigate();
 
     const puzzleId = useAppSelector((state: RootState) => state.reloaded.puzzleId);
-    const user = useAppSelector((state: RootState) => state.login.user)!;
+    const dbUser = useAppSelector((state: RootState) => state.login.user)!;
 
-    const sudoku = _findSudoku(user.puzzles, puzzleId);
+    const sudoku = _findSudoku(dbUser.puzzles, puzzleId);
     let info: GenerateInfo | undefined;
 
     if (sudoku) {
@@ -41,7 +41,7 @@ export default function GameplayPage(): ReactNode {
     return (
         <div className="container">
             <div id="title-card">
-                <h1>Hello, { user.username }!</h1>
+                <h1>Hello, { dbUser.username }!</h1>
 
                 <button onClick={(_) => nav(Endpoints.LOADER)}>Load</button>
                 <button onClick={(_) => nav(Endpoints.SETTINGS)}>User Settings</button>

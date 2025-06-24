@@ -7,7 +7,7 @@ import { useAppDispatch } from "./Hooks";
 import { AppDispatch } from "./Store";
 import { deletePuzzle } from "./Fetch";
 import { load } from "./LoadState";
-import { update } from "./UserState";
+import { puzzle } from "./UserState";
 
 interface BoardLoaderProps {
     puzzleId: number;
@@ -24,7 +24,7 @@ function _reloadSudoku(props: BoardLoaderProps, nav: NavigateFunction, dispatch:
 function _deleteSudoku(props: BoardLoaderProps, dispatch: AppDispatch) {
     deletePuzzle(props.puzzleId).then((info) => {
         if (info.type.endsWith("Success")) {
-            dispatch(update({ operation: "DELETE_ITEM", puzzleId: props.puzzleId }));
+            dispatch(puzzle({ operation: "DELETE_ITEM", puzzleId: props.puzzleId }));
         }
         else {
             throw new Error("Failed to delete");

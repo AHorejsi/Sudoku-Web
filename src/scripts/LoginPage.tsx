@@ -38,9 +38,7 @@ function _attemptUserLogin(
 ) {
     setLogin({ borders: "login-not-attempted", text: "Authenticating...", color: "login-text" });
 
-    const loginResult = login(usernameOrEmail, password);
-
-    loginResult.then((info: LoginInfo) => {
+    login(usernameOrEmail, password).then((info: LoginInfo) => {
         _checkLogin(info, setLogin, nav, dispatch);
     }).catch((error: Error) => {
         throw error;
@@ -58,7 +56,7 @@ export default function LoginPage(): ReactNode {
 
     return (
         <div id="login">
-            <form>
+            <form onSubmit={(_) => false}>
                 <p className={login.color}>{login.text}</p>
 
                 <InputField

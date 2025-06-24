@@ -21,9 +21,9 @@ export const userSlice = createSlice({
     initialState: { user: null as User | null },
     reducers: {
         user: (state, actions) => {
-            state.user = actions.payload;
+            state.user = actions.payload as User | null;
         },
-        update: (state, actions) => {
+        puzzle: (state, actions) => {
             const payload = actions.payload;
             const puzzles = state.user!.puzzles;
 
@@ -47,7 +47,7 @@ export const userSlice = createSlice({
     }
 });
 
-export const { user, update } = userSlice.actions;
+export const { user, puzzle } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.login.user;
 

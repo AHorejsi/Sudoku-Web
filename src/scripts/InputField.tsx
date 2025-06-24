@@ -2,15 +2,17 @@ import "../styles/InputField.scss";
 import { FormEventHandler, ReactNode } from "react";
 
 interface InputFieldProps {
+    classes?: string;
+
     label: string;
 
     prompt: string;
 
-    classes?: string;
-
     covered: boolean;
 
-    inputEvent: FormEventHandler<HTMLInputElement>
+    value?: string;
+
+    inputEvent?: FormEventHandler<HTMLInputElement>
 }
 
 export default function InputField(props: InputFieldProps): ReactNode {

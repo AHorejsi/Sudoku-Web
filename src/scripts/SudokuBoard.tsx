@@ -7,7 +7,7 @@ import { User } from "./LoginInfo";
 import { load } from "./LoadState";
 import { useAppDispatch, useAppSelector } from "./Hooks";
 import { AppDispatch, RootState } from "./Store";
-import { update } from "./UserState";
+import { puzzle } from "./UserState";
 
 
 interface SudokuBoardProps {
@@ -75,7 +75,7 @@ function _savePuzzle(
             const newPuzzle = info.puzzle;
 
             dispatch(load(newPuzzle.id));
-            dispatch(update({ operation: "ADD_ITEM", newPuzzle }));
+            dispatch(puzzle({ operation: "ADD_ITEM", newPuzzle }));
 
             _saveCleanup(button, info.type);
         }).catch((error) => {
@@ -86,9 +86,9 @@ function _savePuzzle(
         updatePuzzle(puzzleId, json).then((info) => {
             const saved = user.puzzles;
 
-            for (const puzzle of saved) {
-                if (puzzle.id === puzzleId) {
-                    dispatch(update({ operation: "UPDATE_ITEM", json, puzzleId }));
+            for (const sudoku of saved) {
+                if (sudoku.id === puzzleId) {
+                    dispatch(puzzle({ operation: "UPDATE_ITEM", json, puzzleId }));
 
                     break;
                 }
