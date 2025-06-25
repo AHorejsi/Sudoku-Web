@@ -1,26 +1,29 @@
-#login {
+@mixin login-padding {
+    padding-left: 0.75em;
+}
+
+.centered {
     width: 50%;
-    margin: auto;
+    margin: 0 auto;
 }
 
 #login-title {
     text-align: left;
+    padding-bottom: 0.25em;
 }
 
 #login-box {
     min-width: 15em;
-    max-width: 30em;
+    max-width: 25em;
     border-style: solid;
     border-radius: 5px;
     border-width: 1px;
     border-color: black;
-    margin-top: 2em;
-    margin-bottom: 2em;
     padding-bottom: 1em;
 }
 
 #login-button {
-    padding-left: 0.75em;
+    @include login-padding;
 }
 
 .login-not-attempted {
@@ -32,9 +35,13 @@
 }
 
 .login-text {
+    @include login-padding;
+
     color: black;
 }
 
 .failed-login-text {
+    @include login-padding;
+
     color: red;
 }

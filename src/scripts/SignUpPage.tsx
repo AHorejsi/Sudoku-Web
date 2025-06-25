@@ -16,7 +16,7 @@ interface _SignupState {
 
 function _checkSignup(info: SignupInfo, setSignup: Dispatch<SetStateAction<_SignupState>>, nav: NavigateFunction) {
     if (!info.type.endsWith("Success")) {
-        setSignup({ borders: "failed-signup" , text: "Username/Email or Password not valid", color: "failed-signup-text" });
+        setSignup({ borders: "failed-sign-up" , text: "Username/Email or Password not valid", color: "failed-signup-text" });
     }
     else {    
         nav(Endpoints.LOGIN);
@@ -30,11 +30,9 @@ function _attemptSignup(
     setSignup: Dispatch<SetStateAction<_SignupState>>,
     nav: NavigateFunction
 ) {
-    setSignup({ borders: "signup-not-attempted", text: "Registering...", color: "signup-text" });
+    setSignup({ borders: "sign-up-not-attempted", text: "Registering...", color: "signup-text" });
 
-    const signupResult = signup(username, email, password);
-
-    signupResult.then((info: SignupInfo) => {
+    signup(username, email, password).then((info: SignupInfo) => {
         _checkSignup(info, setSignup, nav);
     }).catch((error: Error) => {
         throw error;
@@ -46,40 +44,45 @@ export default function SignUpPage(): ReactNode {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const [signup, setSignup] = useState<_SignupState>({ borders: "signup-not-attempted", text: "", color: "" });
+    const [signup, setSignup] = useState<_SignupState>({ borders: "sign-up-not-attempted", text: "", color: "" });
 
     const nav = useNavigate();
 
     return (
-        <div id="signup">
-            <form onSubmit={(_) => false}>
-                <p className={signup.color}>{signup.text}</p>
+        <div id="sign-up" className="centered">
+            <h1 id="sign-up-title" className="centered">Sign Up</h1>
 
-                <InputField
-                    label="username" prompt="Username:" classes={signup.borders} covered={false}
-                    inputEvent={(ev) => setUsername(ev.currentTarget.value)}
-                />
+            <div id="sign-up-box" className="centered">
+                <form onSubmit={(_) => false}>
+                    <p className={signup.color}>{signup.text}</p>
 
-                <InputField
-                    label="email" prompt="Email:" classes={signup.borders} covered={false}
-                    inputEvent={(ev) => setEmail(ev.currentTarget.value)}
-                />
-
-                <InputField
-                    label="password" prompt="Password:" classes={signup.borders} covered={true}
-                    inputEvent={(ev) => setPassword(ev.currentTarget.value)}
-                />
-
-                <div>
-                    <label htmlFor="signup" />
-                    <input
-                        type="button"
-                        name="signup"
-                        value="Sign Up"
-                        onClick={(_) => _attemptSignup(username, email, password, setSignup, nav)}
+                    <InputField
+                        label="username" prompt="Username:" classes={signup.borders} covered={false}
+                        inputEvent={(ev) => setUsername(ev.currentTarget.value)}
                     />
-                </div>
-            </form>
+
+                    <InputField
+                        label="email" prompt="Email:" classes={signup.borders} covered={false}
+                        inputEvent={(ev) => setEmail(ev.currentTarget.value)}
+                    />
+
+                    <InputField
+                        label="password" prompt="Password:" classes={signup.borders} covered={true}
+                        inputEvent={(ev) => setPassword(ev.currentTarget.value)}
+                    />
+
+                    <div id="sign-up-button">
+                        <label htmlFor="signup" />
+                        <input
+                            className="btn btn-primary"
+                            type="button"
+                            name="signup"
+                            value="Sign Up"
+                            onClick={(_) => _attemptSignup(username, email, password, setSignup, nav)}
+                        />
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }

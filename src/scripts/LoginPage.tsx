@@ -15,13 +15,15 @@ interface _LoginAttemptState {
     text: string;
 
     color: string;
+
+    padding: string;
 }
 
 function _checkLogin(info: LoginInfo, setLogin: Dispatch<SetStateAction<_LoginAttemptState>>, nav: NavigateFunction, dispatch: AppDispatch) {
     const dbUser = info.user;
 
     if (!dbUser) {
-        setLogin({ borders: "failed-login" , text: "Username or Password not authenticated", color: "failed-login-text" });
+        setLogin({ borders: "failed-login" , text: "Username or Password not authenticated", color: "failed-login-text", padding: "0em" });
     }
     else {    
         dispatch(user(dbUser));
@@ -36,7 +38,7 @@ function _attemptUserLogin(
     nav: NavigateFunction,
     dispatch: AppDispatch
 ) {
-    setLogin({ borders: "login-not-attempted", text: "Authenticating...", color: "login-text" });
+    setLogin({ borders: "login-not-attempted", text: "Authenticating...", color: "login-text", padding: "0em" });
 
     login(usernameOrEmail, password).then((info: LoginInfo) => {
         _checkLogin(info, setLogin, nav, dispatch);
@@ -49,19 +51,19 @@ export default function LoginPage(): ReactNode {
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const [login, setLogin] = useState<_LoginAttemptState>({ borders: "login-not-attempted", text: "", color: "" });
+    const [login, setLogin] = useState<_LoginAttemptState>({ borders: "login-not-attempted", text: "", color: "", padding: "1.5em" });
     
     const nav = useNavigate();
     const dispatch = useAppDispatch();
 
     return (
-        <div id="login">
-            <h1 id="login-title">Login</h1>
+        <div className="centered">
+            <h1 id="login-title" className="centered">Login</h1>
 
-            <div id="login-box">
+            <div id="login-box" className="centered">
+                <p className={login.color} style={{ paddingTop: login.padding }}>{login.text}</p>
+
                 <form onSubmit={(_) => false}>
-                    <p className={login.color}>{login.text}</p>
-
                     <InputField
                         label="usernameOrEmail" prompt="Username/Email:" classes={login.borders} covered={false}
                         inputEvent={(ev) => setUsernameOrEmail(ev.currentTarget.value)}

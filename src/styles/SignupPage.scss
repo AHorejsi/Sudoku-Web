@@ -1,27 +1,48 @@
-#signup {
+@mixin sign-up-padding {
+    padding-left: 0.5em;
+}
+
+.centered {
+    width: 50%;
+    margin: 0 auto;
+}
+
+#sign-up-title {
+    text-align: left;
+    padding-bottom: 0.25em;
+}
+
+#sign-up-box {
+    min-width: 15em;
+    max-width: 25em;
     display: flex;
     justify-content: center;
     border-style: solid;
+    border-radius: 5px;
     border-width: 1px;
     border-color: black;
-    margin-top: 2em;
-    margin-bottom: 2em;
-    margin-left: 30em;
-    margin-right: 30em;
 }
 
-.signup-not-attempted {
+#sign-up-button {
+    @include sign-up-padding;
+}
+
+.sign-up-not-attempted {
     border-color: gray;
 }
 
-.failed-signup {
+.failed-sign-up {
     border-color: red;
 }
 
 .signup-text {
+    @include sign-up-padding;
+
     color: black;
 }
 
-.failed-signup-text {
+.failed-sign-up-text {
+    @include sign-up-padding;
+
     color: red;
 }
