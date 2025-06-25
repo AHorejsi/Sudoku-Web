@@ -12,7 +12,7 @@ interface SelectionCardProps {
     creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>
 }
 
-function _generateButton(
+function _generate(
     dimension: string,
     difficulty: string,
     games: string[],
@@ -68,8 +68,8 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
                     <p className="game-selection-title">Generate</p>
 
                     <label htmlFor="generate" />
-                    <input type="button" name="generate" value="Generate"
-                        onClick={(_) => _generateButton(dimension, difficulty, games, props.creator, dispatch)}
+                    <input className="btn btn-success" type="button" name="generate" value="Generate"
+                        onClick={(_) => _generate(dimension, difficulty, games, props.creator, dispatch)}
                     />
                 </div>
             </form>
