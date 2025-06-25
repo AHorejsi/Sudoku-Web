@@ -14,16 +14,22 @@ function _ensureOkResponse(response: Response) {
     }
 }
 
+function _headers(xReqId: string): HeadersInit {
+    return {
+        "X-Request-ID": xReqId,
+        "Accept": "application/json; charset=UTF-8",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Connection": "keep-alive"
+    };
+}
+
 async function retrieveBoard(dimension: string, difficulty: string, games: string[]): Promise<GenerateInfo> {
+    const headers = _headers(XRequestIds.GENERATE);
+
     const response = await fetch(URLs.GENERATE, {
-        headers: {
-            "X-Request-ID": XRequestIds.GENERATE,
-            "Accept": "application/json; charset=UTF-8",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Connection": "keep-alive"
-        },
+        headers: _headers(XRequestIds.GENERATE),
         method: "POST",
         body: JSON.stringify({ dimension, difficulty, games }),
         credentials: "include"
@@ -38,14 +44,7 @@ async function retrieveBoard(dimension: string, difficulty: string, games: strin
 
 async function signup(username: string, email: string, password: string): Promise<SignupInfo> {
     const response = await fetch(URLs.CREATE_USER, {
-        headers: {
-            "X-Request-ID": XRequestIds.CREATE_USER,
-            "Accept": "application/json; charset=UTF-8",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Connection": "keep-alive"
-        },
+        headers: _headers(XRequestIds.CREATE_USER),
         method: "PUT",
         body: JSON.stringify({ username, email, password }),
         credentials: "include"
@@ -60,14 +59,7 @@ async function signup(username: string, email: string, password: string): Promis
 
 async function login(usernameOrEmail: string, password: string): Promise<LoginInfo> {
     const response = await fetch(URLs.READ_USER, {
-        headers: {
-            "X-Request-ID": XRequestIds.READ_USER,
-            "Accept": "application/json; charset=UTF-8",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Connection": "keep-alive"
-        },
+        headers: _headers(XRequestIds.READ_USER),
         method: "POST",
         body: JSON.stringify({ usernameOrEmail, password }),
         credentials: "include"
@@ -86,14 +78,7 @@ async function updateUser(
     newEmail: string
 ): Promise<UpdateUserInfo> {
     const response = await fetch(URLs.UPDATE_USER, {
-        headers: {
-            "X-Request-ID": XRequestIds.UPDATE_USER,
-            "Accept": "application/json; charset=UTF-8",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Connection": "keep-alive"
-        },
+        headers: _headers(XRequestIds.UPDATE_USER),
         method: "PUT",
         body: JSON.stringify({ userId, newUsername, newEmail }),
         credentials: "include"
@@ -108,14 +93,7 @@ async function updateUser(
 
 async function deleteUser(userId: number): Promise<DeleteUserInfo> {
     const response = await fetch(URLs.DELETE_USER, {
-        headers: {
-            "X-Request-ID": XRequestIds.DELETE_USER,
-            "Accept": "application/json; charset=UTF-8",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Connection": "keep-alive"
-        },
+        headers: _headers(XRequestIds.DELETE_USER),
         method: "DELETE",
         body: JSON.stringify({ userId }),
         credentials: "include"
@@ -130,14 +108,7 @@ async function deleteUser(userId: number): Promise<DeleteUserInfo> {
 
 async function createPuzzle(json: string, userId: number): Promise<CreatePuzzleInfo> {
     const response = await fetch(URLs.CREATE_PUZZLE, {
-        headers: {
-            "X-Request-ID": XRequestIds.CREATE_PUZZLE,
-            "Accept": "application/json; charset=UTF-8",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Connection": "keep-alive"
-        },
+        headers: _headers(XRequestIds.CREATE_PUZZLE),
         method: "PUT",
         body: JSON.stringify({ json, userId }),
         credentials: "include"
@@ -152,14 +123,7 @@ async function createPuzzle(json: string, userId: number): Promise<CreatePuzzleI
 
 async function updatePuzzle(puzzleId: number, json: string): Promise<UpdatePuzzleInfo> {
     const response = await fetch(URLs.UPDATE_PUZZLE, {
-        headers: {
-            "X-Request-ID": XRequestIds.UPDATE_PUZZLE,
-            "Accept": "application/json; charset=UTF-8",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Connection": "keep-alive"
-        },
+        headers: _headers(XRequestIds.UPDATE_PUZZLE),
         method: "PUT",
         body: JSON.stringify({ puzzleId, json }),
         credentials: "include"
@@ -174,14 +138,7 @@ async function updatePuzzle(puzzleId: number, json: string): Promise<UpdatePuzzl
 
 async function deletePuzzle(puzzleId: number): Promise<DeletePuzzleInfo> {
     const response = await fetch(URLs.DELETE_PUZZLE, {
-        headers: {
-            "X-Request-ID": XRequestIds.DELETE_PUZZLE,
-            "Accept": "application/json; charset=UTF-8",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Connection": "keep-alive"
-        },
+        headers: _headers(XRequestIds.DELETE_PUZZLE),
         method: "DELETE",
         body: JSON.stringify({ puzzleId }),
         credentials: "include"
