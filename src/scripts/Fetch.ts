@@ -37,7 +37,7 @@ async function retrieveBoard(dimension: string, difficulty: string, games: strin
 
     _ensureOkResponse(response);
 
-    const json: GenerateInfo = await response.json();
+    const json = await response.json() as GenerateInfo;
     
     return json;
 }
@@ -52,7 +52,7 @@ async function signup(username: string, email: string, password: string): Promis
 
     _ensureOkResponse(response);
 
-    const signup: SignupInfo = await response.json();
+    const signup = await response.json() as SignupInfo;
 
     return signup;
 }
@@ -67,7 +67,7 @@ async function login(usernameOrEmail: string, password: string): Promise<LoginIn
 
     _ensureOkResponse(response);
 
-    const login: LoginInfo = await response.json();
+    const login = await response.json() as LoginInfo;
 
     return login;
 }
@@ -86,7 +86,7 @@ async function updateUser(
 
     _ensureOkResponse(response);
 
-    const update: UpdateUserInfo = await response.json();
+    const update = await response.json() as UpdateUserInfo;
 
     return update;
 }
@@ -101,7 +101,7 @@ async function deleteUser(userId: number): Promise<DeleteUserInfo> {
 
     _ensureOkResponse(response);
 
-    const info: DeleteUserInfo = await response.json();
+    const info = await response.json() as DeleteUserInfo;
 
     return info;
 }
@@ -116,7 +116,7 @@ async function createPuzzle(json: string, userId: number): Promise<CreatePuzzleI
 
     _ensureOkResponse(response)
 
-    const info: CreatePuzzleInfo = await response.json();
+    const info = await response.json() as CreatePuzzleInfo;
 
     return info;
 }
@@ -131,7 +131,7 @@ async function updatePuzzle(puzzleId: number, json: string): Promise<UpdatePuzzl
 
     _ensureOkResponse(response);
 
-    const info: UpdatePuzzleInfo = await response.json();
+    const info = await response.json() as UpdatePuzzleInfo;
 
     return info;
 }
@@ -146,7 +146,7 @@ async function deletePuzzle(puzzleId: number): Promise<DeletePuzzleInfo> {
 
     _ensureOkResponse(response);
 
-    const info: DeletePuzzleInfo = await response.json();
+    const info = await response.json() as DeletePuzzleInfo;
 
     return info;
 }

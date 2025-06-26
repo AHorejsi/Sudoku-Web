@@ -5,8 +5,8 @@ export const loadSlice = createSlice({
     name: "load",
     initialState: { puzzleId: null as number | null },
     reducers: {
-        load: (state, id) => {
-            state.puzzleId = id.payload as number | null;
+        load: (state, actions) => {
+            state.puzzleId = actions.payload as number | null;
         }
     }
 });

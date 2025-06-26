@@ -4,10 +4,10 @@ import { createPuzzle, updatePuzzle } from "./Fetch";
 import { GenerateInfo, Position, Sudoku } from "./GenerateInfo";
 import SudokuCell from "./SudokuCell";
 import { User } from "./LoginInfo";
-import { load } from "./LoadState";
+import { load, selectSave } from "./LoadState";
 import { useAppDispatch, useAppSelector } from "./Hooks";
 import { AppDispatch, RootState } from "./Store";
-import { puzzle } from "./UserState";
+import { puzzle, selectUser } from "./UserState";
 
 
 interface SudokuBoardProps {
@@ -34,7 +34,7 @@ function createTableOfCells(sudoku: Sudoku): ReactNode {
 
         for (let colIndex = 0; colIndex < sudoku.length; ++colIndex) {
             const isHyper = checkIfHyperCell(hyperPos, rowIndex, colIndex);
-            const cell = sudoku.board[rowIndex][colIndex];
+            const cell = sudoku.board[rowIndex]![colIndex]!;
 
             tableRow.push(
                 <SudokuCell
@@ -122,8 +122,8 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
         const sudoku = info.sudoku;
         const button = useRef<HTMLButtonElement>(null);
 
-        const puzzleId = useAppSelector((state: RootState) => state.reloaded.puzzleId);
-        const user = useAppSelector((state: RootState) => state.login.user)!;
+        const puzzleId = useAppSelector(selectSave);
+        const user = useAppSelector(selectUser)!;
         const dispatch = useAppDispatch();
         
         const table = createTableOfCells(sudoku);

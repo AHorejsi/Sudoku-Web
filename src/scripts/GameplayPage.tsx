@@ -6,8 +6,9 @@ import { GenerateInfo, Sudoku } from "./GenerateInfo";
 import { Puzzle } from "./LoginInfo";
 import SelectionCard from "./SelectionCard";
 import SudokuBoard from "./SudokuBoard";
-import { RootState } from "./Store";
 import { useAppSelector } from "./Hooks";
+import { selectSave } from "./LoadState";
+import { selectUser } from "./UserState";
 
 function _findSudoku(puzzleSet: Puzzle[], targetId: number | null): Sudoku | null {
     if (!targetId) {
@@ -26,8 +27,8 @@ function _findSudoku(puzzleSet: Puzzle[], targetId: number | null): Sudoku | nul
 export default function GameplayPage(): ReactNode {
     const nav = useNavigate();
 
-    const puzzleId = useAppSelector((state: RootState) => state.reloaded.puzzleId);
-    const dbUser = useAppSelector((state: RootState) => state.login.user)!;
+    const puzzleId = useAppSelector(selectSave);
+    const dbUser = useAppSelector(selectUser)!;
 
     const sudoku = _findSudoku(dbUser.puzzles, puzzleId);
     let info: GenerateInfo | undefined;

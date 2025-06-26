@@ -4,18 +4,18 @@ import { useNavigate } from "react-router";
 import { Sudoku } from "./GenerateInfo";
 import BoardLoader from "./BoardLoader";
 import { useAppSelector } from "./Hooks";
-import { RootState } from "./Store";
 import { Endpoints } from "./StringConstants";
+import { selectUser } from "./UserState";
 
 export default function LoaderPage(): ReactNode {
-    const user = useAppSelector((state: RootState) => state.login.user);
+    const user = useAppSelector(selectUser);
     const nav = useNavigate();
 
     const puzzleSet = user!.puzzles;
     const selection = Array<ReactNode>();
 
     for (const puzzle of puzzleSet) {
-        const sudoku: Sudoku = JSON.parse(puzzle.json);
+        const sudoku = JSON.parse(puzzle.json) as Sudoku;
 
         selection.push(<BoardLoader puzzleId={puzzle.id} sudoku={sudoku} />);
     }    

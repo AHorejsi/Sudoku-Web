@@ -67,9 +67,7 @@ function _determineBorders(props: SudokuCellProps): string {
 
     let css = "";
 
-    for (const side in borders) {
-        const value: string = borders[side];
-
+    for (const [side, value] of Object.entries(borders)) {
         css += `${value}-${side}-bordered `;
     }
 
@@ -94,7 +92,7 @@ function _validChar(key: string | undefined): boolean {
 
 function _checkInput(div: HTMLDivElement, props: SudokuCellProps) {
     const text = div.textContent!;
-    const last: string | undefined = text[text.length - 1]; // undefined means that the text is empty
+    const last = text[text.length - 1]; // undefined means that the text is empty
 
     if (text.length > props.maxCharLength || !_validChar(last)) {
         _deleteLastChars(div, text);
@@ -103,10 +101,10 @@ function _checkInput(div: HTMLDivElement, props: SudokuCellProps) {
     }
 
     if (0 === text.length) {
-        props.whole[props.row][props.column].value = null;
+        props.whole[props.row]![props.column]!.value = null;
     }
     else if ("1" <= text && text <= "9") {
-        props.whole[props.row][props.column].value = Number(text);
+        props.whole[props.row]![props.column]!.value = Number(text);
     }
 }
 
