@@ -9,7 +9,6 @@
   "keywords": [],
   "author": "alexh",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
     "@parcel/transformer-sass": "^2.13.3",
     "@types/node": "^22.13.5",
