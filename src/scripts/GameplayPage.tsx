@@ -28,6 +28,8 @@ function _getInfo(puzzleSet: Puzzle[], targetId: number | null): GenerateInfo | 
 }
 
 export default function GameplayPage(): ReactNode {
+    document.title = "Sudoku - Gameplay";
+
     const nav = useNavigate();
     const puzzleId = useAppSelector(selectSave);
     const dbUser = useAppSelector(selectUser)!;

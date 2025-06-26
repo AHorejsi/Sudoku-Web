@@ -48,6 +48,8 @@ function _attemptUserLogin(
 }
 
 export default function LoginPage(): ReactNode {
+    document.title = "Sudoku - Login";
+
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
     const [password, setPassword] = useState("");
 

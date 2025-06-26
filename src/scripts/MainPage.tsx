@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 import { Endpoints } from "./StringConstants";
 
 export default function MainPage(): ReactNode {
+    document.title = "Sudoku - Main";
+
     const nav = useNavigate();
 
     return (

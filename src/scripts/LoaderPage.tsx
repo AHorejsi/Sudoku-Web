@@ -8,6 +8,8 @@ import { Endpoints } from "./StringConstants";
 import { selectUser } from "./UserState";
 
 export default function LoaderPage(): ReactNode {
+    document.title = "Sudoku - Loader";
+
     const user = useAppSelector(selectUser);
     const nav = useNavigate();
 

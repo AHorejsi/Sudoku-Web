@@ -58,6 +58,8 @@ function _attemptDelete(userId: number, dispatch: AppDispatch, nav: NavigateFunc
 }
 
 export default function UserSettingsPage(): ReactNode {
+    document.title = "Sudoku - Settings";
+
     const nav = useNavigate();
     const dbUser = useAppSelector((state: RootState) => state.login.user)!;
     const dispatch = useAppDispatch();

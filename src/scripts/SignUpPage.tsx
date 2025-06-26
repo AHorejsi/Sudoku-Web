@@ -40,6 +40,8 @@ function _attemptSignup(
 }
 
 export default function SignUpPage(): ReactNode {
+    document.title = "Sudoku - Sign Up";
+
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
