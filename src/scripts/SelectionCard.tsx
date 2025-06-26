@@ -1,5 +1,5 @@
 import "../styles/SelectionCard.css";
-import { ReactNode, useState, Dispatch, SetStateAction } from "react";
+import { ReactNode, useState, Dispatch, SetStateAction, useRef } from "react";
 import { retrieveBoard } from "./Fetch";
 import { GenerateInfo } from "./GenerateInfo";
 import SelectionRadioButton from "./SelectionRadioButton";
@@ -17,9 +17,11 @@ function _generate(
     difficulty: string,
     games: string[],
     creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>,
-    dispatch: AppDispatch
+    dispatch: AppDispatch,
+    button: HTMLInputElement
 ) {
     creator("Retrieving...");
+    button.disabled = true;
 
     retrieveBoard(dimension, difficulty, games).then((info: GenerateInfo) => {
         if (info.type.endsWith("Success")) {
@@ -32,6 +34,7 @@ function _generate(
         creator(error);
     }).finally(() => {
         dispatch(load(null));
+        button.disabled = false;
     });
 }
 
@@ -41,6 +44,7 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
     const [games, setGames] = useState(Array<string>());
 
     const dispatch = useAppDispatch();
+    const button = useRef<HTMLInputElement>(null);
 
     return (
         <div id="selection-card">
@@ -62,8 +66,8 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
                     <p className="game-selection-title">Generate</p>
 
                     <label htmlFor="generate" />
-                    <input className="btn btn-success" type="button" name="generate" value="Generate"
-                        onClick={(_) => _generate(dimension, difficulty, games, props.creator, dispatch)}
+                    <input className="btn btn-success" ref={button} type="button" name="generate" value="Generate"
+                        onClick={(_) => _generate(dimension, difficulty, games, props.creator, dispatch, button.current!)}
                     />
                 </div>
             </form>
