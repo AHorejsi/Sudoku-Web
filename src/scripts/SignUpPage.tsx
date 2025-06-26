@@ -1,4 +1,4 @@
-import "../styles/SignupPage.scss";
+import "../styles/SignupPage.css";
 import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { Endpoints } from "./StringConstants";
 import { signup } from "./Fetch";
@@ -11,12 +11,12 @@ interface _SignupState {
 
     text: string;
 
-    color: string;
+    style: string;
 }
 
 function _checkSignup(info: SignupInfo, setSignup: Dispatch<SetStateAction<_SignupState>>, nav: NavigateFunction) {
     if (!info.type.endsWith("Success")) {
-        setSignup({ borders: "failed-sign-up" , text: "Username/Email or Password not valid", color: "failed-signup-text" });
+        setSignup({ borders: "failed-sign-up" , text: "Username/Email or Password not valid", style: "failed-signup-text" });
     }
     else {    
         nav(Endpoints.LOGIN);
@@ -30,7 +30,7 @@ function _attemptSignup(
     setSignup: Dispatch<SetStateAction<_SignupState>>,
     nav: NavigateFunction
 ) {
-    setSignup({ borders: "sign-up-not-attempted", text: "Registering...", color: "signup-text" });
+    setSignup({ borders: "sign-up-not-attempted", text: "Registering...", style: "signup-text" });
 
     signup(username, email, password).then((info: SignupInfo) => {
         _checkSignup(info, setSignup, nav);
@@ -44,7 +44,7 @@ export default function SignUpPage(): ReactNode {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const [signup, setSignup] = useState<_SignupState>({ borders: "sign-up-not-attempted", text: "", color: "" });
+    const [signup, setSignup] = useState<_SignupState>({ borders: "sign-up-not-attempted", text: "", style: "" });
 
     const nav = useNavigate();
 
@@ -54,7 +54,7 @@ export default function SignUpPage(): ReactNode {
 
             <div id="sign-up-box" className="centered">
                 <form onSubmit={(_) => false}>
-                    <p className={signup.color}>{signup.text}</p>
+                    <p className={`${signup.style} sign-up-padding`}>{signup.text}</p>
 
                     <InputField
                         label="username" prompt="Username:" classes={signup.borders} covered={false}
@@ -71,7 +71,7 @@ export default function SignUpPage(): ReactNode {
                         inputEvent={(ev) => setPassword(ev.currentTarget.value)}
                     />
 
-                    <div id="sign-up-button">
+                    <div className="sign-up-padding">
                         <label htmlFor="signup" />
                         <input
                             className="btn btn-primary"

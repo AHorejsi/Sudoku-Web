@@ -10,13 +10,11 @@
   "author": "alexh",
   "license": "ISC",
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.13.3",
     "@types/node": "^22.13.5",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "parcel": "^2.13.3",
     "process": "^0.11.10",
-    "sass": "^1.85.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {

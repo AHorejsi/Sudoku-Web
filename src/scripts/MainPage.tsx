@@ -1,4 +1,4 @@
-import "../styles/MainPage.scss";
+import "../styles/MainPage.css";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router";
 import { Endpoints } from "./StringConstants";

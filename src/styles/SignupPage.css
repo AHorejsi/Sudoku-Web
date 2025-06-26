@@ -1,4 +1,4 @@
-@mixin sign-up-padding {
+.sign-up-padding {
     padding-left: 0.5em;
 }
 
@@ -23,10 +23,6 @@
     border-color: black;
 }
 
-#sign-up-button {
-    @include sign-up-padding;
-}
-
 .sign-up-not-attempted {
     border-color: gray;
 }
@@ -36,13 +32,9 @@
 }
 
 .signup-text {
-    @include sign-up-padding;
-
     color: black;
 }
 
 .failed-sign-up-text {
-    @include sign-up-padding;
-
     color: red;
 }

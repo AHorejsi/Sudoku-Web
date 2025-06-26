@@ -1,4 +1,4 @@
-import "../styles/LoaderPage.scss";
+import "../styles/LoaderPage.css";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router";
 import { Sudoku } from "./GenerateInfo";

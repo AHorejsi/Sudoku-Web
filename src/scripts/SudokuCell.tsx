@@ -1,4 +1,4 @@
-import "../styles/SudokuCell.scss";
+import "../styles/SudokuCell.css";
 import { ReactNode, useRef } from "react";
 import { Cell } from "./GenerateInfo";
 
@@ -19,13 +19,13 @@ interface SudokuCellProps {
 }
 
 interface _CellBorderThickness {
-    top: string;
+    top: "thin" | "thick";
 
-    bottom: string;
+    bottom: "thin" | "thick";
 
-    left: string;
+    left: "thin" | "thick";
 
-    right: string;
+    right: "thin" | "thick";
 }
 
 function _decideThickness(props: SudokuCellProps): _CellBorderThickness {
@@ -54,7 +54,7 @@ function _decideThickness(props: SudokuCellProps): _CellBorderThickness {
 
         break;
     case boxLength - 1:
-        borderThickness.right = " thick";
+        borderThickness.right = "thick";
 
         break;
     }
@@ -111,20 +111,19 @@ function _checkInput(div: HTMLDivElement, props: SudokuCellProps) {
 export default function SudokuCell(props: SudokuCellProps): ReactNode {
     const cell = props.cell;
     const cellType = cell.editable ? null : "immutable-cell";
-    const hyper = props.isHyper ? "hyper-cell" : "";
+    const hyper = props.isHyper ? "hyper-cell" : null;
     const cellBorders = _determineBorders(props);
 
     const div = useRef<HTMLDivElement>(null);
 
     return (
         <td className={`${hyper} ${cellBorders}`}>
-            <div
-                className={`${cellType} all-cell`}
-                ref={div}
-                contentEditable={cell.editable}
-                onInput={(_) => _checkInput(div.current!, props)}
-            >
-                {cell.value ?? ""}
+            <div>
+                <div className={`${cellType} all-cell`} ref={div} contentEditable={cell.editable}
+                    onInput={(_) => _checkInput(div.current!, props)}
+                >
+                    {cell.value ?? ""}
+                </div>
             </div>
         </td>
     );

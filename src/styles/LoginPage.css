@@ -1,4 +1,4 @@
-@mixin login-padding {
+.login-padding {
     padding-left: 0.75em;
 }
 
@@ -22,10 +22,6 @@
     padding-bottom: 1em;
 }
 
-#login-button {
-    @include login-padding;
-}
-
 .login-not-attempted {
     border-color: gray;
 }
@@ -35,13 +31,9 @@
 }
 
 .login-text {
-    @include login-padding;
-
     color: black;
 }
 
 .failed-login-text {
-    @include login-padding;
-
     color: red;
 }

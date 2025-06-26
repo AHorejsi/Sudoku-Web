@@ -1,4 +1,4 @@
-import "../styles/GameplayPage.scss";
+import "../styles/GameplayPage.css";
 import { ReactNode, useState } from "react";
 import { useNavigate } from "react-router";
 import { Endpoints } from "./StringConstants";

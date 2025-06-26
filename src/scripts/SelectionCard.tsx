@@ -1,4 +1,4 @@
-import "../styles/SelectionCard.scss";
+import "../styles/SelectionCard.css";
 import { ReactNode, useState, Dispatch, SetStateAction } from "react";
 import { retrieveBoard } from "./Fetch";
 import { GenerateInfo } from "./GenerateInfo";

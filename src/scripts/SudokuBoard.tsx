@@ -1,4 +1,4 @@
-import "../styles/SudokuBoard.scss";
+import "../styles/SudokuBoard.css";
 import { ReactNode, useRef } from "react";
 import { createPuzzle, updatePuzzle } from "./Fetch";
 import { GenerateInfo, Position, Sudoku } from "./GenerateInfo";

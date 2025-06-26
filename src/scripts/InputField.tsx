@@ -1,4 +1,4 @@
-import "../styles/InputField.scss";
+import "../styles/InputField.css";
 import { FormEventHandler, ReactNode } from "react";
 
 interface InputFieldProps {

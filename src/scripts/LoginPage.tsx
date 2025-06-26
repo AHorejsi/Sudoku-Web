@@ -1,4 +1,4 @@
-import "../styles/LoginPage.scss";
+import "../styles/LoginPage.css";
 import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
 import { Endpoints } from "./StringConstants";
@@ -14,7 +14,7 @@ interface _LoginAttemptState {
 
     text: string;
 
-    color: string;
+    style: string;
 
     padding: string;
 }
@@ -23,7 +23,7 @@ function _checkLogin(info: LoginInfo, setLogin: Dispatch<SetStateAction<_LoginAt
     const dbUser = info.user;
 
     if (!dbUser) {
-        setLogin({ borders: "failed-login" , text: "Username or Password not authenticated", color: "failed-login-text", padding: "0em" });
+        setLogin({ borders: "failed-login" , text: "Username or Password not authenticated", style: "failed-login-text", padding: "0em" });
     }
     else {    
         dispatch(user(dbUser));
@@ -38,7 +38,7 @@ function _attemptUserLogin(
     nav: NavigateFunction,
     dispatch: AppDispatch
 ) {
-    setLogin({ borders: "login-not-attempted", text: "Authenticating...", color: "login-text", padding: "0em" });
+    setLogin({ borders: "login-not-attempted", text: "Authenticating...", style: "login-text", padding: "0em" });
 
     login(usernameOrEmail, password).then((info: LoginInfo) => {
         _checkLogin(info, setLogin, nav, dispatch);
@@ -51,7 +51,7 @@ export default function LoginPage(): ReactNode {
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const [login, setLogin] = useState<_LoginAttemptState>({ borders: "login-not-attempted", text: "", color: "", padding: "1.5em" });
+    const [login, setLogin] = useState<_LoginAttemptState>({ borders: "login-not-attempted", text: "", style: "", padding: "1.5em" });
     
     const nav = useNavigate();
     const dispatch = useAppDispatch();
@@ -61,7 +61,7 @@ export default function LoginPage(): ReactNode {
             <h1 id="login-title" className="centered">Login</h1>
 
             <div id="login-box" className="centered">
-                <p className={login.color} style={{ paddingTop: login.padding }}>{login.text}</p>
+                <p className={`${login.style} login-padding`} style={{ paddingTop: login.padding }}>{login.text}</p>
 
                 <form onSubmit={(_) => false}>
                     <InputField
@@ -74,7 +74,7 @@ export default function LoginPage(): ReactNode {
                         inputEvent={(ev) => setPassword(ev.currentTarget.value)}
                     />
 
-                    <div id="login-button">
+                    <div className="login-padding">
                         <label htmlFor="login" />
                         <input
                             className="btn btn-primary"

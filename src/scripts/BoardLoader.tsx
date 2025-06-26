@@ -1,4 +1,4 @@
-import "../styles/BoardLoader.scss";
+import "../styles/BoardLoader.css";
 import { ReactNode } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
 import { Sudoku } from "./GenerateInfo";
