@@ -34,7 +34,7 @@ export const userSlice = createSlice({
                 break;
             case "UPDATE_ITEM":
                 const indexToUpdate = _findById(puzzles, payload.puzzleId);
-                puzzles[indexToUpdate!].json = payload.json;
+                puzzles[indexToUpdate!]!.json = payload.json;
 
                 break;
             case "DELETE_ITEM":
