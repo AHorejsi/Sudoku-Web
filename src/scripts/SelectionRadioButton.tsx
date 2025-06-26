@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode, Dispatch, SetStateAction } from "react";
 
 interface SelectionRadioButtonProps {
     prompt: string;
@@ -7,7 +7,7 @@ interface SelectionRadioButtonProps {
 
     value: string;
 
-    setter: React.Dispatch<React.SetStateAction<string>>
+    setter: Dispatch<SetStateAction<string>>
 }
 
 export default function SelectionRadioButton(props: SelectionRadioButtonProps): ReactNode {

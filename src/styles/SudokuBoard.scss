@@ -1,31 +1,28 @@
-@mixin text {
+.all-text {
     text-align: center;
-    padding-left: 10em;
-    padding-right: 10em;
+    width: 100%;
+    padding-top: 25%;
+}
+
+#play-area {
+    padding-left: 25%;
 }
 
 #board {
     width: fit-content;
     display: inline-block;
+    text-align: center;
+}
+
+#save-button {
+    margin-top: 0.5em;
 }
 
 #error-text {
-    @include text;
-
     color: red;
     
 }
 
 #info-text {
-    @include text;
-
     color: black;
-}
-
-#cell-table {
-    width: fit-content;
-    height: fit-content;
-    border-style: solid;
-    border-width: thick;
-    border-color: black;
 }

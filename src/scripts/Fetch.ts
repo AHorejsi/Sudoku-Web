@@ -21,13 +21,12 @@ function _headers(xReqId: string): HeadersInit {
         "Accept-Encoding": "gzip, deflate, br",
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
-        "Connection": "keep-alive"
+        "Connection": "keep-alive",
+        "User-Agent": "Mozilla/5.0"
     };
 }
 
 async function retrieveBoard(dimension: string, difficulty: string, games: string[]): Promise<GenerateInfo> {
-    const headers = _headers(XRequestIds.GENERATE);
-
     const response = await fetch(URLs.GENERATE, {
         headers: _headers(XRequestIds.GENERATE),
         method: "POST",

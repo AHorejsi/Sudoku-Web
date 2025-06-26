@@ -1,5 +1,5 @@
 import "../styles/SudokuCell.scss";
-import { ReactNode, FormEvent, useRef } from "react";
+import { ReactNode, useRef } from "react";
 import { Cell } from "./GenerateInfo";
 
 interface SudokuCellProps {
@@ -110,7 +110,7 @@ function _checkInput(div: HTMLDivElement, props: SudokuCellProps) {
 
 export default function SudokuCell(props: SudokuCellProps): ReactNode {
     const cell = props.cell;
-    const cellType = cell.editable ? "mutable-cell" : "immutable-cell";
+    const cellType = cell.editable ? null : "immutable-cell";
     const hyper = props.isHyper ? "hyper-cell" : "";
     const cellBorders = _determineBorders(props);
 
@@ -119,7 +119,7 @@ export default function SudokuCell(props: SudokuCellProps): ReactNode {
     return (
         <td className={`${hyper} ${cellBorders}`}>
             <div
-                className={`${cellType}`}
+                className={`${cellType} all-cell`}
                 ref={div}
                 contentEditable={cell.editable}
                 onInput={(_) => _checkInput(div.current!, props)}

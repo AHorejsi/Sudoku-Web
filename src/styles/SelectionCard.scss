@@ -1,25 +1,10 @@
-#selection-card-main {
-    text-align: center;
-    display: inline-block;
+#selection-card {
     width: fit-content;
-}
-
-#game-selections {
-    width: 100%;
-    margin: 0 auto;
 }
 
 .game-selection-title {
     font-weight: bold;
     font-size: 1.5em;
-}
-
-.game-selection-row {
-    display: inline-block;
-}
-
-#difficulty-selection {
-    margin: 2em 5em 2em 5em;
 }
 
 #generate-button {

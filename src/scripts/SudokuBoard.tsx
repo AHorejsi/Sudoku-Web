@@ -113,10 +113,10 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
     const info = props.info;
 
     if (info instanceof Error) {
-        return <p id="error-text">{info.message}</p>
+        return <p id="error-text" className="all-text">{info.message}</p>
     }
     else if ("string" === typeof info) {
-        return <p id="info-text">{info}</p>
+        return <p id="info-text" className="all-text">{info}</p>
     }
     else {
         const sudoku = info.sudoku;
@@ -129,11 +129,11 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
         const table = createTableOfCells(sudoku);
 
         return (
-            <div>
-                <div id="board" className="container">{table}</div>
+            <div id="play-area">
+                <div id="board">{table}</div>
 
                 <div>
-                    <button className="btn btn-primary" ref={button}
+                    <button id="save-button" className="btn btn-primary" ref={button}
                         onClick={(_) => _savePuzzle(puzzleId, user, dispatch, sudoku, button.current!)}
                     >
                         Save

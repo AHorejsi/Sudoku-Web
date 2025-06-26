@@ -1,19 +1,13 @@
-@mixin cell {
-    width: 2em;
-    height: 2em;
+.all-cell {
+    min-width: 3.5em;
+    height: 3.5em;
     text-align: center;
     display: table-cell;
     vertical-align: middle;
 }
 
 .immutable-cell {
-    @include cell;
-
     font-weight: bold;
-}
-
-.mutable-cell {
-    @include cell;
 }
 
 .hyper-cell {
@@ -21,7 +15,7 @@
 }
 
 .thick-top-bordered {
-    border-top-width: medium;
+    border-top-width: thick;
     border-top-color: black;
     border-top-style: solid;
 }
@@ -33,7 +27,7 @@
 }
 
 .thick-bottom-bordered {
-    border-bottom-width: medium;
+    border-bottom-width: thick;
     border-bottom-color: black;
     border-bottom-style: solid;
 }
@@ -45,7 +39,7 @@
 }
 
 .thick-left-bordered {
-    border-left-width: medium;
+    border-left-width: thick;
     border-left-color: black;
     border-left-style: solid;
 }
@@ -57,7 +51,7 @@
 }
 
 .thick-right-bordered {
-    border-right-width: medium;
+    border-right-width: thick;
     border-right-color: black;
     border-right-style: solid;
 }

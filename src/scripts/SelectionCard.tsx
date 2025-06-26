@@ -43,28 +43,22 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
     const dispatch = useAppDispatch();
 
     return (
-        <div id="selection-card-main" className="container">
+        <div id="selection-card">
             <form>
-                <div className="game-selections">
-                    <div className="game-selection-row">
-                        <p className="game-selection-title">Difficulty</p>
+                <div>
+                    <p className="game-selection-title">Difficulty</p>
+                    <SelectionRadioButton name="difficulty" value="BEGINNER" prompt="Beginner" setter={setDifficulty} />
+                    <SelectionRadioButton name="difficulty" value="EASY" prompt="Easy" setter={setDifficulty} />
+                    <SelectionRadioButton name="difficulty" value="MEDIUM" prompt="Medium" setter={setDifficulty} />
+                    <SelectionRadioButton name="difficulty" value="HARD" prompt="Hard" setter={setDifficulty} />
+                    <SelectionRadioButton name="difficulty" value="MASTER" prompt="Master" setter={setDifficulty} />
 
-                        <SelectionRadioButton name="difficulty" value="BEGINNER" prompt="Beginner" setter={setDifficulty} />
-                        <SelectionRadioButton name="difficulty" value="EASY" prompt="Easy" setter={setDifficulty} />
-                        <SelectionRadioButton name="difficulty" value="MEDIUM" prompt="Medium" setter={setDifficulty} />
-                        <SelectionRadioButton name="difficulty" value="HARD" prompt="Hard" setter={setDifficulty} />
-                        <SelectionRadioButton name="difficulty" value="MASTER" prompt="Master" setter={setDifficulty} />
-                    </div>
-
-                    <div className="game-selection-row">
-                        <p className="game-selection-title">Game Types</p>
-
-                        <SelectionCheckbox name="game-type" value="KILLER" prompt="Killer" getter={games} setter={setGames} />
-                        <SelectionCheckbox name="game-type" value="HYPER" prompt="Hyper" getter={games} setter={setGames} />
-                    </div>
+                    <p className="game-selection-title">Game Types</p>
+                    <SelectionCheckbox name="game-type" value="KILLER" prompt="Killer" getter={games} setter={setGames} />
+                    <SelectionCheckbox name="game-type" value="HYPER" prompt="Hyper" getter={games} setter={setGames} />
                 </div>
 
-                <div id="generate-button" className="game-selection-row">
+                <div id="generate-button">
                     <p className="game-selection-title">Generate</p>
 
                     <label htmlFor="generate" />
