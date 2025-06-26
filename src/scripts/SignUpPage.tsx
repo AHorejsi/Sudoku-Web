@@ -6,7 +6,7 @@ import { SignupInfo } from "./SignupInfo";
 import { NavigateFunction, useNavigate } from "react-router";
 import InputField from "./InputField";
 
-interface _SignupState {
+interface _SignupAttemptState {
     borders: string;
 
     text: string;
@@ -14,7 +14,7 @@ interface _SignupState {
     style: string;
 }
 
-function _checkSignup(info: SignupInfo, setSignup: Dispatch<SetStateAction<_SignupState>>, nav: NavigateFunction) {
+function _checkSignup(info: SignupInfo, setSignup: Dispatch<SetStateAction<_SignupAttemptState>>, nav: NavigateFunction) {
     if (!info.type.endsWith("Success")) {
         setSignup({ borders: "failed-sign-up" , text: "Username/Email or Password not valid", style: "failed-signup-text" });
     }
@@ -27,7 +27,7 @@ function _attemptSignup(
     username: string,
     email: string,
     password: string,
-    setSignup: Dispatch<SetStateAction<_SignupState>>,
+    setSignup: Dispatch<SetStateAction<_SignupAttemptState>>,
     nav: NavigateFunction
 ) {
     setSignup({ borders: "sign-up-not-attempted", text: "Registering...", style: "signup-text" });
@@ -44,7 +44,7 @@ export default function SignUpPage(): ReactNode {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const [signup, setSignup] = useState<_SignupState>({ borders: "sign-up-not-attempted", text: "", style: "" });
+    const [signup, setSignup] = useState<_SignupAttemptState>({ borders: "sign-up-not-attempted", text: "", style: "" });
 
     const nav = useNavigate();
 
