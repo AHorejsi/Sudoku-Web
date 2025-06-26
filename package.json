@@ -1,11 +1,10 @@
 {
   "name": "sudoku-web",
   "version": "1.0.0",
-  "main": "index.js",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "start": "parcel src/index.html --open",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "parcel build src/index.html"
   },
   "keywords": [],
   "author": "alexh",
