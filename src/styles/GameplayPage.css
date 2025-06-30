@@ -10,3 +10,7 @@
     display: flex;
     text-align: center;
 }
+
+#divider {
+    margin: 1em;
+}
