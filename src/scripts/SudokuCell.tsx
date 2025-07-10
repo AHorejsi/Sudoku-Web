@@ -9,16 +9,18 @@ interface SudokuCellProps {
 
     column: number;
 
+    color: string;
+
+    dashes: string;
+
     boardLength: number;
 
-    isHyper: boolean;
-
-    maxCharLength: number;
+    maxLength: number;
 
     whole: Cell[][];
 }
 
-interface _CellBorderThickness {
+interface _BorderThickness {
     top: "thin" | "thick";
 
     bottom: "thin" | "thick";
@@ -28,9 +30,9 @@ interface _CellBorderThickness {
     right: "thin" | "thick";
 }
 
-function _decideThickness(props: SudokuCellProps): _CellBorderThickness {
+function _decideThickness(props: SudokuCellProps): _BorderThickness {
     const boxLength = Math.sqrt(props.boardLength);
-    const borderThickness: _CellBorderThickness = {
+    const borderThickness: _BorderThickness = {
         top: "thin",
         bottom: "thin",
         left: "thin",
@@ -68,10 +70,10 @@ function _determineBorders(props: SudokuCellProps): string {
     let css = "";
 
     for (const [side, value] of Object.entries(borders)) {
-        css += `${value}-${side}-bordered `;
+        css += `${value}-${side} `;
     }
 
-    return css;
+    return css.trimEnd();
 }
 
 function _deleteLastChars(div: HTMLDivElement, text: string) {
@@ -94,7 +96,7 @@ function _checkInput(div: HTMLDivElement, props: SudokuCellProps) {
     const text = div.textContent!;
     const last = text[text.length - 1]; // undefined means that the text is empty
 
-    if (text.length > props.maxCharLength || !_validChar(last)) {
+    if (text.length > props.maxLength || !_validChar(last)) {
         _deleteLastChars(div, text);
 
         return;
@@ -110,21 +112,21 @@ function _checkInput(div: HTMLDivElement, props: SudokuCellProps) {
 
 export default function SudokuCell(props: SudokuCellProps): ReactNode {
     const cell = props.cell;
-    const cellType = cell.editable ? null : "immutable-cell";
-    const hyper = props.isHyper ? "hyper-cell" : null;
-    const cellBorders = _determineBorders(props);
+    const cellType = cell.editable ? "mutable-cell" : "immutable-cell";
+    const borders = _determineBorders(props);
+    const dashes = `inner ${props.dashes}`.trimEnd();
 
     const div = useRef<HTMLDivElement>(null);
 
     return (
-        <td className={`${hyper} ${cellBorders}`}>
-            <div>
+        <div className={borders} style={{ backgroundColor: props.color }}>
+            <div className={dashes}>
                 <div className={`${cellType} all-cell`} ref={div} contentEditable={cell.editable}
                     onInput={(_) => _checkInput(div.current!, props)}
                 >
                     {cell.value ?? ""}
                 </div>
             </div>
-        </td>
+        </div>
     );
 }

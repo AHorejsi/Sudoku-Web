@@ -2,62 +2,87 @@
     min-width: 3.5em;
     height: 3.5em;
     text-align: center;
-    display: table-cell;
-    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .immutable-cell {
     font-weight: bold;
 }
 
-.hyper-cell {
-    background-color: pink;
+.inner {
+    margin: 0.25em;
 }
 
-.thick-top-bordered {
+.thick-top {
     border-top-width: thick;
     border-top-color: black;
     border-top-style: solid;
 }
 
-.thin-top-bordered {
+.thin-top {
     border-top-width: thin;
     border-top-color: black;
     border-top-style: solid;
 }
 
-.thick-bottom-bordered {
+.thick-bottom {
     border-bottom-width: thick;
     border-bottom-color: black;
     border-bottom-style: solid;
 }
 
-.thin-bottom-bordered {
+.thin-bottom {
     border-bottom-width: thin;
     border-bottom-color: black;
     border-bottom-style: solid;
 }
 
-.thick-left-bordered {
+.thick-left {
     border-left-width: thick;
     border-left-color: black;
     border-left-style: solid;
 }
 
-.thin-left-bordered {
+.thin-left {
     border-left-width: thin;
     border-left-color: black;
     border-left-style: solid;
 }
 
-.thick-right-bordered {
+.thick-right {
     border-right-width: thick;
     border-right-color: black;
     border-right-style: solid;
 }
 
-.thin-right-bordered {
+.thin-right {
     border-right-width: thin;
     border-right-color: black;
     border-right-style: solid;
+}
+
+.dashed-top {
+    border-top-style: dashed;
+    border-top-color: black;
+    border-top-width: medium;
+}
+
+.dashed-bottom {
+    border-bottom-style: dashed;
+    border-bottom-color: black;
+    border-bottom-width: medium;
+}
+
+.dashed-left {
+    border-left-style: dashed;
+    border-left-color: black;
+    border-left-width: medium;
+}
+
+.dashed-right {
+    border-right-style: dashed;
+    border-right-color: black;
+    border-right-width: medium;
 }

@@ -10,8 +10,12 @@
 
 #board {
     width: fit-content;
-    display: inline-block;
     text-align: center;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto;
+    border-width: 0.5em;
+    border-style: solid;
+    border-color: black;
 }
 
 #save-button {

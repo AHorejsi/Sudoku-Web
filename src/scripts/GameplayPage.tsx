@@ -44,9 +44,7 @@ export default function GameplayPage(): ReactNode {
                 <h1>Hello, { dbUser.username }!</h1>
 
                 <button className="btn btn-info" onClick={(_) => nav(Endpoints.LOADER)}>Load</button>
-
                 <span id="divider" />
-
                 <button className="btn btn-info" onClick={(_) => nav(Endpoints.SETTINGS)}>User Settings</button>
             </div>
 
