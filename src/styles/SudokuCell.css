@@ -16,7 +16,7 @@
 }
 
 .thick-top {
-    border-top-width: thick;
+    border-top-width: medium;
     border-top-color: black;
     border-top-style: solid;
 }
@@ -28,7 +28,7 @@
 }
 
 .thick-bottom {
-    border-bottom-width: thick;
+    border-bottom-width: medium;
     border-bottom-color: black;
     border-bottom-style: solid;
 }
@@ -40,7 +40,7 @@
 }
 
 .thick-left {
-    border-left-width: thick;
+    border-left-width: medium;
     border-left-color: black;
     border-left-style: solid;
 }
@@ -52,7 +52,7 @@
 }
 
 .thick-right {
-    border-right-width: thick;
+    border-right-width: medium;
     border-right-color: black;
     border-right-style: solid;
 }

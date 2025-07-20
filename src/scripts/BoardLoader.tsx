@@ -39,11 +39,14 @@ export default function BoardLoader(props: BoardLoaderProps): ReactNode {
     const dispatch = useAppDispatch();
 
     const sudoku = props.sudoku;
+    
+    const difficulty = sudoku.difficulty;
+    const games = 0 === sudoku.games.length ? "REGULAR" : sudoku.games.join(", ");
 
     return (
         <div className="border">
-            <div>{sudoku.difficulty}</div>
-            <div>{sudoku.games.join(", ")}</div>
+            <div>{difficulty}</div>
+            <div>{games}</div>
 
             <button onClick={(_) => _reloadSudoku(props, nav, dispatch)}>Reload</button>
             <button onClick={(_) => _deleteSudoku(props, dispatch)}>Delete</button>

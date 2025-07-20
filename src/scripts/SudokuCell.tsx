@@ -16,8 +16,6 @@ interface SudokuCellProps {
     boardLength: number;
 
     maxLength: number;
-
-    whole: Cell[][];
 }
 
 interface _BorderThickness {
@@ -92,21 +90,20 @@ function _validChar(key: string | undefined): boolean {
     return key.localeCompare("1") >= 0 && key.localeCompare("9") <= 0;
 }
 
-function _checkInput(div: HTMLDivElement, props: SudokuCellProps) {
-    const text = div.textContent!;
+function _checkInput(div: HTMLDivElement, cell: Cell, maxLength: number) {
+    const text = div.textContent;
     const last = text[text.length - 1]; // undefined means that the text is empty
 
-    if (text.length > props.maxLength || !_validChar(last)) {
+    if (text.length > maxLength || !_validChar(last)) {
         _deleteLastChars(div, text);
-
-        return;
     }
-
-    if (0 === text.length) {
-        props.whole[props.row]![props.column]!.value = null;
-    }
-    else if ("1" <= text && text <= "9") {
-        props.whole[props.row]![props.column]!.value = Number(text);
+    else {
+        if (0 === text.length) {
+            cell.value = null;
+        }
+        else if ("1" <= text && text <= "9") {
+            cell.value = Number(text);
+        }
     }
 }
 
@@ -122,7 +119,7 @@ export default function SudokuCell(props: SudokuCellProps): ReactNode {
         <div className={borders} style={{ backgroundColor: props.color }}>
             <div className={dashes}>
                 <div className={`${cellType} all-cell`} ref={div} contentEditable={cell.editable}
-                    onInput={(_) => _checkInput(div.current!, props)}
+                    onInput={(_) => _checkInput(div.current!, cell, props.maxLength)}
                 >
                     {cell.value ?? ""}
                 </div>

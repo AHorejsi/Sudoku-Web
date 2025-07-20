@@ -17,7 +17,7 @@ interface SudokuBoardProps {
 function _createCells(sudoku: Sudoku): ReactNode {
     const grid = Array<ReactNode>();
     const maxLength = sudoku.length.toString().length;
-    const colorMap = _determineColorsOfCages(sudoku.cages);
+    const colorMap = _determineColorsOfCages(sudoku.cages, sudoku.length);
     const hyperBorders = _determineHyperBorders(sudoku.boxes, sudoku.length);
 
     for (let rowIndex = 0; rowIndex < sudoku.length; ++rowIndex) {
@@ -35,7 +35,6 @@ function _createCells(sudoku: Sudoku): ReactNode {
                     dashes={dashes}
                     boardLength={sudoku.length}
                     maxLength={maxLength}
-                    whole={sudoku.board}
                 />
             );
         }
@@ -44,17 +43,21 @@ function _createCells(sudoku: Sudoku): ReactNode {
     return <div id="board">{grid}</div>;
 }
 
-function _determineColorsOfCages(cageSet: Cage[] | null): string[][] | null {
+function _determineColorsOfCages(cageSet: Cage[] | null, boardDimensions: number): string[][] | null {
     if (!cageSet) {
         return null;
     }
 
     const adjacentMap = _createAdjacentMap(cageSet);
-    const maxNumberOfColorsNeeded = _findMaxNumberOfColorsNeeded(adjacentMap);
+    const maxColorsNeeded = _findMaxNumberOfColorsNeeded(adjacentMap);
+    const colors = _generateColors(maxColorsNeeded);
 
-    alert("Length: " + cageSet.length + "\nMax: " + maxNumberOfColorsNeeded);
+    const colorMap = Array.from({ length: boardDimensions }, () => Array<string>(boardDimensions));
+    const startingCage = adjacentMap.keys().next().value!;
 
-    return null;
+    _assignColors(colors, adjacentMap, startingCage, 0, colorMap);
+
+    return colorMap;
 }
 
 function _createAdjacentMap(cageSet: Cage[]): Map<Cage, Cage[]> {
@@ -99,26 +102,72 @@ function _isAdjacent(current: Cage, other: Cage): boolean {
 }
 
 function _findMaxNumberOfColorsNeeded(adjacentMap: Map<Cage, Cage[]>): number {
-    let max = 0;
+    let maxColors = 0;
 
     for (const adjacentSet of adjacentMap.values()) {
-        if (max < adjacentSet.length) {
-            max = adjacentSet.length;
+        const amountOfAdjacentCages = adjacentSet.length;
+
+        if (maxColors < amountOfAdjacentCages) {
+            maxColors = amountOfAdjacentCages;
         }
     }
 
-    return max;
+    return maxColors;
 }
 
-function _determineHyperBorders(boxSet: Box[], length: number): string[][] | null {
+function _generateColors(maxColorsNeeded: number): string[] {
+    const colors = Array<string>(maxColorsNeeded);
+    const colorFunction = "0123456789abcdef";
+
+    for (let index = 0; index < maxColorsNeeded; ++index) {
+        let randomHexColor = "#";
+
+        for (let counter = 0; counter < 6; ++counter) {
+            const hexIndex = Math.floor(Math.random() * colorFunction.length);
+            const colorHex = colorFunction[hexIndex];
+
+            randomHexColor += colorHex;
+        }
+
+        colors[index] = randomHexColor;
+    }
+
+    return colors;
+}
+
+function _assignColors(
+    colors: string[],
+    adjacentMap: Map<Cage, Cage[]>,
+    currentCage: Cage,
+    colorIndex: number,
+    colorMap: string[][]
+) {
+    for (const pos of currentCage.positions) {
+        colorMap[pos.rowIndex]![pos.colIndex] = colors[colorIndex % colors.length]!;
+    }
+
+    const adjacentCages = adjacentMap.get(currentCage)!;
+    adjacentMap.delete(currentCage);
+
+    for (let cageIndex = 0; cageIndex < adjacentCages.length; ++cageIndex) {
+        const otherCage = adjacentCages[cageIndex]!;
+        ++colorIndex;
+
+        if (adjacentMap.has(otherCage)) {
+            _assignColors(colors, adjacentMap, otherCage, colorIndex, colorMap);
+        }
+    }
+}
+
+function _determineHyperBorders(boxSet: Box[], boardDimensions: number): string[][] | null {
     const hyperSet = boxSet.filter((box) => box.isHyper);
 
     if (0 === hyperSet.length) {
         return null;
     }
 
-    const borders = Array.from({ length }, () => Array<string>(length).fill(""));
-    const dimensions = Math.sqrt(length);
+    const borders = Array.from({ length: boardDimensions }, () => Array<string>(boardDimensions).fill(""));
+    const boxDimensions = Math.sqrt(boardDimensions);
 
     for (const hyper of hyperSet) {
         hyper.positions.sort(_posComp);
@@ -126,7 +175,7 @@ function _determineHyperBorders(boxSet: Box[], length: number): string[][] | nul
         for (let index = 0; index < hyper.positions.length; ++index) {
             const pos = hyper.positions[index]!;
 
-            borders[pos.rowIndex]![pos.colIndex]! = _setHyperBorder(index, dimensions);
+            borders[pos.rowIndex]![pos.colIndex]! = _setHyperBorder(index, boxDimensions);
         }
     }
 
