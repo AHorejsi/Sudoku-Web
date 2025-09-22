@@ -66,8 +66,6 @@ function generateDistinctRgbColors(maxColorsNeeded: number): string[] {
         currentHue = Math.abs(currentHue);
     }
 
-    alert(colors);
-
     return colors;
 }
 
