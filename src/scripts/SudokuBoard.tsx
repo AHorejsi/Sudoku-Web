@@ -8,6 +8,7 @@ import { load, selectSave } from "./LoadState";
 import { useAppDispatch, useAppSelector } from "./Hooks";
 import { AppDispatch } from "./Store";
 import { puzzle, selectUser } from "./UserState";
+import { generateDistinctRgbColors } from "./ColorGeneration";
 
 
 interface SudokuBoardProps {
@@ -24,7 +25,7 @@ function _createCells(sudoku: Sudoku): ReactNode {
         for (let colIndex = 0; colIndex < sudoku.length; ++colIndex) {
             const cell = sudoku.board[rowIndex]![colIndex]!;
             const dashes = hyperBorders?.at(rowIndex)!.at(colIndex)! ?? "";
-            const color = colorMap?.at(rowIndex)!.at(colIndex)! ?? "";
+            const color = colorMap!.at(rowIndex)!.at(colIndex)!;
 
             grid.push(
                 <SudokuCell
@@ -50,7 +51,7 @@ function _determineColorsOfCages(cageSet: Cage[] | null, boardDimensions: number
 
     const adjacentMap = _createAdjacentMap(cageSet);
     const maxColorsNeeded = _findMaxNumberOfColorsNeeded(adjacentMap);
-    const colors = _generateColors(maxColorsNeeded);
+    const colors = generateDistinctRgbColors(maxColorsNeeded);
 
     const colorMap = Array.from({ length: boardDimensions }, () => Array<string>(boardDimensions));
     const startingCage = adjacentMap.keys().next().value!;
@@ -113,26 +114,6 @@ function _findMaxNumberOfColorsNeeded(adjacentMap: Map<Cage, Cage[]>): number {
     }
 
     return maxColors;
-}
-
-function _generateColors(maxColorsNeeded: number): string[] {
-    const colors = Array<string>(maxColorsNeeded);
-    const colorFunction = "0123456789abcdef";
-
-    for (let index = 0; index < maxColorsNeeded; ++index) {
-        let randomHexColor = "#";
-
-        for (let counter = 0; counter < 6; ++counter) {
-            const hexIndex = Math.floor(Math.random() * colorFunction.length);
-            const colorHex = colorFunction[hexIndex];
-
-            randomHexColor += colorHex;
-        }
-
-        colors[index] = randomHexColor;
-    }
-
-    return colors;
 }
 
 function _assignColors(
