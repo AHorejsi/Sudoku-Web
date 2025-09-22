@@ -100,10 +100,6 @@ function _createPositionsForRegularCage(startRowIndex: number, startColIndex: nu
     return positions;
 }
 
-function _createAdjacentMapForKiller(cageSet: Cage[], adjacentMap: Map<Cage, Cage[]>) {
-    
-}
-
 function _findAdjacentPositions(current: Cage, cageSet: Cage[]): Cage[] {
     const adjacentSet = Array<Cage>();
 
