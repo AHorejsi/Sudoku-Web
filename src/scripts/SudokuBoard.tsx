@@ -264,11 +264,11 @@ function _savePuzzle(
 }
 
 function _saveCleanup(button: HTMLButtonElement, message: string) {
-    button.disabled = false;
-
     if (!message.endsWith("Success")) {
         alert("Sudoku Failed to Save");
     }
+
+    button.disabled = false;
 }
 
 export default function SudokuBoard(props: SudokuBoardProps): ReactNode {

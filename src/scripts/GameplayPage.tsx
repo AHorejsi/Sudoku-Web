@@ -10,7 +10,7 @@ import { useAppSelector } from "./Hooks";
 import { selectSave } from "./LoadState";
 import { selectUser } from "./UserState";
 
-function _getInfo(puzzleSet: Puzzle[], targetId: number | null): GenerateInfo | null {
+function _getInfo(puzzleSet: Puzzle[], targetId: number | null): GenerateInfo | null | undefined {
     if (!targetId) {
         return null;
     }
@@ -24,7 +24,7 @@ function _getInfo(puzzleSet: Puzzle[], targetId: number | null): GenerateInfo | 
         }
     }
 
-    return null;
+    return undefined;
 }
 
 export default function GameplayPage(): ReactNode {

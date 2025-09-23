@@ -34,6 +34,7 @@ function _generate(
         creator(error);
     }).finally(() => {
         dispatch(load(null));
+        
         button.disabled = false;
     });
 }
