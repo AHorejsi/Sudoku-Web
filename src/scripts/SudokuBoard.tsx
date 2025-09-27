@@ -18,7 +18,7 @@ interface SudokuBoardProps {
 function _createCells(sudoku: Sudoku): ReactNode {
     const grid = Array<ReactNode>();
     const maxLength = sudoku.length.toString().length;
-    const colorMap = _determineColorsOfCages(sudoku.cages, sudoku.length);
+    const colorMap = _determineColorsOfCages(sudoku);
     const hyperBorders = _determineHyperBorders(sudoku.boxes, sudoku.length);
 
     for (let rowIndex = 0; rowIndex < sudoku.length; ++rowIndex) {
@@ -44,23 +44,27 @@ function _createCells(sudoku: Sudoku): ReactNode {
     return <div id="board">{grid}</div>;
 }
 
-function _determineColorsOfCages(cageSet: Cage[] | null, boardDimensions: number): string[][] {
+function _determineColorsOfCages(sudoku: Sudoku): string[][] {
+    const boardDimensions = sudoku.length;
+    const cageSet = sudoku.cages ?? _createRegularCages(boardDimensions);;
+
     const colorMap = Array.from({ length: boardDimensions }, () => Array<string>(boardDimensions));
     const adjacentMap = new Map<Cage, Cage[]>();
 
-    if (!cageSet) {
-        cageSet = _createRegularCages(boardDimensions);
-    }
-
     for (const cage of cageSet) {
-        adjacentMap.set(cage, _findAdjacentPositions(cage, cageSet));
+        const adjacentCages = _findAdjacentPositions(cage, cageSet);
+
+        adjacentMap.set(cage, adjacentCages);
     }
 
     const maxColorsNeeded = _findMaxNumberOfColorsNeeded(adjacentMap);
     const colors = generateDistinctRgbColors(maxColorsNeeded);
 
-    const startingCage = adjacentMap.keys().next().value!;
-    _assignColors(colors, adjacentMap, startingCage, 0, colorMap);
+    while (0 !== adjacentMap.size) {
+        const currentCage = adjacentMap.keys().next().value!;
+
+        _assignColors(colors, adjacentMap, currentCage, 0, colorMap);
+    }
 
     return colorMap;
 }
@@ -74,9 +78,8 @@ function _createRegularCages(dimensions: number): Cage[] {
     for (let startRowIndex = 0; startRowIndex < dimensions; startRowIndex += boxDimensions) {
         for (let startColIndex = 0; startColIndex < dimensions; startColIndex += boxDimensions) {
             const positions = _createPositionsForRegularCage(startRowIndex, startColIndex, boxDimensions);
-            const newCage: Cage = { sum, positions };
 
-            cageSet.push(newCage);
+            cageSet.push({ sum, positions });
         }
     }
 
@@ -91,9 +94,7 @@ function _createPositionsForRegularCage(startRowIndex: number, startColIndex: nu
 
     for (let rowIndex = startRowIndex; rowIndex < endRowIndex; ++rowIndex) {
         for (let colIndex = startColIndex; colIndex < endColIndex; ++colIndex) {
-            const newPos: Position = { rowIndex, colIndex };
-
-            positions.push(newPos);
+            positions.push({ rowIndex, colIndex });
         }
     }
 
@@ -161,9 +162,10 @@ function _assignColors(
 
     for (let cageIndex = 0; cageIndex < adjacentCages.length; ++cageIndex) {
         const otherCage = adjacentCages[cageIndex]!;
-        ++colorIndex;
 
         if (adjacentMap.has(otherCage)) {
+            ++colorIndex;
+
             _assignColors(colors, adjacentMap, otherCage, colorIndex, colorMap);
         }
     }

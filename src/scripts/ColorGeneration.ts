@@ -48,7 +48,11 @@ function _hsvToRgb(hue: number, saturation: number, value: number): [number, num
         break;
     }
 
-    return [Math.floor(red! * 256), Math.floor(green! * 256), Math.floor(blue! * 256)];
+    const finalRed = Math.floor(red! * 256);
+    const finalGreen = Math.floor(green! * 256);
+    const finalBlue = Math.floor(blue! * 256);
+
+    return [finalRed, finalGreen, finalBlue];
 }
 
 function generateDistinctRgbColors(maxColorsNeeded: number): string[] {
@@ -63,7 +67,6 @@ function generateDistinctRgbColors(maxColorsNeeded: number): string[] {
 
         currentHue += goldenRatioConjugate;
         currentHue %= 1;
-        currentHue = Math.abs(currentHue);
     }
 
     return colors;
