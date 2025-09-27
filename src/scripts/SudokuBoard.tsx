@@ -275,10 +275,10 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
     const info = props.info;
 
     if (info instanceof Error) {
-        return <p id="error-text" className="all-text">{info.message}</p>
+        return <p id="error-text" className="all-text">{ info.message }</p>;
     }
     else if ("string" === typeof info) {
-        return <p id="info-text" className="all-text">{info}</p>
+        return <p id="info-text" className="all-text">{ info }</p>;
     }
     else {
         const sudoku = info.sudoku;
@@ -292,7 +292,7 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
 
         return (
             <div id="play-area">
-                {grid}
+                { grid }
 
                 <div>
                     <button id="save-button" className="btn btn-primary" ref={button}
