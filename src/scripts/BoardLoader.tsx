@@ -48,8 +48,8 @@ export default function BoardLoader(props: BoardLoaderProps): ReactNode {
             <div>{difficulty}</div>
             <div>{games}</div>
 
-            <button onClick={(_) => _reloadSudoku(props, nav, dispatch)}>Reload</button>
-            <button onClick={(_) => _deleteSudoku(props, dispatch)}>Delete</button>
+            <button className="btn btn-info" onClick={(_) => _reloadSudoku(props, nav, dispatch)}>Reload</button>
+            <button className="btn btn-info" onClick={(_) => _deleteSudoku(props, dispatch)}>Delete</button>
         </div>
     );
 }

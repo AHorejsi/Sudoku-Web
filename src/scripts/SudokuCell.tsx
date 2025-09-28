@@ -1,6 +1,7 @@
 import "../styles/SudokuCell.css";
 import { ReactNode, useRef } from "react";
 import { Cell } from "./GenerateInfo";
+import NotesBox from "./NotesBox";
 
 interface SudokuCellProps {
     cell: Cell;
@@ -117,6 +118,8 @@ export default function SudokuCell(props: SudokuCellProps): ReactNode {
 
     return (
         <div className={borders} style={{ backgroundColor: props.color }}>
+            <NotesBox cell={props.cell} />
+
             <div className={dashes}>
                 <div className={`${cellType} all-cell`} ref={div} contentEditable={cell.editable}
                     onInput={(_) => _checkInput(div.current!, cell, props.maxLength)}

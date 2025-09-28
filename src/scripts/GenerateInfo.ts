@@ -19,6 +19,8 @@ interface Box {
 interface Cell {
     value: number | null;
 
+    notes: number;
+
     editable: boolean;
 }
 

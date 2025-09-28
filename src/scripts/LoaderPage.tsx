@@ -28,7 +28,7 @@ export default function LoaderPage(): ReactNode {
 
             <div id="select-card">{selection}</div>
 
-            <button onClick={(_) => nav(Endpoints.GAMEPLAY)}>Back</button>
+            <button className="btn btn-info" onClick={(_) => nav(Endpoints.GAMEPLAY)}>Back</button>
         </div>
     );
 }
