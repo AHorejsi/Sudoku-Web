@@ -20,21 +20,24 @@ function _createCells(sudoku: Sudoku): ReactNode {
     const maxLength = sudoku.length.toString().length;
     const colorMap = _determineColorsOfCages(sudoku);
     const hyperBorders = _determineHyperBorders(sudoku.boxes, sudoku.length);
+    const killerSums = _determinePositionsOfKillerSums(sudoku.cages, sudoku.length);
 
     for (let rowIndex = 0; rowIndex < sudoku.length; ++rowIndex) {
         for (let colIndex = 0; colIndex < sudoku.length; ++colIndex) {
             const cell = sudoku.board[rowIndex]![colIndex]!;
             const dashes = hyperBorders?.at(rowIndex)!.at(colIndex)! ?? "";
-            const color = colorMap.at(rowIndex)!.at(colIndex)!;
+            const color = colorMap[rowIndex]![colIndex]!;
+            const killerSum = killerSums[rowIndex]![colIndex];
 
             grid.push(
                 <SudokuCell
                     cell={cell}
+                    killerSum={killerSum}
                     row={rowIndex}
                     column={colIndex}
                     color={color}
                     dashes={dashes}
-                    boardLength={sudoku.length}
+                    dimensions={sudoku.length}
                     maxLength={maxLength}
                 />
             );
@@ -221,6 +224,32 @@ function _setHyperBorder(index: number, dimensions: number): string {
     }
 
     return borders.trimStart();
+}
+
+function _determinePositionsOfKillerSums(cageSet: Cage[] | null, boardDimensions: number): (number | undefined)[][] {
+    const killerSums = Array.from({ length: boardDimensions}, () => Array<number | undefined>(boardDimensions));
+
+    if (!cageSet) {
+        return killerSums;
+    }
+
+    for (const cage of cageSet) {
+        const positionSet = cage.positions;
+
+        let highest = positionSet[0]!;
+
+        for (let index = 1; index < positionSet.length; ++index) {
+            const next = positionSet[index]!;
+
+            if (highest.rowIndex > next.rowIndex || (highest.rowIndex === next.rowIndex && highest.colIndex > next.colIndex)) {
+                highest = next;
+            }
+        }
+
+        killerSums[highest.rowIndex]![highest.colIndex] = cage.sum;
+    }
+
+    return killerSums;
 }
 
 function _savePuzzle(

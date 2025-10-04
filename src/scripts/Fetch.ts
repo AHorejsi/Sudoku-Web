@@ -17,7 +17,8 @@ function _ensureOkResponse(response: Response) {
 function _headers(xReqId: string): HeadersInit {
     return {
         "X-Request-ID": xReqId,
-        "Accept": "application/json; charset=UTF-8",
+        "Accept": "application/json",
+        "Accept-Charset": "ISO-8859-1",
         "Accept-Encoding": "gzip, deflate, br",
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",

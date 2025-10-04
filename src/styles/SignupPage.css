@@ -13,7 +13,7 @@
 }
 
 #sign-up-box {
-    padding: 1em;
+    padding-bottom: 1em;
     min-width: 15em;
     max-width: 25em;
     display: flex;

@@ -35,7 +35,6 @@ export default function GameplayPage(): ReactNode {
     const dbUser = useAppSelector(selectUser)!;
 
     const info = _getInfo(dbUser.puzzles, puzzleId);
-
     const [board, setBoard] = useState<GenerateInfo | string | Error>(info ?? "No Puzzle");
 
     return (

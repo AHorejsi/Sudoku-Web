@@ -57,11 +57,14 @@ function _hsvToRgb(hue: number, saturation: number, value: number): [number, num
 
 function generateDistinctRgbColors(maxColorsNeeded: number): string[] {
     const goldenRatioConjugate = (Math.sqrt(5) - 1) / 2;
+    const saturation = 0.5;
+    const value = 0.95;
+
     const colors = Array<string>(maxColorsNeeded);
     let currentHue = Math.random();
 
     for (let index = 0; index < maxColorsNeeded; ++index) {
-        const [red, green, blue] = _hsvToRgb(currentHue, 0.5, 0.95);
+        const [red, green, blue] = _hsvToRgb(currentHue, saturation, value);
 
         colors[index] = `rgb(${red}, ${green}, ${blue})`;
 

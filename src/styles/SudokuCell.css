@@ -1,6 +1,7 @@
 .all-cell {
-    min-width: 2.5em;
-    height: 1.25em;
+    z-index: 0;
+    width: 2.5em;
+    height: 2.5em;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -12,8 +13,24 @@
 }
 
 .inner {
-    margin: 0.25em;
     padding: 0.25em;
+    margin: 0.25em;
+}
+
+.top-negative {
+    margin-top: -30%;
+    margin-bottom: -5%;
+}
+
+.killer-sum-box {
+    z-index: 1;
+    font-size: x-small;
+    text-align: center;
+    width: 35%;
+    background-color: white;
+    border-width: thin;
+    border-color: black;
+    border-style: solid;
 }
 
 .thick-top {

@@ -1,6 +1,10 @@
-.notes {
+.notes-button {
     background-color: white;
     position: relative;
     float: right;
     height: 0.5em;
+}
+
+.note-marker {
+    color: gray;
 }

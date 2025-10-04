@@ -4,24 +4,37 @@ import { Cell } from "./GenerateInfo";
 
 interface NotesBoxProps {
     cell: Cell;
+
+    dimensions: number;
 }
 
-function _toggleNote(value: number, cell: Cell) {
-    cell.notes = cell.notes ^ (1 << value);
-}
+function _makeNoteMarkers(dimensions: number): ReactNode {
+    const markers = Array<ReactNode>();
+    const rowAmount = Math.sqrt(dimensions);
 
-function _showPopup(cell: Cell) {
-    const value = prompt("Enter Note: ");
+    let num = 1;
 
-    if (value) {
-        const num = Number(value);
+    while (num < dimensions) {
+        const section = Array<ReactNode>();
 
-        _toggleNote(num, cell);
+        for (let count = 0; count < rowAmount; ++count) {
+            section.push(
+                <td>{num}</td>
+            );
+        }
+
+        markers.push(<tr>section</tr>);
     }
+
+    return (
+        <table>
+            <tbody>{markers}</tbody>
+        </table>
+    );
 }
 
 export default function NotesBox(props: NotesBoxProps): ReactNode {
-    return (
-        <button className="notes" onClick={(_) => _showPopup(props.cell)} />
-    );
+    const noteMarkers = _makeNoteMarkers(props.dimensions);
+
+    return noteMarkers;
 }

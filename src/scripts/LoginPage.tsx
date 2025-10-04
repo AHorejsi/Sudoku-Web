@@ -83,7 +83,7 @@ export default function LoginPage(): ReactNode {
                             type="button"
                             name="login"
                             value="Login"
-                            onClick={(_) => _attemptUserLogin(usernameOrEmail, password, setLogin, nav, dispatch) }
+                            onClick={(_) => _attemptUserLogin(usernameOrEmail, password, setLogin, nav, dispatch)}
                         />
                     </div>
                 </form>

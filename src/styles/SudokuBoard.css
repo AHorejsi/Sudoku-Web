@@ -9,8 +9,6 @@
 }
 
 #board {
-    width: fit-content;
-    text-align: center;
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto;
     border-width: 0.5em;
