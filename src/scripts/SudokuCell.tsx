@@ -1,5 +1,5 @@
 import "../styles/SudokuCell.css";
-import { ReactNode, Dispatch, SetStateAction, useState, useRef } from "react";
+import { ReactNode, useRef } from "react";
 import { Cell } from "./GenerateInfo";
 
 interface SudokuCellProps {
@@ -76,7 +76,7 @@ function _decideThickness(props: SudokuCellProps): _BorderThickness {
     return borderThickness;
 }
 
-function _checkInput(div: HTMLDivElement, cell: Cell, maxLength: number, setNeedNotes: Dispatch<SetStateAction<boolean>>) {
+function _checkInput(div: HTMLDivElement, cell: Cell, maxLength: number) {
     const text = div.textContent;
     const last = text[text.length - 1]; // undefined means that the text is empty
 
@@ -86,13 +86,9 @@ function _checkInput(div: HTMLDivElement, cell: Cell, maxLength: number, setNeed
     else {
         if (0 === text.length) {
             cell.value = null;
-
-            setNeedNotes(true);
         }
         else if ("1" <= text && text <= "9") {
             cell.value = Number(text);
-
-            setNeedNotes(false);
         }
     }
 }
@@ -123,19 +119,16 @@ export default function SudokuCell(props: SudokuCellProps): ReactNode {
     const dashes = `inner ${props.dashes}`.trimEnd();
 
     const div = useRef<HTMLDivElement>(null);
-    const [needNotes, setNeedNotes] = useState(null === cell.value);
 
     return (
         <div className={borders} style={{ backgroundColor: props.color }}>
             { props.killerSum ? <div className="killer-sum-box">{props.killerSum}</div> : null }
 
-            <div className={dashes}>
-                <div className={`${cellType} ${cellMargin} all-cell`} ref={div} contentEditable={cell.editable}
-                    onInput={(_) => _checkInput(div.current!, cell, maxLength, setNeedNotes)}
+                <div className={`${cellType} ${cellMargin} ${dashes} all-cell`} ref={div} contentEditable={cell.editable}
+                    onInput={(_) => _checkInput(div.current!, cell, maxLength)}
                 >
                     {cell.value ?? ""}
                 </div>
-            </div>
         </div>
     );
 }

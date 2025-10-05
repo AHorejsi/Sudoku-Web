@@ -1,5 +1,4 @@
 .all-cell {
-    z-index: 0;
     width: 2.5em;
     height: 2.5em;
     text-align: center;
@@ -23,6 +22,7 @@
 }
 
 .killer-sum-box {
+    position: relative;
     z-index: 1;
     font-size: x-small;
     text-align: center;
