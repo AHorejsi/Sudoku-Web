@@ -8,7 +8,7 @@ import SelectionCard from "./SelectionCard";
 import SudokuBoard from "./SudokuBoard";
 import { useAppSelector } from "./Hooks";
 import { selectSave } from "./LoadState";
-import { selectUser } from "./UserState";
+import { selectToken, selectUser } from "./UserState";
 
 function _getInfo(puzzleSet: Puzzle[], targetId: number | null): GenerateInfo | null | undefined {
     if (!targetId) {
@@ -33,6 +33,7 @@ export default function GameplayPage(): ReactNode {
     const nav = useNavigate();
     const puzzleId = useAppSelector(selectSave);
     const dbUser = useAppSelector(selectUser)!;
+    const token = useAppSelector(selectToken)!;
 
     const info = _getInfo(dbUser.puzzles, puzzleId);
     const [board, setBoard] = useState<GenerateInfo | string | Error>(info ?? "No Puzzle");
@@ -48,7 +49,7 @@ export default function GameplayPage(): ReactNode {
             </div>
 
             <div id="gameplay">
-                <SelectionCard creator={setBoard} />
+                <SelectionCard token={token} creator={setBoard} />
                 <SudokuBoard info={board} />
             </div>
         </div>

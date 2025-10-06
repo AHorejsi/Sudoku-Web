@@ -9,13 +9,16 @@ import { useAppDispatch } from "./Hooks";
 import { AppDispatch } from "./Store";
 
 interface SelectionCardProps {
-    creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>
+    creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>;
+
+    token: string;
 }
 
 function _generate(
     dimension: string,
     difficulty: string,
     games: string[],
+    token: string,
     creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>,
     dispatch: AppDispatch,
     button: HTMLInputElement
@@ -23,7 +26,7 @@ function _generate(
     creator("Retrieving...");
     button.disabled = true;
 
-    retrieveBoard(dimension, difficulty, games).then((info: GenerateInfo) => {
+    retrieveBoard(dimension, difficulty, games, token).then((info: GenerateInfo) => {
         if (info.type.endsWith("Success")) {
             creator(info);
         }
@@ -68,7 +71,7 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
 
                     <label htmlFor="generate" />
                     <input className="btn btn-success" ref={button} type="button" name="generate" value="Generate"
-                        onClick={(_) => _generate(dimension, difficulty, games, props.creator, dispatch, button.current!)}
+                        onClick={(_) => _generate(dimension, difficulty, games, props.token, props.creator, dispatch, button.current!)}
                     />
                 </div>
             </form>

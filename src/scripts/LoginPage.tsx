@@ -6,7 +6,7 @@ import { login } from "./Fetch";
 import { LoginInfo } from "./LoginInfo";
 import InputField from "./InputField";
 import { useAppDispatch } from "./Hooks";
-import { user } from "./UserState";
+import { token, user } from "./UserState";
 import { AppDispatch } from "./Store";
 
 interface _LoginAttemptState {
@@ -27,6 +27,8 @@ function _checkLogin(info: LoginInfo, setLogin: Dispatch<SetStateAction<_LoginAt
     }
     else {    
         dispatch(user(dbUser));
+        dispatch(token(info.token));
+
         nav(Endpoints.GAMEPLAY);
     }
 }

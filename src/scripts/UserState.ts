@@ -18,10 +18,16 @@ function _findById(puzzleSet: Puzzle[], id: number): number {
 
 export const userSlice = createSlice({
     name: "user",
-    initialState: { user: null as User | null },
+    initialState: {
+        user: null as User | null,
+        token: null as string | null
+    },
     reducers: {
         user: (state, actions) => {
             state.user = actions.payload as User | null;
+        },
+        token: (state, actions) => {
+            state.token = actions.payload as string | null;
         },
         puzzle: (state, actions) => {
             const payload = actions.payload;
@@ -47,8 +53,10 @@ export const userSlice = createSlice({
     }
 });
 
-export const { user, puzzle } = userSlice.actions;
+export const { user, token, puzzle } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.login.user;
+
+export const selectToken = (state: RootState) => state.login.token;
 
 export default userSlice.reducer;
