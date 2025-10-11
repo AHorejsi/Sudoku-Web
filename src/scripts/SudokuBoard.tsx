@@ -4,10 +4,9 @@ import { createPuzzle, updatePuzzle } from "./Fetch";
 import { Box, Cage, GenerateInfo, Position, Sudoku } from "./GenerateInfo";
 import SudokuCell from "./SudokuCell";
 import { User } from "./LoginInfo";
-import { load, selectSave } from "./LoadState";
 import { useAppDispatch, useAppSelector } from "./Hooks";
 import { AppDispatch } from "./Store";
-import { puzzle, selectUser } from "./UserState";
+import { save, load, selectUser, selectLoad, selectToken } from "./UserState";
 import { generateDistinctRgbColors } from "./ColorGeneration";
 
 
@@ -255,6 +254,7 @@ function _determinePositionsOfKillerSums(cageSet: Cage[] | null, boardDimensions
 function _savePuzzle(
     puzzleId: number | null,
     user: User,
+    token: string,
     dispatch: AppDispatch,
     sudoku: Sudoku,
     button: HTMLButtonElement
@@ -264,11 +264,11 @@ function _savePuzzle(
     button.disabled = true;
 
     if (!puzzleId) {
-        createPuzzle(json, user.id).then((info) => {
+        createPuzzle(json, user.id, token).then((info) => {
             const newPuzzle = info.puzzle;
 
             dispatch(load(newPuzzle.id));
-            dispatch(puzzle({ operation: "ADD_ITEM", newPuzzle }));
+            dispatch(save({ newPuzzle }));
 
             _saveCleanup(button, info.type);
         }).catch((error) => {
@@ -276,12 +276,12 @@ function _savePuzzle(
         });
     }
     else {
-        updatePuzzle(puzzleId, json).then((info) => {
+        updatePuzzle(puzzleId, json, token).then((info) => {
             const saved = user.puzzles;
 
             for (const sudoku of saved) {
                 if (sudoku.id === puzzleId) {
-                    dispatch(puzzle({ operation: "UPDATE_ITEM", json, puzzleId }));
+                    dispatch(save({ operation: "UPDATE_ITEM", json, puzzleId }));
 
                     break;
                 }
@@ -315,8 +315,10 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
         const sudoku = info.sudoku;
         const button = useRef<HTMLButtonElement>(null);
 
-        const puzzleId = useAppSelector(selectSave);
+        const puzzleId = useAppSelector(selectLoad);
         const user = useAppSelector(selectUser)!;
+        const token = useAppSelector(selectToken)!;
+
         const dispatch = useAppDispatch();
         
         const grid = _createCells(sudoku);
@@ -327,7 +329,7 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
 
                 <div>
                     <button id="save-button" className="btn btn-primary" ref={button}
-                        onClick={(_) => _savePuzzle(puzzleId, user, dispatch, sudoku, button.current!)}
+                        onClick={(_) => _savePuzzle(puzzleId, user, token, dispatch, sudoku, button.current!)}
                     >
                         Save
                     </button>

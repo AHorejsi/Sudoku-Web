@@ -1,10 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import loadReducer from "./LoadState";
 import userReducer from "./UserState";
 
 const store = configureStore({
     reducer: {
-        reloaded: loadReducer,
         login: userReducer
     }
 });

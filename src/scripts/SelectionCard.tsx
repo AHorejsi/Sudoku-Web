@@ -4,7 +4,7 @@ import { retrieveBoard } from "./Fetch";
 import { GenerateInfo } from "./GenerateInfo";
 import SelectionRadioButton from "./SelectionRadioButton";
 import SelectionCheckbox from "./SelectionCheckbox";
-import { load } from "./LoadState";
+import { load } from "./UserState";
 import { useAppDispatch } from "./Hooks";
 import { AppDispatch } from "./Store";
 

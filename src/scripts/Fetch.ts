@@ -81,10 +81,11 @@ async function login(usernameOrEmail: string, password: string): Promise<LoginIn
 async function updateUser(
     userId: number,
     newUsername: string,
-    newEmail: string
+    newEmail: string,
+    token: string
 ): Promise<UpdateUserInfo> {
     const response = await fetch(URLs.UPDATE_USER, {
-        headers: _headers(XRequestIds.UPDATE_USER, null),
+        headers: _headers(XRequestIds.UPDATE_USER, token),
         method: "PUT",
         body: JSON.stringify({ userId, newUsername, newEmail }),
         credentials: "include"
@@ -97,13 +98,15 @@ async function updateUser(
     return update;
 }
 
-async function deleteUser(userId: number): Promise<DeleteUserInfo> {
+async function deleteUser(userId: number, token: string): Promise<DeleteUserInfo> {
     const response = await fetch(URLs.DELETE_USER, {
-        headers: _headers(XRequestIds.DELETE_USER, null),
+        headers: _headers(XRequestIds.DELETE_USER, token),
         method: "DELETE",
         body: JSON.stringify({ userId }),
         credentials: "include"
     });
+
+    alert(token);
 
     _ensureOkResponse(response);
 
@@ -112,9 +115,9 @@ async function deleteUser(userId: number): Promise<DeleteUserInfo> {
     return info;
 }
 
-async function createPuzzle(json: string, userId: number): Promise<CreatePuzzleInfo> {
+async function createPuzzle(json: string, userId: number, token: string): Promise<CreatePuzzleInfo> {
     const response = await fetch(URLs.CREATE_PUZZLE, {
-        headers: _headers(XRequestIds.CREATE_PUZZLE, null),
+        headers: _headers(XRequestIds.CREATE_PUZZLE, token),
         method: "PUT",
         body: JSON.stringify({ json, userId }),
         credentials: "include"
@@ -127,9 +130,9 @@ async function createPuzzle(json: string, userId: number): Promise<CreatePuzzleI
     return info;
 }
 
-async function updatePuzzle(puzzleId: number, json: string): Promise<UpdatePuzzleInfo> {
+async function updatePuzzle(puzzleId: number, json: string, token: string): Promise<UpdatePuzzleInfo> {
     const response = await fetch(URLs.UPDATE_PUZZLE, {
-        headers: _headers(XRequestIds.UPDATE_PUZZLE, null),
+        headers: _headers(XRequestIds.UPDATE_PUZZLE, token),
         method: "PUT",
         body: JSON.stringify({ puzzleId, json }),
         credentials: "include"
@@ -142,9 +145,9 @@ async function updatePuzzle(puzzleId: number, json: string): Promise<UpdatePuzzl
     return info;
 }
 
-async function deletePuzzle(puzzleId: number): Promise<DeletePuzzleInfo> {
+async function deletePuzzle(puzzleId: number, token: string): Promise<DeletePuzzleInfo> {
     const response = await fetch(URLs.DELETE_PUZZLE, {
-        headers: _headers(XRequestIds.DELETE_PUZZLE, null),
+        headers: _headers(XRequestIds.DELETE_PUZZLE, token),
         method: "DELETE",
         body: JSON.stringify({ puzzleId }),
         credentials: "include"
