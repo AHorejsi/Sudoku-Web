@@ -19,7 +19,7 @@ function _headers(xReqId: string, token: string | null): HeadersInit {
         "X-Request-ID": xReqId,
         "Accept": "application/json",
         "Accept-Charset": "ISO-8859-1",
-        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Encoding": "gzip",
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
         "Connection": "keep-alive",
@@ -27,7 +27,7 @@ function _headers(xReqId: string, token: string | null): HeadersInit {
     };
 
     if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
+        headers["Authorization"] = token;
     }
 
     return headers;

@@ -19,7 +19,7 @@ interface LoginInfo {
 
     user: User | undefined;
 
-    token: string;
+    token: string | undefined;
 }
 
 export { Puzzle, User, LoginInfo };
