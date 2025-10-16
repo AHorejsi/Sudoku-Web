@@ -5,10 +5,10 @@ import { retrieveBoard } from "./Fetch";
 import { GenerateInfo } from "./GenerateInfo";
 import SelectionRadioButton from "./SelectionRadioButton";
 import SelectionCheckbox from "./SelectionCheckbox";
-import { load, selectToken } from "./UserState";
+import { load } from "./UserState";
 import { useAppDispatch, useAppSelector } from "./Hooks";
 import { AppDispatch } from "./Store";
-import { Endpoints } from "./StringConstants";
+import { Endpoints, LocalStorageNames } from "./StringConstants";
 
 interface SelectionCardProps {
     creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>;
@@ -18,13 +18,14 @@ function _generate(
     dimension: string,
     difficulty: string,
     games: string[],
-    token: string | null,
     creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>,
     nav: NavigateFunction,
     dispatch: AppDispatch,
     button: HTMLInputElement
 ) {
     creator("Retrieving...");
+
+    const token = localStorage.getItem(LocalStorageNames.JWT_TOKEN);
 
     button.disabled = true;
 
@@ -48,8 +49,6 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
     const dimension = "NINE";
     const [difficulty, setDifficulty] = useState("");
     const [games, setGames] = useState(Array<string>());
-
-    const token = useAppSelector(selectToken);
 
     const dispatch = useAppDispatch();
 
@@ -77,7 +76,7 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
 
                     <label htmlFor="generate" />
                     <input className="btn btn-success" ref={button} type="button" name="generate" value="Generate"
-                        onClick={(_) => _generate(dimension, difficulty, games, token, props.creator, nav, dispatch, button.current!)}
+                        onClick={(_) => _generate(dimension, difficulty, games, props.creator, nav, dispatch, button.current!)}
                     />
                 </div>
             </form>

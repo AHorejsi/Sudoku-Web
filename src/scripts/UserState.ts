@@ -47,9 +47,6 @@ export const userSlice = createSlice({
         user: (state, actions) => {
             state.user = actions.payload as User | null;
         },
-        token: (state, actions) => {
-            state.token = actions.payload as string | null;
-        },
         load: (state, actions) => {
             state.loadId = actions.payload as number | null;
         },
@@ -85,10 +82,9 @@ export const userSlice = createSlice({
     }
 });
 
-export const { user, token, load, save } = userSlice.actions;
+export const { user, load, save } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.login.user;
 export const selectLoad = (state: RootState) => state.login.loadId;
-export const selectToken = (state: RootState) => state.login.token;
 
 export default userSlice.reducer;

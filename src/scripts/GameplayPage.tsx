@@ -1,13 +1,13 @@
 import "../styles/GameplayPage.css";
 import { ReactNode, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
-import { Endpoints } from "./StringConstants";
+import { Endpoints, LocalStorageNames } from "./StringConstants";
 import { GenerateInfo } from "./GenerateInfo";
 import { Puzzle, User } from "./LoginInfo";
 import SelectionCard from "./SelectionCard";
 import SudokuBoard from "./SudokuBoard";
 import { useAppDispatch, useAppSelector } from "./Hooks";
-import { selectUser, selectLoad, selectToken, token, user, load } from "./UserState";
+import { selectUser, selectLoad, user, load } from "./UserState";
 import { renewJwtToken } from "./Fetch";
 import { AppDispatch } from "./Store";
 
@@ -31,9 +31,12 @@ function _getInfo(puzzleSet: Puzzle[], targetId: number | null): GenerateInfo | 
 function _setUpJwtAutoRenewal(ref: { jwt: string }, dbUser: User, dispatch: AppDispatch, nav: NavigateFunction) {
     setInterval(() => {
         renewJwtToken(dbUser, ref.jwt).then((info) => {
-            dispatch(token(info.newToken));
-
-            ref.jwt = useAppSelector(selectToken)!;
+            if (info.type.endsWith("Success")) {
+                localStorage.setItem(LocalStorageNames.JWT_TOKEN, info.newToken!);
+            }
+            else {
+                nav(Endpoints.ERROR, { state: new Error("Invalid JWT Token") });
+            }
         }).catch((error) => {
             nav(Endpoints.ERROR, { state: error });
         });
@@ -42,7 +45,6 @@ function _setUpJwtAutoRenewal(ref: { jwt: string }, dbUser: User, dispatch: AppD
 
 function _logout(dispatch: AppDispatch, nav: NavigateFunction) {
     dispatch(user(null));
-    dispatch(token(null));
     dispatch(load(null));
 
     nav(Endpoints.MAIN);
@@ -55,14 +57,12 @@ export default function GameplayPage(): ReactNode {
 
     const puzzleId = useAppSelector(selectLoad);
     const dbUser = useAppSelector(selectUser)!;
-    let jwt = useAppSelector(selectToken)!;
+    let jwt = localStorage.getItem(LocalStorageNames.JWT_TOKEN);
 
     const dispatch = useAppDispatch();
 
     const info = _getInfo(dbUser.puzzles, puzzleId);
     const [board, setBoard] = useState<GenerateInfo | string | Error>(info ?? "No Puzzle");
-
-    _setUpJwtAutoRenewal({ jwt }, dbUser, dispatch, nav);
 
     return (
         <div className="container">

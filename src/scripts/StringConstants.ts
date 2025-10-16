@@ -30,6 +30,10 @@ const XRequestIds = {
     UPDATE_PUZZLE: "Update-Puzzle",
     DELETE_PUZZLE: "Delete-Puzzle",
     RENEW_TOKEN: "Renew-Token"
-}
+};
 
-export { Endpoints, URLs, XRequestIds };
+const LocalStorageNames = {
+    JWT_TOKEN: "jwt-token"
+};
+
+export { Endpoints, URLs, XRequestIds, LocalStorageNames };

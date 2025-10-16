@@ -9,6 +9,7 @@ import { AppDispatch } from "./Store";
 import { save, load, selectUser, selectLoad, selectToken } from "./UserState";
 import { generateDistinctRgbColors } from "./ColorGeneration";
 import { useNavigate } from "react-router";
+import { LocalStorageNames } from "./StringConstants";
 
 
 interface SudokuBoardProps {
@@ -255,12 +256,12 @@ function _determinePositionsOfKillerSums(cageSet: Cage[] | null, boardDimensions
 function _savePuzzle(
     puzzleId: number | null,
     user: User,
-    token: string | null,
     sudoku: Sudoku,
     dispatch: AppDispatch,
     button: HTMLButtonElement
 ) {
     const json = JSON.stringify(sudoku);
+    const token = localStorage.getItem(LocalStorageNames.JWT_TOKEN);
 
     button.disabled = true;
 
@@ -306,8 +307,6 @@ function _saveCleanup(button: HTMLButtonElement, message: string) {
 export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
     const info = props.info;
 
-    const nav = useNavigate();
-
     if (info instanceof Error) {
         <p id="error-text" className="all-text">{ info.message }</p>
     }
@@ -321,7 +320,6 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
 
         const puzzleId = useAppSelector(selectLoad);
         const user = useAppSelector(selectUser)!;
-        const token = useAppSelector(selectToken);
 
         const dispatch = useAppDispatch();
         
@@ -333,7 +331,7 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
 
                 <div>
                     <button id="save-button" className="btn btn-primary" ref={button}
-                        onClick={(_) => _savePuzzle(puzzleId, user, token, sudoku, dispatch, button.current!)}
+                        onClick={(_) => _savePuzzle(puzzleId, user, sudoku, dispatch, button.current!)}
                     >
                         Save
                     </button>

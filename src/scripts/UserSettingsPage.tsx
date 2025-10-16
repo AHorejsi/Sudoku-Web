@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
-import { Endpoints } from "./StringConstants";
+import { Endpoints, LocalStorageNames } from "./StringConstants";
 import { updateUser, deleteUser } from "./Fetch";
 import { User } from "./LoginInfo";
 import { UpdateUserInfo } from "./UpdateUserInfo";
@@ -12,54 +12,59 @@ import InputField from "./InputField";
 
 function _checkUpdate(info: UpdateUserInfo, dbUser: User, newUsername: string, newEmail: string, nav: NavigateFunction, dispatch: AppDispatch) {
     if (!info.type.endsWith("Success")) {
-        throw new Error("Failed to update");
+        nav(Endpoints.ERROR, { state: new Error("Failed to update") });
     }
+    else {
+        dispatch(user({
+            id: dbUser.id,
+            username: newUsername,
+            email: newEmail,
+            puzzles: dbUser.puzzles
+        }));
 
-    dispatch(user({
-        id: dbUser.id,
-        username: newUsername,
-        email: newEmail,
-        puzzles: dbUser.puzzles
-    }));
-
-    nav(Endpoints.GAMEPLAY);
+        nav(Endpoints.GAMEPLAY);
+    }
 }
 
 function _checkDelete(info: DeleteUserInfo, nav: NavigateFunction, dispatch: AppDispatch) {
     if (!info.type.endsWith("Success")) {
-        throw new Error("Failed to delete");
+        nav(Endpoints.ERROR, { state: new Error("Failed to delete") });
     }
+    else {
+        dispatch(user(null));
+        dispatch(load(null));
 
-    dispatch(user(null));
-    dispatch(load(null));
-
-    nav(Endpoints.MAIN);
+        nav(Endpoints.MAIN);
+    }
 }
 
 function _attemptUpdate(
     dbUser: User,
     newUsername: string,
     newEmail: string,
-    token: string | null,
     dispatch: AppDispatch,
     nav: NavigateFunction
 ) {
     if (dbUser.username === newUsername && dbUser.email === newEmail) {
         return;
     }
+    
+    const token = localStorage.getItem(LocalStorageNames.JWT_TOKEN);
 
     updateUser(dbUser.id, newUsername, newEmail, token).then((info: UpdateUserInfo) => {
         _checkUpdate(info, dbUser, newUsername, newEmail, nav, dispatch);
     }).catch((error) => {
-        throw error;
+        nav(Endpoints.ERROR, { state: error });
     });
 }
 
-function _attemptDelete(userId: number, token: string | null, dispatch: AppDispatch, nav: NavigateFunction) {
+function _attemptDelete(userId: number, dispatch: AppDispatch, nav: NavigateFunction) {
+    const token = localStorage.getItem(LocalStorageNames.JWT_TOKEN);
+
     deleteUser(userId, token).then((info: DeleteUserInfo) => {
         _checkDelete(info, nav, dispatch);
     }).catch((error) => {
-        throw error;
+        nav(Endpoints.ERROR, { state: error });
     });
 }
 
@@ -69,7 +74,6 @@ export default function UserSettingsPage(): ReactNode {
     const nav = useNavigate();
     
     const dbUser = useAppSelector(selectUser)!;
-    const token = useAppSelector(selectToken);
 
     const dispatch = useAppDispatch();
 
@@ -92,13 +96,13 @@ export default function UserSettingsPage(): ReactNode {
 
             <span>
                 <button className="btn btn-info"
-                    onClick={(_) => _attemptUpdate(dbUser, newUsername, newEmail, token, dispatch, nav)}
+                    onClick={(_) => _attemptUpdate(dbUser, newUsername, newEmail, dispatch, nav)}
                 >
                     Update
                 </button>
 
                 <button className="btn btn-danger"
-                    onClick={(_) => _attemptDelete(dbUser.id, token, dispatch, nav)}
+                    onClick={(_) => _attemptDelete(dbUser.id, dispatch, nav)}
                 >
                     Delete Account
                 </button>
