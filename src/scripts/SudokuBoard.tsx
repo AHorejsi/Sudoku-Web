@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "./Hooks";
 import { AppDispatch } from "./Store";
 import { save, load, selectUser, selectLoad, selectToken } from "./UserState";
 import { generateDistinctRgbColors } from "./ColorGeneration";
+import { useNavigate } from "react-router";
 
 
 interface SudokuBoardProps {
@@ -254,9 +255,9 @@ function _determinePositionsOfKillerSums(cageSet: Cage[] | null, boardDimensions
 function _savePuzzle(
     puzzleId: number | null,
     user: User,
-    token: string,
-    dispatch: AppDispatch,
+    token: string | null,
     sudoku: Sudoku,
+    dispatch: AppDispatch,
     button: HTMLButtonElement
 ) {
     const json = JSON.stringify(sudoku);
@@ -305,19 +306,22 @@ function _saveCleanup(button: HTMLButtonElement, message: string) {
 export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
     const info = props.info;
 
+    const nav = useNavigate();
+
     if (info instanceof Error) {
-        return <p id="error-text" className="all-text">{ info.message }</p>;
+        <p id="error-text" className="all-text">{ info.message }</p>
     }
     else if ("string" === typeof info) {
         return <p id="info-text" className="all-text">{ info }</p>;
     }
     else {
         const sudoku = info.sudoku;
+
         const button = useRef<HTMLButtonElement>(null);
 
         const puzzleId = useAppSelector(selectLoad);
         const user = useAppSelector(selectUser)!;
-        const token = useAppSelector(selectToken)!;
+        const token = useAppSelector(selectToken);
 
         const dispatch = useAppDispatch();
         
@@ -329,7 +333,7 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
 
                 <div>
                     <button id="save-button" className="btn btn-primary" ref={button}
-                        onClick={(_) => _savePuzzle(puzzleId, user, token, dispatch, sudoku, button.current!)}
+                        onClick={(_) => _savePuzzle(puzzleId, user, token, sudoku, dispatch, button.current!)}
                     >
                         Save
                     </button>

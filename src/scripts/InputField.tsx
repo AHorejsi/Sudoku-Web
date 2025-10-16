@@ -10,8 +10,6 @@ interface InputFieldProps {
 
     covered: boolean;
 
-    value?: string;
-
     inputEvent?: FormEventHandler<HTMLInputElement>
 }
 

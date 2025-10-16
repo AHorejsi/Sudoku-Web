@@ -11,12 +11,14 @@ interface SelectionRadioButtonProps {
 }
 
 export default function SelectionRadioButton(props: SelectionRadioButtonProps): ReactNode {
+    const setter = props.setter;
+
     return (
         <div>
-            {`${props.prompt}:    `}
+            {`${props.prompt}:`}
             
             <label htmlFor={props.name} />
-            <input type="radio" name={props.name} onClick={(_) => { props.setter(props.value) }} />
+            <input type="radio" name={props.name} onClick={(_) => setter(props.value)} />
         </div>
     );
 }

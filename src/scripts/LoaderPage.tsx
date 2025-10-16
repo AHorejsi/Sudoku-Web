@@ -10,10 +10,10 @@ import { selectUser } from "./UserState";
 export default function LoaderPage(): ReactNode {
     document.title = "Sudoku - Loader";
 
-    const user = useAppSelector(selectUser);
+    const user = useAppSelector(selectUser)!;
     const nav = useNavigate();
 
-    const puzzleSet = user!.puzzles;
+    const puzzleSet = user.puzzles;
     const selection = Array<ReactNode>();
 
     for (const puzzle of puzzleSet) {

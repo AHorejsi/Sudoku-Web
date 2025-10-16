@@ -1,13 +1,15 @@
 import "../styles/GameplayPage.css";
 import { ReactNode, useState } from "react";
-import { useNavigate } from "react-router";
+import { NavigateFunction, useNavigate } from "react-router";
 import { Endpoints } from "./StringConstants";
 import { GenerateInfo } from "./GenerateInfo";
-import { Puzzle } from "./LoginInfo";
+import { Puzzle, User } from "./LoginInfo";
 import SelectionCard from "./SelectionCard";
 import SudokuBoard from "./SudokuBoard";
-import { useAppSelector } from "./Hooks";
-import { selectToken, selectUser, selectLoad } from "./UserState";
+import { useAppDispatch, useAppSelector } from "./Hooks";
+import { selectUser, selectLoad, selectToken, token, user, load } from "./UserState";
+import { renewJwtToken } from "./Fetch";
+import { AppDispatch } from "./Store";
 
 function _getInfo(puzzleSet: Puzzle[], targetId: number | null): GenerateInfo | null | undefined {
     if (!targetId) {
@@ -26,16 +28,41 @@ function _getInfo(puzzleSet: Puzzle[], targetId: number | null): GenerateInfo | 
     return undefined;
 }
 
+function _setUpJwtAutoRenewal(ref: { jwt: string }, dbUser: User, dispatch: AppDispatch, nav: NavigateFunction) {
+    setInterval(() => {
+        renewJwtToken(dbUser, ref.jwt).then((info) => {
+            dispatch(token(info.newToken));
+
+            ref.jwt = useAppSelector(selectToken)!;
+        }).catch((error) => {
+            nav(Endpoints.ERROR, { state: error });
+        });
+    }, 3600000); // 1 hour
+}
+
+function _logout(dispatch: AppDispatch, nav: NavigateFunction) {
+    dispatch(user(null));
+    dispatch(token(null));
+    dispatch(load(null));
+
+    nav(Endpoints.MAIN);
+}
+
 export default function GameplayPage(): ReactNode {
     document.title = "Sudoku - Gameplay";
 
     const nav = useNavigate();
+
     const puzzleId = useAppSelector(selectLoad);
     const dbUser = useAppSelector(selectUser)!;
-    const token = useAppSelector(selectToken)!;
+    let jwt = useAppSelector(selectToken)!;
+
+    const dispatch = useAppDispatch();
 
     const info = _getInfo(dbUser.puzzles, puzzleId);
     const [board, setBoard] = useState<GenerateInfo | string | Error>(info ?? "No Puzzle");
+
+    _setUpJwtAutoRenewal({ jwt }, dbUser, dispatch, nav);
 
     return (
         <div className="container">
@@ -43,12 +70,14 @@ export default function GameplayPage(): ReactNode {
                 <h1>Hello, { dbUser.username }!</h1>
 
                 <button className="btn btn-info" onClick={(_) => nav(Endpoints.LOADER)}>Load</button>
-                <span id="divider" />
+                <span className="divider" />
                 <button className="btn btn-info" onClick={(_) => nav(Endpoints.SETTINGS)}>User Settings</button>
+                <span className="divider" />
+                <button className="btn btn-danger" onClick={(_) => _logout(dispatch, nav)} />
             </div>
 
             <div id="gameplay">
-                <SelectionCard token={token} creator={setBoard} />
+                <SelectionCard creator={setBoard} />
                 <SudokuBoard info={board} />
             </div>
         </div>

@@ -42,10 +42,10 @@ function _attemptUserLogin(
 ) {
     setLogin({ borders: "login-not-attempted", text: "Authenticating...", style: "login-text", padding: "0em" });
 
-    login(usernameOrEmail, password).then((info: LoginInfo) => {
+    login(usernameOrEmail, password).then((info) => {
         _checkLogin(info, setLogin, nav, dispatch);
-    }).catch((error: Error) => {
-        throw error;
+    }).catch((error) => {
+        nav(Endpoints.ERROR, { state: error })
     });
 }
 

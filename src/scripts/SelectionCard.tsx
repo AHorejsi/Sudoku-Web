@@ -1,44 +1,46 @@
 import "../styles/SelectionCard.css";
-import { ReactNode, useState, Dispatch, SetStateAction, useRef } from "react";
+import { ReactNode, useState, useRef, Dispatch, SetStateAction } from "react";
+import { NavigateFunction, useNavigate } from "react-router";
 import { retrieveBoard } from "./Fetch";
 import { GenerateInfo } from "./GenerateInfo";
 import SelectionRadioButton from "./SelectionRadioButton";
 import SelectionCheckbox from "./SelectionCheckbox";
-import { load } from "./UserState";
-import { useAppDispatch } from "./Hooks";
+import { load, selectToken } from "./UserState";
+import { useAppDispatch, useAppSelector } from "./Hooks";
 import { AppDispatch } from "./Store";
+import { Endpoints } from "./StringConstants";
 
 interface SelectionCardProps {
     creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>;
-
-    token: string;
 }
 
 function _generate(
     dimension: string,
     difficulty: string,
     games: string[],
-    token: string,
+    token: string | null,
     creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>,
+    nav: NavigateFunction,
     dispatch: AppDispatch,
     button: HTMLInputElement
 ) {
     creator("Retrieving...");
+
     button.disabled = true;
 
-    retrieveBoard(dimension, difficulty, games, token).then((info: GenerateInfo) => {
+    retrieveBoard(dimension, difficulty, games, token).then((info) => {
         if (info.type.endsWith("Success")) {
             creator(info);
         }
-        else {
+        else if (info.type.endsWith("UnfilledFields")) {
             creator(new Error("PLEASE FILL FIELDS"));
         }
-    }).catch((error: Error) => {
-        creator(error);
+
+        button.disabled = false;
+    }).catch((error) => {
+        nav(Endpoints.ERROR, { state: error });
     }).finally(() => {
         dispatch(load(null));
-        
-        button.disabled = false;
     });
 }
 
@@ -47,7 +49,11 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
     const [difficulty, setDifficulty] = useState("");
     const [games, setGames] = useState(Array<string>());
 
+    const token = useAppSelector(selectToken);
+
     const dispatch = useAppDispatch();
+
+    const nav = useNavigate();
     const button = useRef<HTMLInputElement>(null);
 
     return (
@@ -62,8 +68,8 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
                     <SelectionRadioButton name="difficulty" value="MASTER" prompt="Master" setter={setDifficulty} />
 
                     <p className="game-selection-title">Game Types</p>
-                    <SelectionCheckbox name="game-type" value="KILLER" prompt="Killer" getter={games} setter={setGames} />
-                    <SelectionCheckbox name="game-type" value="HYPER" prompt="Hyper" getter={games} setter={setGames} />
+                    <SelectionCheckbox name="game-type" value="KILLER" prompt="Killer" current={games} setter={setGames} />
+                    <SelectionCheckbox name="game-type" value="HYPER" prompt="Hyper" current={games} setter={setGames} />
                 </div>
 
                 <div id="generate-button">
@@ -71,7 +77,7 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
 
                     <label htmlFor="generate" />
                     <input className="btn btn-success" ref={button} type="button" name="generate" value="Generate"
-                        onClick={(_) => _generate(dimension, difficulty, games, props.token, props.creator, dispatch, button.current!)}
+                        onClick={(_) => _generate(dimension, difficulty, games, token, props.creator, nav, dispatch, button.current!)}
                     />
                 </div>
             </form>

@@ -15,11 +15,11 @@ interface _SignupAttemptState {
 }
 
 function _checkSignup(info: SignupInfo, setSignup: Dispatch<SetStateAction<_SignupAttemptState>>, nav: NavigateFunction) {
-    if (!info.type.endsWith("Success")) {
-        setSignup({ borders: "failed-sign-up" , text: "Username/Email or Password not valid", style: "failed-signup-text" });
-    }
-    else {    
+    if (info.type.endsWith("Success")) {
         nav(Endpoints.LOGIN);
+    }
+    else {
+        setSignup({ borders: "failed-sign-up" , text: "Username/Email or Password not valid", style: "failed-signup-text" });    
     }
 }
 
@@ -32,10 +32,10 @@ function _attemptSignup(
 ) {
     setSignup({ borders: "sign-up-not-attempted", text: "Registering...", style: "signup-text" });
 
-    signup(username, email, password).then((info: SignupInfo) => {
+    signup(username, email, password).then((info) => {
         _checkSignup(info, setSignup, nav);
-    }).catch((error: Error) => {
-        throw error;
+    }).catch((error) => {
+        nav(Endpoints.ERROR, { state: error });
     })
 }
 
@@ -46,7 +46,7 @@ export default function SignUpPage(): ReactNode {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const [signup, setSignup] = useState<_SignupAttemptState>({ borders: "sign-up-not-attempted", text: "", style: "" });
+    const [signup, setSignup] = useState({ borders: "sign-up-not-attempted", text: "", style: "" });
 
     const nav = useNavigate();
 

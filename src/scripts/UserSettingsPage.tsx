@@ -40,7 +40,7 @@ function _attemptUpdate(
     dbUser: User,
     newUsername: string,
     newEmail: string,
-    token: string,
+    token: string | null,
     dispatch: AppDispatch,
     nav: NavigateFunction
 ) {
@@ -55,7 +55,7 @@ function _attemptUpdate(
     });
 }
 
-function _attemptDelete(userId: number, token: string, dispatch: AppDispatch, nav: NavigateFunction) {
+function _attemptDelete(userId: number, token: string | null, dispatch: AppDispatch, nav: NavigateFunction) {
     deleteUser(userId, token).then((info: DeleteUserInfo) => {
         _checkDelete(info, nav, dispatch);
     }).catch((error) => {
@@ -69,7 +69,7 @@ export default function UserSettingsPage(): ReactNode {
     const nav = useNavigate();
     
     const dbUser = useAppSelector(selectUser)!;
-    const token = useAppSelector(selectToken)!;
+    const token = useAppSelector(selectToken);
 
     const dispatch = useAppDispatch();
 

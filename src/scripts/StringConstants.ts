@@ -4,7 +4,8 @@ const Endpoints = {
     LOGIN: "/login",
     GAMEPLAY: "/gameplay",
     LOADER: "/loader",
-    SETTINGS: "/settings"
+    SETTINGS: "/settings",
+    ERROR: "/error"
 };
 
 const URLs = {
@@ -15,7 +16,8 @@ const URLs = {
     DELETE_USER: "http://127.0.0.1:8080/deleteUser",
     CREATE_PUZZLE: "http://127.0.0.1:8080/createPuzzle",
     UPDATE_PUZZLE: "http://127.0.0.1:8080/updatePuzzle",
-    DELETE_PUZZLE: "http://127.0.0.1:8080/deletePuzzle"
+    DELETE_PUZZLE: "http://127.0.0.1:8080/deletePuzzle",
+    RENEW_TOKEN: "http://127.0.0.1:8080/renewToken"
 };
 
 const XRequestIds = {
@@ -26,7 +28,8 @@ const XRequestIds = {
     DELETE_USER: "Delete-User",
     CREATE_PUZZLE: "Create-Puzzle",
     UPDATE_PUZZLE: "Update-Puzzle",
-    DELETE_PUZZLE: "Delete-Puzzle"
+    DELETE_PUZZLE: "Delete-Puzzle",
+    RENEW_TOKEN: "Renew-Token"
 }
 
 export { Endpoints, URLs, XRequestIds };

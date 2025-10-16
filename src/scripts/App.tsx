@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router";
 import { Endpoints } from "./StringConstants";
 import GameplayPage from "./GameplayPage";
@@ -7,7 +8,7 @@ import SignUpPage from "./SignUpPage";
 import UserSettingsPage from "./UserSettingsPage";
 import MainPage from "./MainPage";
 import LoaderPage from "./LoaderPage";
-import { Provider } from "react-redux";
+import ErrorPage from "./ErrorPage";
 import store from "./Store";
 
 export default function App(): ReactNode {
@@ -21,6 +22,7 @@ export default function App(): ReactNode {
                     <Route path={Endpoints.GAMEPLAY} element={<GameplayPage />} />
                     <Route path={Endpoints.LOADER} element={<LoaderPage />} />
                     <Route path={Endpoints.SETTINGS} element={<UserSettingsPage />} />
+                    <Route path={Endpoints.ERROR} element={<ErrorPage />} />
                 </Routes>
             </BrowserRouter>
         </Provider>
