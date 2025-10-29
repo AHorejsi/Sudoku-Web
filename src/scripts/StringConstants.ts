@@ -17,6 +17,7 @@ const URLs = {
     CREATE_PUZZLE: "http://127.0.0.1:8080/createPuzzle",
     UPDATE_PUZZLE: "http://127.0.0.1:8080/updatePuzzle",
     DELETE_PUZZLE: "http://127.0.0.1:8080/deletePuzzle",
+    TOKEN_LOGIN: "http://127.0.0.1:8080/tokenLogin",
     RENEW_TOKEN: "http://127.0.0.1:8080/renewToken"
 };
 
@@ -29,11 +30,12 @@ const XRequestIds = {
     CREATE_PUZZLE: "Create-Puzzle",
     UPDATE_PUZZLE: "Update-Puzzle",
     DELETE_PUZZLE: "Delete-Puzzle",
+    TOKEN_LOGIN: "Token-Login",
     RENEW_TOKEN: "Renew-Token"
 };
 
-const LocalStorageNames = {
+const StorageNames = {
     JWT_TOKEN: "jwt-token"
 };
 
-export { Endpoints, URLs, XRequestIds, LocalStorageNames };
+export { Endpoints, URLs, XRequestIds, StorageNames };

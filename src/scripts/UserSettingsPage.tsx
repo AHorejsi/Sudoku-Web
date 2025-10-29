@@ -1,14 +1,15 @@
 import { ReactNode } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
-import { Endpoints, LocalStorageNames } from "./StringConstants";
+import { Endpoints, StorageNames } from "./StringConstants";
 import { updateUser, deleteUser } from "./Fetch";
 import { User } from "./LoginInfo";
 import { UpdateUserInfo } from "./UpdateUserInfo";
 import { DeleteUserInfo } from "./DeleteUserInfo";
 import { useAppDispatch, useAppSelector } from "./Hooks";
 import { AppDispatch } from "./Store";
-import { user, load, selectUser, selectToken } from "./UserState";
+import { user, load, selectUser } from "./UserState";
 import InputField from "./InputField";
+import { getItemFromStorage } from "./Storage";
 
 function _checkUpdate(info: UpdateUserInfo, dbUser: User, newUsername: string, newEmail: string, nav: NavigateFunction, dispatch: AppDispatch) {
     if (!info.type.endsWith("Success")) {
@@ -49,7 +50,7 @@ function _attemptUpdate(
         return;
     }
     
-    const token = localStorage.getItem(LocalStorageNames.JWT_TOKEN);
+    const token = getItemFromStorage(StorageNames.JWT_TOKEN);
 
     updateUser(dbUser.id, newUsername, newEmail, token).then((info: UpdateUserInfo) => {
         _checkUpdate(info, dbUser, newUsername, newEmail, nav, dispatch);
@@ -59,7 +60,7 @@ function _attemptUpdate(
 }
 
 function _attemptDelete(userId: number, dispatch: AppDispatch, nav: NavigateFunction) {
-    const token = localStorage.getItem(LocalStorageNames.JWT_TOKEN);
+    const token = getItemFromStorage(StorageNames.JWT_TOKEN);
 
     deleteUser(userId, token).then((info: DeleteUserInfo) => {
         _checkDelete(info, nav, dispatch);

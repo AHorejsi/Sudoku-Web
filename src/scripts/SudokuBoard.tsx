@@ -6,11 +6,11 @@ import SudokuCell from "./SudokuCell";
 import { User } from "./LoginInfo";
 import { useAppDispatch, useAppSelector } from "./Hooks";
 import { AppDispatch } from "./Store";
-import { save, load, selectUser, selectLoad, selectToken } from "./UserState";
+import { save, load, selectUser, selectLoad } from "./UserState";
 import { generateDistinctRgbColors } from "./ColorGeneration";
-import { useNavigate } from "react-router";
-import { LocalStorageNames } from "./StringConstants";
-
+import { Endpoints, StorageNames } from "./StringConstants";
+import { getItemFromStorage } from "./Storage";
+import { NavigateFunction, useNavigate } from "react-router";
 
 interface SudokuBoardProps {
     info: GenerateInfo | string | Error;
@@ -257,11 +257,12 @@ function _savePuzzle(
     puzzleId: number | null,
     user: User,
     sudoku: Sudoku,
+    nav: NavigateFunction,
     dispatch: AppDispatch,
     button: HTMLButtonElement
 ) {
     const json = JSON.stringify(sudoku);
-    const token = localStorage.getItem(LocalStorageNames.JWT_TOKEN);
+    const token = getItemFromStorage(StorageNames.JWT_TOKEN);
 
     button.disabled = true;
 
@@ -270,7 +271,7 @@ function _savePuzzle(
             const newPuzzle = info.puzzle;
 
             dispatch(load(newPuzzle.id));
-            dispatch(save({ newPuzzle }));
+            dispatch(save({ operation: "ADD_ITEM", data: { newPuzzle } }));
 
             _saveCleanup(button, info.type);
         }).catch((error) => {
@@ -283,7 +284,7 @@ function _savePuzzle(
 
             for (const sudoku of saved) {
                 if (sudoku.id === puzzleId) {
-                    dispatch(save({ operation: "UPDATE_ITEM", json, puzzleId }));
+                    dispatch(save({ operation: "UPDATE_ITEM", data: { json, puzzleId } }));
 
                     break;
                 }
@@ -291,7 +292,7 @@ function _savePuzzle(
 
             _saveCleanup(button, info.type);
         }).catch((error) => {
-            throw error;
+            nav(Endpoints.ERROR, { state: error });
         });
     }
 }
@@ -322,6 +323,8 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
         const user = useAppSelector(selectUser)!;
 
         const dispatch = useAppDispatch();
+
+        const nav = useNavigate();
         
         const grid = _createCells(sudoku);
 
@@ -331,7 +334,7 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
 
                 <div>
                     <button id="save-button" className="btn btn-primary" ref={button}
-                        onClick={(_) => _savePuzzle(puzzleId, user, sudoku, dispatch, button.current!)}
+                        onClick={(_) => _savePuzzle(puzzleId, user, sudoku, nav, dispatch, button.current!)}
                     >
                         Save
                     </button>

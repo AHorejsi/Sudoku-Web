@@ -1,13 +1,14 @@
 import "../styles/LoginPage.css";
 import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
-import { Endpoints } from "./StringConstants";
-import { login } from "./Fetch";
+import { Endpoints, StorageNames } from "./StringConstants";
+import { loginWithPassword } from "./Fetch";
 import { LoginInfo } from "./LoginInfo";
 import InputField from "./InputField";
 import { useAppDispatch } from "./Hooks";
-import { token, user } from "./UserState";
+import { user } from "./UserState";
 import { AppDispatch } from "./Store";
+import { setItemInStorage } from "./Storage";
 
 interface _LoginAttemptState {
     borders: string;
@@ -25,9 +26,11 @@ function _checkLogin(info: LoginInfo, setLogin: Dispatch<SetStateAction<_LoginAt
     if (!dbUser) {
         setLogin({ borders: "failed-login" , text: "Username or Password not authenticated", style: "failed-login-text", padding: "0em" });
     }
-    else {    
+    else {
+        const jwtToken = info.token!;
+
         dispatch(user(dbUser));
-        dispatch(token(info.token));
+        setItemInStorage(StorageNames.JWT_TOKEN, jwtToken);
 
         nav(Endpoints.GAMEPLAY);
     }
@@ -42,7 +45,7 @@ function _attemptUserLogin(
 ) {
     setLogin({ borders: "login-not-attempted", text: "Authenticating...", style: "login-text", padding: "0em" });
 
-    login(usernameOrEmail, password).then((info) => {
+    loginWithPassword(usernameOrEmail, password).then((info) => {
         _checkLogin(info, setLogin, nav, dispatch);
     }).catch((error) => {
         nav(Endpoints.ERROR, { state: error })
@@ -54,10 +57,10 @@ export default function LoginPage(): ReactNode {
 
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
     const [password, setPassword] = useState("");
-
     const [login, setLogin] = useState<_LoginAttemptState>({ borders: "login-not-attempted", text: "", style: "", padding: "1.5em" });
     
     const nav = useNavigate();
+
     const dispatch = useAppDispatch();
 
     return (

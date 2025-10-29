@@ -11,7 +11,7 @@ import { RenewJwtTokenInfo } from "./RenewJwtTokenInfo";
 
 function _ensureOkResponse(response: Response) {
     if (!response.ok) {
-        throw new Error("Response status: " + response.status + ". " + response.statusText);
+        throw new Error(`Response Status: ${response.status}. ${response.statusText}`)
     }
 }
 
@@ -28,7 +28,7 @@ function _headers(xReqId: string, token: string | null): HeadersInit {
     };
 
     if (token) {
-        headers["Authorization"] = token;
+        headers["Authorization"] = `Bearer ${token}`;
     }
 
     return headers;
@@ -64,7 +64,7 @@ async function signup(username: string, email: string, password: string): Promis
     return signup;
 }
 
-async function login(usernameOrEmail: string, password: string): Promise<LoginInfo> {
+async function loginWithPassword(usernameOrEmail: string, password: string): Promise<LoginInfo> {
     const response = await fetch(URLs.READ_USER, {
         headers: _headers(XRequestIds.READ_USER, null),
         method: "POST",
@@ -75,6 +75,22 @@ async function login(usernameOrEmail: string, password: string): Promise<LoginIn
     _ensureOkResponse(response);
 
     const login = await response.json() as LoginInfo;
+
+    return login;
+}
+
+async function loginWithToken(token: string): Promise<LoginInfo> {
+    const response = await fetch(URLs.TOKEN_LOGIN, {
+        headers: _headers(XRequestIds.TOKEN_LOGIN, token),
+        method: "GET",
+        credentials: "include"
+    });
+
+    _ensureOkResponse(response);
+
+    const login = await response.json() as LoginInfo;
+
+    alert(login.type);
 
     return login;
 }
@@ -174,4 +190,4 @@ async function renewJwtToken(user: User, token: string): Promise<RenewJwtTokenIn
     return info;
 }
 
-export { retrieveBoard, signup, login, updateUser, deleteUser, createPuzzle, updatePuzzle, deletePuzzle, renewJwtToken };
+export { retrieveBoard, signup, loginWithPassword, loginWithToken, updateUser, deleteUser, createPuzzle, updatePuzzle, deletePuzzle, renewJwtToken };

@@ -6,9 +6,10 @@ import { GenerateInfo } from "./GenerateInfo";
 import SelectionRadioButton from "./SelectionRadioButton";
 import SelectionCheckbox from "./SelectionCheckbox";
 import { load } from "./UserState";
-import { useAppDispatch, useAppSelector } from "./Hooks";
+import { useAppDispatch } from "./Hooks";
 import { AppDispatch } from "./Store";
-import { Endpoints, LocalStorageNames } from "./StringConstants";
+import { Endpoints, StorageNames } from "./StringConstants";
+import { getItemFromStorage } from "./Storage";
 
 interface SelectionCardProps {
     creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>;
@@ -25,7 +26,7 @@ function _generate(
 ) {
     creator("Retrieving...");
 
-    const token = localStorage.getItem(LocalStorageNames.JWT_TOKEN);
+    const token = getItemFromStorage(StorageNames.JWT_TOKEN);
 
     button.disabled = true;
 

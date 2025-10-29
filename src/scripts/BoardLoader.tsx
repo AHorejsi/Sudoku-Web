@@ -7,7 +7,8 @@ import { useAppDispatch, useAppSelector } from "./Hooks";
 import { AppDispatch } from "./Store";
 import { deletePuzzle } from "./Fetch";
 import { load, save } from "./UserState";
-import { LocalStorageNames } from "./StringConstants";
+import { StorageNames } from "./StringConstants";
+import { getItemFromStorage } from "./Storage";
 
 interface BoardLoaderProps {
     puzzleId: number;
@@ -22,11 +23,11 @@ function _reloadSudoku(puzzleId: number, nav: NavigateFunction, dispatch: AppDis
 }
 
 function _deleteSudoku(puzzleId: number, nav: NavigateFunction, dispatch: AppDispatch) {
-    const token = localStorage.getItem(LocalStorageNames.JWT_TOKEN);
+    const token = getItemFromStorage(StorageNames.JWT_TOKEN);
 
     deletePuzzle(puzzleId, token).then((info) => {
         if (info.type.endsWith("Success")) {
-            dispatch(save({ operation: "DELETE_ITEM", puzzleId }));
+            dispatch(save({ operation: "DELETE_ITEM", data: { puzzleId } }));
         }
         else {
             nav(Endpoints.ERROR, { state: new Error("Failed to delete") });

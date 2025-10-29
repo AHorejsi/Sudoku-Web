@@ -77,6 +77,8 @@ export const userSlice = createSlice({
                 puzzles.splice(indexToRemove, 1);
 
                 break;
+            default:
+                throw new Error("No valid save operation");
             }
         }
     }

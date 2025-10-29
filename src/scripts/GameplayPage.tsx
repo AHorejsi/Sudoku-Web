@@ -1,7 +1,7 @@
 import "../styles/GameplayPage.css";
 import { ReactNode, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
-import { Endpoints, LocalStorageNames } from "./StringConstants";
+import { Endpoints, StorageNames } from "./StringConstants";
 import { GenerateInfo } from "./GenerateInfo";
 import { Puzzle, User } from "./LoginInfo";
 import SelectionCard from "./SelectionCard";
@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "./Hooks";
 import { selectUser, selectLoad, user, load } from "./UserState";
 import { renewJwtToken } from "./Fetch";
 import { AppDispatch } from "./Store";
+import { getItemFromStorage, setItemInStorage } from "./Storage";
 
 function _getInfo(puzzleSet: Puzzle[], targetId: number | null): GenerateInfo | null | undefined {
     if (!targetId) {
@@ -28,11 +29,11 @@ function _getInfo(puzzleSet: Puzzle[], targetId: number | null): GenerateInfo | 
     return undefined;
 }
 
-function _setUpJwtAutoRenewal(ref: { jwt: string }, dbUser: User, dispatch: AppDispatch, nav: NavigateFunction) {
+function _setUpJwtAutoRenewal(ref: { jwt: string }, dbUser: User, nav: NavigateFunction) {
     setInterval(() => {
         renewJwtToken(dbUser, ref.jwt).then((info) => {
             if (info.type.endsWith("Success")) {
-                localStorage.setItem(LocalStorageNames.JWT_TOKEN, info.newToken!);
+                setItemInStorage(StorageNames.JWT_TOKEN, info.newToken!);
             }
             else {
                 nav(Endpoints.ERROR, { state: new Error("Invalid JWT Token") });
@@ -57,9 +58,11 @@ export default function GameplayPage(): ReactNode {
 
     const puzzleId = useAppSelector(selectLoad);
     const dbUser = useAppSelector(selectUser)!;
-    let jwt = localStorage.getItem(LocalStorageNames.JWT_TOKEN);
 
     const dispatch = useAppDispatch();
+
+    const jwt = getItemFromStorage(StorageNames.JWT_TOKEN)!;
+    _setUpJwtAutoRenewal({ jwt }, dbUser, nav);
 
     const info = _getInfo(dbUser.puzzles, puzzleId);
     const [board, setBoard] = useState<GenerateInfo | string | Error>(info ?? "No Puzzle");
@@ -73,7 +76,7 @@ export default function GameplayPage(): ReactNode {
                 <span className="divider" />
                 <button className="btn btn-info" onClick={(_) => nav(Endpoints.SETTINGS)}>User Settings</button>
                 <span className="divider" />
-                <button className="btn btn-danger" onClick={(_) => _logout(dispatch, nav)} />
+                <button className="btn btn-danger" onClick={(_) => _logout(dispatch, nav)}>Logout</button>
             </div>
 
             <div id="gameplay">
