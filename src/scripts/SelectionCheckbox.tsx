@@ -1,3 +1,4 @@
+import "../styles/Selection.css";
 import { ReactNode, Dispatch, SetStateAction, FormEvent } from "react";
 
 interface SelectionCheckboxProps {
@@ -30,11 +31,13 @@ function _changeSelection(ev: FormEvent<HTMLInputElement>, props: SelectionCheck
 
 export default function SelectionCheckbox(props: SelectionCheckboxProps): ReactNode {
     return (
-        <div>
+        <div className="input-title">
             {`${props.prompt}:`}
 
-            <label htmlFor={props.name} />
-            <input type="checkbox" name={props.name} onClick={(ev) => _changeSelection(ev, props)}/>
+            <div className="input-box">
+                <label htmlFor={props.name} />
+                <input type="checkbox" name={props.name} onClick={(ev) => _changeSelection(ev, props)} />
+            </div>
         </div>
     );
 }

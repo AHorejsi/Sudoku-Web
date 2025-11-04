@@ -18,7 +18,7 @@ export default function InputField(props: InputFieldProps): ReactNode {
         <div className="container field-block">
             <label className="field-title" htmlFor={props.label}>{props.prompt}</label>
             <input 
-                className={`${props.classes} input-box`} type={props.covered ? "password" : "text"} name={props.label}
+                className={`${props.classes} field-box`} type={props.covered ? "password" : "text"} name={props.label}
                 onInput={props.inputEvent}
             />
         </div>

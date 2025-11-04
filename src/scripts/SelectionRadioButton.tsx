@@ -1,3 +1,4 @@
+import "../styles/Selection.css";
 import { ReactNode, Dispatch, SetStateAction } from "react";
 
 interface SelectionRadioButtonProps {
@@ -14,11 +15,13 @@ export default function SelectionRadioButton(props: SelectionRadioButtonProps): 
     const setter = props.setter;
 
     return (
-        <div>
+        <div className="input-title">
             {`${props.prompt}:`}
             
-            <label htmlFor={props.name} />
-            <input type="radio" name={props.name} onClick={(_) => setter(props.value)} />
+            <div className="input-box">
+                <label htmlFor={props.name} />
+                <input className="" type="radio" name={props.name} onClick={(_) => setter(props.value)} />
+            </div>
         </div>
     );
 }
