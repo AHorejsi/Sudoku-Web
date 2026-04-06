@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router";
 import { Endpoints } from "./StringConstants";
@@ -11,7 +10,7 @@ import LoaderPage from "./LoaderPage";
 import ErrorPage from "./ErrorPage";
 import store from "./Store";
 
-export default function App(): ReactNode {
+export default function App(): React.JSX.Element {
     return (
         <Provider store={store}>
             <BrowserRouter>

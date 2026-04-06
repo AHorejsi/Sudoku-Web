@@ -1,5 +1,5 @@
 import "../styles/SelectionCard.css";
-import { ReactNode, useState, useRef, Dispatch, SetStateAction } from "react";
+import { useState, useRef, Dispatch, SetStateAction } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
 import { retrieveBoard } from "./Fetch";
 import { GenerateInfo } from "./GenerateInfo";
@@ -46,7 +46,7 @@ function _generate(
     });
 }
 
-export default function SelectionCard(props: SelectionCardProps): ReactNode {
+export default function SelectionCard(props: SelectionCardProps): React.JSX.Element {
     const dimension = "NINE";
     const [difficulty, setDifficulty] = useState("");
     const [games, setGames] = useState(Array<string>());
@@ -58,7 +58,7 @@ export default function SelectionCard(props: SelectionCardProps): ReactNode {
 
     return (
         <div id="selection-card">
-            <form>
+            <form onClick={(_) => false}>
                 <div>
                     <p className="game-selection-title">Difficulty</p>
                     <SelectionRadioButton name="difficulty" value="BEGINNER" prompt="Beginner" setter={setDifficulty} />

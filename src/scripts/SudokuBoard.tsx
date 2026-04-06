@@ -1,5 +1,5 @@
 import "../styles/SudokuBoard.css";
-import { ReactNode, useRef } from "react";
+import { Dispatch, ReactNode, SetStateAction, useRef, useState } from "react";
 import { createPuzzle, updatePuzzle } from "./Fetch";
 import { Box, Cage, GenerateInfo, Position, Sudoku } from "./GenerateInfo";
 import SudokuCell from "./SudokuCell";
@@ -16,8 +16,8 @@ interface SudokuBoardProps {
     info: GenerateInfo | string | Error;
 }
 
-function _createCells(sudoku: Sudoku): ReactNode {
-    const grid = Array<ReactNode>();
+function _createCells(sudoku: Sudoku, isNoteMode: boolean): Array<React.JSX.Element> {
+    const grid = Array<React.JSX.Element>();
     const maxLength = sudoku.length.toString().length;
     const colorMap = _determineColorsOfCages(sudoku);
     const hyperBorders = _determineHyperBorders(sudoku.boxes, sudoku.length);
@@ -40,12 +40,13 @@ function _createCells(sudoku: Sudoku): ReactNode {
                     dashes={dashes}
                     dimensions={sudoku.length}
                     maxLength={maxLength}
+                    isNoteMode={isNoteMode}
                 />
             );
         }
     }
 
-    return <div id="board">{grid}</div>;
+    return grid;
 }
 
 function _determineColorsOfCages(sudoku: Sudoku): string[][] {
@@ -275,7 +276,7 @@ function _savePuzzle(
 
             _saveCleanup(button, info.type);
         }).catch((error) => {
-            throw error;
+            nav(Endpoints.ERROR, { state: error });
         });
     }
     else {
@@ -305,11 +306,15 @@ function _saveCleanup(button: HTMLButtonElement, message: string) {
     button.disabled = false;
 }
 
-export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
+function _toggleNoteMode(isNoteMode: boolean, setNoteMode: Dispatch<SetStateAction<boolean>>, cells: React.JSX.Element[]) {
+    setNoteMode(!isNoteMode);
+}
+
+export default function SudokuBoard(props: SudokuBoardProps): React.JSX.Element {
     const info = props.info;
 
     if (info instanceof Error) {
-        <p id="error-text" className="all-text">{ info.message }</p>
+        return <p id="error-text" className="all-text">{ info.message }</p>;
     }
     else if ("string" === typeof info) {
         return <p id="info-text" className="all-text">{ info }</p>;
@@ -317,6 +322,7 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
     else {
         const sudoku = info.sudoku;
 
+        const [isNoteMode, setNoteMode] = useState(false);
         const button = useRef<HTMLButtonElement>(null);
 
         const puzzleId = useAppSelector(selectLoad);
@@ -325,19 +331,16 @@ export default function SudokuBoard(props: SudokuBoardProps): ReactNode {
         const dispatch = useAppDispatch();
 
         const nav = useNavigate();
-        
-        const grid = _createCells(sudoku);
+
+        const cells = _createCells(sudoku, isNoteMode);
 
         return (
             <div id="play-area">
-                { grid }
+                <div id="board">{ cells }</div>
 
-                <div>
-                    <button id="save-button" className="btn btn-primary" ref={button}
-                        onClick={(_) => _savePuzzle(puzzleId, user, sudoku, nav, dispatch, button.current!)}
-                    >
-                        Save
-                    </button>
+                <div id="buttons-area">
+                    <button className="btn btn-primary" ref={button} onClick={(_) => _savePuzzle(puzzleId, user, sudoku, nav, dispatch, button.current!)}>Save</button>
+                    <button className="btn btn-primary" onClick={(_) => _toggleNoteMode(isNoteMode, setNoteMode, cells)}>Note Mode</button>
                 </div>
             </div>
         );

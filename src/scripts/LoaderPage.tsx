@@ -1,5 +1,4 @@
 import "../styles/LoaderPage.css";
-import { ReactNode } from "react";
 import { useNavigate } from "react-router";
 import { Sudoku } from "./GenerateInfo";
 import BoardLoader from "./BoardLoader";
@@ -7,14 +6,14 @@ import { useAppSelector } from "./Hooks";
 import { Endpoints } from "./StringConstants";
 import { selectUser } from "./UserState";
 
-export default function LoaderPage(): ReactNode {
+export default function LoaderPage(): React.JSX.Element {
     document.title = "Sudoku - Loader";
 
     const user = useAppSelector(selectUser)!;
     const nav = useNavigate();
 
     const puzzleSet = user.puzzles;
-    const selection = Array<ReactNode>();
+    const selection = Array<React.JSX.Element>();
 
     for (const puzzle of puzzleSet) {
         const sudoku = JSON.parse(puzzle.json) as Sudoku;

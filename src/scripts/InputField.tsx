@@ -1,5 +1,5 @@
 import "../styles/InputField.css";
-import { FormEventHandler, ReactNode } from "react";
+import { FormEventHandler } from "react";
 
 interface InputFieldProps {
     classes?: string;
@@ -13,7 +13,7 @@ interface InputFieldProps {
     inputEvent?: FormEventHandler<HTMLInputElement>
 }
 
-export default function InputField(props: InputFieldProps): ReactNode {
+export default function InputField(props: InputFieldProps): React.JSX.Element {
     return (
         <div className="container field-block">
             <label className="field-title" htmlFor={props.label}>{props.prompt}</label>

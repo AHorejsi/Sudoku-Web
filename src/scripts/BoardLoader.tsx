@@ -1,9 +1,8 @@
 import "../styles/BoardLoader.css";
-import { ReactNode } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
 import { Sudoku } from "./GenerateInfo";
 import { Endpoints } from "./StringConstants";
-import { useAppDispatch, useAppSelector } from "./Hooks";
+import { useAppDispatch } from "./Hooks";
 import { AppDispatch } from "./Store";
 import { deletePuzzle } from "./Fetch";
 import { load, save } from "./UserState";
@@ -37,7 +36,7 @@ function _deleteSudoku(puzzleId: number, nav: NavigateFunction, dispatch: AppDis
     })
 }
 
-export default function BoardLoader(props: BoardLoaderProps): ReactNode {
+export default function BoardLoader(props: BoardLoaderProps): React.JSX.Element {
     const nav = useNavigate();
 
     const dispatch = useAppDispatch();
@@ -50,8 +49,8 @@ export default function BoardLoader(props: BoardLoaderProps): ReactNode {
 
     return (
         <div className="border">
-            <div>{difficulty}</div>
-            <div>{games}</div>
+            <div>{ difficulty }</div>
+            <div>{ games }</div>
 
             <button className="btn btn-info" onClick={(_) => _reloadSudoku(puzzleId, nav, dispatch)}>Reload</button>
             <button className="btn btn-info" onClick={(_) => _deleteSudoku(puzzleId, nav, dispatch)}>Delete</button>

@@ -1,5 +1,5 @@
 import "../styles/Selection.css";
-import { ReactNode, Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 interface SelectionRadioButtonProps {
     prompt: string;
@@ -11,7 +11,7 @@ interface SelectionRadioButtonProps {
     setter: Dispatch<SetStateAction<string>>
 }
 
-export default function SelectionRadioButton(props: SelectionRadioButtonProps): ReactNode {
+export default function SelectionRadioButton(props: SelectionRadioButtonProps): React.JSX.Element {
     const setter = props.setter;
 
     return (

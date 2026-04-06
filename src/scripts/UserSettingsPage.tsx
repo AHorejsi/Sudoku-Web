@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
 import { Endpoints, StorageNames } from "./StringConstants";
 import { updateUser, deleteUser } from "./Fetch";
@@ -69,7 +68,7 @@ function _attemptDelete(userId: number, dispatch: AppDispatch, nav: NavigateFunc
     });
 }
 
-export default function UserSettingsPage(): ReactNode {
+export default function UserSettingsPage(): React.JSX.Element {
     document.title = "Sudoku - Settings";
 
     const nav = useNavigate();

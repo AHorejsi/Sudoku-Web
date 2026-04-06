@@ -1,5 +1,5 @@
 import "../styles/LoginPage.css";
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
 import { Endpoints, StorageNames } from "./StringConstants";
 import { loginWithPassword } from "./Fetch";
@@ -52,7 +52,7 @@ function _attemptUserLogin(
     });
 }
 
-export default function LoginPage(): ReactNode {
+export default function LoginPage(): React.JSX.Element {
     document.title = "Sudoku - Login";
 
     const [usernameOrEmail, setUsernameOrEmail] = useState("");

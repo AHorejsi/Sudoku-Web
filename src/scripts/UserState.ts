@@ -40,8 +40,7 @@ export const userSlice = createSlice({
     name: "user",
     initialState: {
         user: null as User | null,
-        loadId: null as number | null,
-        token: null as string | null
+        loadId: null as number | null
     },
     reducers: {
         user: (state, actions) => {

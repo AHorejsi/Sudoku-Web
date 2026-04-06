@@ -1,5 +1,5 @@
 import "../styles/GameplayPage.css";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
 import { Endpoints, StorageNames } from "./StringConstants";
 import { GenerateInfo } from "./GenerateInfo";
@@ -51,7 +51,7 @@ function _logout(dispatch: AppDispatch, nav: NavigateFunction) {
     nav(Endpoints.MAIN);
 }
 
-export default function GameplayPage(): ReactNode {
+export default function GameplayPage(): React.JSX.Element {
     document.title = "Sudoku - Gameplay";
 
     const nav = useNavigate();

@@ -1,5 +1,5 @@
 import "../styles/SignupPage.css";
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Endpoints } from "./StringConstants";
 import { signup } from "./Fetch";
 import { SignupInfo } from "./SignupInfo";
@@ -39,7 +39,7 @@ function _attemptSignup(
     })
 }
 
-export default function SignUpPage(): ReactNode {
+export default function SignUpPage(): React.JSX.Element {
     document.title = "Sudoku - Sign Up";
 
     const [username, setUsername] = useState("");

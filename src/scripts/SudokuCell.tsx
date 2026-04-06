@@ -1,5 +1,5 @@
 import "../styles/SudokuCell.css";
-import { ReactNode, useRef } from "react";
+import { useRef } from "react";
 import { Cell } from "./GenerateInfo";
 
 interface SudokuCellProps {
@@ -18,6 +18,8 @@ interface SudokuCellProps {
     dimensions: number;
 
     maxLength: number;
+
+    isNoteMode: boolean;
 }
 
 interface _BorderThickness {
@@ -109,9 +111,8 @@ function _deleteLastChars(div: HTMLDivElement, text: string) {
     sel.collapseToEnd();
 }
 
-export default function SudokuCell(props: SudokuCellProps): ReactNode {
+export default function SudokuCell(props: SudokuCellProps): React.JSX.Element {
     const cell = props.cell;
-    const maxLength = props.maxLength;
 
     const cellType = cell.editable ? "mutable-cell" : "immutable-cell";
     const cellMargin = props.killerSum ? "top-negative" : null;
@@ -124,11 +125,11 @@ export default function SudokuCell(props: SudokuCellProps): ReactNode {
         <div className={borders} style={{ backgroundColor: props.color }}>
             { props.killerSum ? <div className="killer-sum-box">{props.killerSum}</div> : null }
 
-                <div className={`${cellType} ${cellMargin} ${dashes} all-cell`} ref={div} contentEditable={cell.editable}
-                    onInput={(_) => _checkInput(div.current!, cell, maxLength)}
-                >
-                    {cell.value ?? ""}
-                </div>
+            <div className={`${cellType} ${cellMargin} ${dashes} all-cell`} ref={div} contentEditable={cell.editable}
+                onInput={(_) => _checkInput(div.current!, cell, props.maxLength)}
+            >
+                {cell.value ?? ""}
+            </div>
         </div>
     );
 }

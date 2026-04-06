@@ -1,5 +1,4 @@
 import "../styles/MainPage.css";
-import { ReactNode } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
 import { Endpoints, StorageNames } from "./StringConstants";
 import { loginWithToken } from "./Fetch";
@@ -32,7 +31,7 @@ function _checkJwtToken(token: string | null, nav: NavigateFunction, dispatch: A
     }
 }
 
-export default function MainPage(): ReactNode {
+export default function MainPage(): React.JSX.Element {
     document.title = "Sudoku - Main";
 
     const token = getItemFromStorage(StorageNames.JWT_TOKEN);

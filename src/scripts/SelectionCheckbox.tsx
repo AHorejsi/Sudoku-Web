@@ -1,5 +1,5 @@
 import "../styles/Selection.css";
-import { ReactNode, Dispatch, SetStateAction, FormEvent } from "react";
+import { Dispatch, SetStateAction, FormEvent } from "react";
 
 interface SelectionCheckboxProps {
     prompt: string;
@@ -29,7 +29,7 @@ function _changeSelection(ev: FormEvent<HTMLInputElement>, props: SelectionCheck
     props.setter(current);
 }
 
-export default function SelectionCheckbox(props: SelectionCheckboxProps): ReactNode {
+export default function SelectionCheckbox(props: SelectionCheckboxProps): React.JSX.Element {
     return (
         <div className="input-title">
             {`${props.prompt}:`}
