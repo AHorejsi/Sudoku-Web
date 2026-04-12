@@ -36,3 +36,8 @@ typings/
 
 # Yarn Integrity file
 .yarn-integrity
+
+# amplify
+.amplify
+amplify_outputs*
+amplifyconfiguration*
