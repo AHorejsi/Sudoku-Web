@@ -6,7 +6,6 @@
     "start": "parcel src/index.html --open",
     "build": "parcel build src/index.html"
   },
-  "keywords": [],
   "author": "alexh",
   "license": "ISC",
   "overrides": {
