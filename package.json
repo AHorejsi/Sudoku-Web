@@ -9,6 +9,9 @@
   "keywords": [],
   "author": "alexh",
   "license": "ISC",
+  "overrides": {
+    "@smithy/config-resolver": "^4.4.11"
+  },
   "devDependencies": {
     "@aws-amplify/backend": "^1.2.1",
     "@aws-amplify/backend-cli": "^1.7.2",
