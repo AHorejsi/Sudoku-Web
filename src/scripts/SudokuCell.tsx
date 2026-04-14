@@ -18,8 +18,6 @@ interface SudokuCellProps {
     dimensions: number;
 
     maxLength: number;
-
-    isNoteMode: boolean;
 }
 
 interface _BorderThickness {
@@ -125,7 +123,11 @@ export default function SudokuCell(props: SudokuCellProps): React.JSX.Element {
         <div className={borders} style={{ backgroundColor: props.color }}>
             { props.killerSum ? <div className="killer-sum-box">{props.killerSum}</div> : null }
 
-            <div className={`${cellType} ${cellMargin} ${dashes} all-cell`} ref={div} contentEditable={cell.editable}
+            <div 
+                className={`${cellType} ${cellMargin} ${dashes} all-cell`} 
+                ref={div}
+                contentEditable={cell.editable}
+                suppressContentEditableWarning={true}
                 onInput={(_) => _checkInput(div.current!, cell, props.maxLength)}
             >
                 {cell.value ?? ""}

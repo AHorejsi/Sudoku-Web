@@ -1,5 +1,5 @@
 import "../styles/SudokuBoard.css";
-import { Dispatch, ReactNode, SetStateAction, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { createPuzzle, updatePuzzle } from "./Fetch";
 import { Box, Cage, GenerateInfo, Position, Sudoku } from "./GenerateInfo";
 import SudokuCell from "./SudokuCell";
@@ -16,12 +16,14 @@ interface SudokuBoardProps {
     info: GenerateInfo | string | Error;
 }
 
-function _createCells(sudoku: Sudoku, isNoteMode: boolean): Array<React.JSX.Element> {
+function _createCells(sudoku: Sudoku): Array<React.JSX.Element> {
     const grid = Array<React.JSX.Element>();
     const maxLength = sudoku.length.toString().length;
     const colorMap = _determineColorsOfCages(sudoku);
     const hyperBorders = _determineHyperBorders(sudoku.boxes, sudoku.length);
     const killerSums = _determinePositionsOfKillerSums(sudoku.cages, sudoku.length);
+
+    let count = 0;
 
     for (let rowIndex = 0; rowIndex < sudoku.length; ++rowIndex) {
         for (let colIndex = 0; colIndex < sudoku.length; ++colIndex) {
@@ -32,6 +34,7 @@ function _createCells(sudoku: Sudoku, isNoteMode: boolean): Array<React.JSX.Elem
 
             grid.push(
                 <SudokuCell
+                    key={count}
                     cell={cell}
                     killerSum={killerSum}
                     row={rowIndex}
@@ -40,20 +43,18 @@ function _createCells(sudoku: Sudoku, isNoteMode: boolean): Array<React.JSX.Elem
                     dashes={dashes}
                     dimensions={sudoku.length}
                     maxLength={maxLength}
-                    isNoteMode={isNoteMode}
                 />
             );
+
+            ++count;
         }
     }
 
     return grid;
 }
 
-function _determineColorsOfCages(sudoku: Sudoku): string[][] {
-    const boardDimensions = sudoku.length;
-    const cageSet = sudoku.cages ?? _createRegularCages(boardDimensions);;
-
-    const colorMap = Array.from({ length: boardDimensions }, () => Array<string>(boardDimensions));
+function _findCageNeighbors(sudoku: Sudoku, boardDimensions: number): Map<Cage, Cage[]> {
+    const cageSet = sudoku.cages ?? _createRegularCages(boardDimensions);
     const adjacentMap = new Map<Cage, Cage[]>();
 
     for (const cage of cageSet) {
@@ -61,6 +62,15 @@ function _determineColorsOfCages(sudoku: Sudoku): string[][] {
 
         adjacentMap.set(cage, adjacentCages);
     }
+
+    return adjacentMap;
+}
+
+function _determineColorsOfCages(sudoku: Sudoku): string[][] {
+    const boardDimensions = sudoku.length;
+
+    const adjacentMap = _findCageNeighbors(sudoku, boardDimensions);
+    const colorMap = Array.from({ length: boardDimensions }, () => Array<string>(boardDimensions));
 
     const maxColorsNeeded = _findMaxNumberOfColorsNeeded(adjacentMap);
     const colors = generateDistinctRgbColors(maxColorsNeeded);
@@ -306,43 +316,50 @@ function _saveCleanup(button: HTMLButtonElement, message: string) {
     button.disabled = false;
 }
 
-function _toggleNoteMode(isNoteMode: boolean, setNoteMode: Dispatch<SetStateAction<boolean>>, cells: React.JSX.Element[]) {
-    setNoteMode(!isNoteMode);
+function _getErrorComponent(message: string, textClass: string): React.JSX.Element {
+    return <p id={textClass} className="all-text">{ message }</p>
+}
+
+function _getSudokuComponent(info: GenerateInfo): React.JSX.Element {
+    const puzzleId = useAppSelector(selectLoad);
+    const user = useAppSelector(selectUser)!;
+
+    const dispatch = useAppDispatch();
+
+    const button = useRef<HTMLButtonElement>(null);
+    const nav = useNavigate();
+
+    const sudoku = info.sudoku;
+    const cells = _createCells(sudoku);
+
+    return (
+        <div id="play-area">
+            <div id="board">{ cells }</div>
+
+            <div id="buttons-area">
+                <button
+                    className="btn btn-primary"
+                    ref={button}
+                    onClick={(_) => _savePuzzle(puzzleId, user, sudoku, nav, dispatch, button.current!)}
+                >
+                    Save
+                </button>
+            </div>
+        </div>
+    );
 }
 
 export default function SudokuBoard(props: SudokuBoardProps): React.JSX.Element {
     const info = props.info;
 
-    if (info instanceof Error) {
-        return <p id="error-text" className="all-text">{ info.message }</p>;
-    }
-    else if ("string" === typeof info) {
-        return <p id="info-text" className="all-text">{ info }</p>;
-    }
-    else {
-        const sudoku = info.sudoku;
+    const isError = info instanceof Error;
+    const isString = "string" === typeof info;
 
-        const [isNoteMode, setNoteMode] = useState(false);
-        const button = useRef<HTMLButtonElement>(null);
-
-        const puzzleId = useAppSelector(selectLoad);
-        const user = useAppSelector(selectUser)!;
-
-        const dispatch = useAppDispatch();
-
-        const nav = useNavigate();
-
-        const cells = _createCells(sudoku, isNoteMode);
-
-        return (
-            <div id="play-area">
-                <div id="board">{ cells }</div>
-
-                <div id="buttons-area">
-                    <button className="btn btn-primary" ref={button} onClick={(_) => _savePuzzle(puzzleId, user, sudoku, nav, dispatch, button.current!)}>Save</button>
-                    <button className="btn btn-primary" onClick={(_) => _toggleNoteMode(isNoteMode, setNoteMode, cells)}>Note Mode</button>
-                </div>
-            </div>
-        );
-    }
+    return (
+        <>
+            {isError && _getErrorComponent(info.message, "error-text")}
+            {isString && _getErrorComponent(info, "info-text")}
+            {!(isError || isString) && _getSudokuComponent(info)}
+        </>
+    )
 }

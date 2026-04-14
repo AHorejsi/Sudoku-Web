@@ -90,8 +90,6 @@ async function loginWithToken(token: string): Promise<LoginInfo> {
 
     const login = await response.json() as LoginInfo;
 
-    alert(login.type);
-
     return login;
 }
 

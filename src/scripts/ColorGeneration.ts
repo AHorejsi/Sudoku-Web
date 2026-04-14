@@ -5,9 +5,9 @@ function _hsvToRgb(hue: number, saturation: number, value: number): [number, num
     const q = value * (1 - f * saturation);
     const t = value * (1 - (1 - f) * saturation);
 
-    let red = null;
-    let green = null;
-    let blue = null;
+    let red = -1;
+    let green = -1;
+    let blue = -1;
 
     switch (h_i) {
     case 0:
@@ -48,22 +48,22 @@ function _hsvToRgb(hue: number, saturation: number, value: number): [number, num
         break;
     }
 
-    const finalRed = Math.floor(red! * 256);
-    const finalGreen = Math.floor(green! * 256);
-    const finalBlue = Math.floor(blue! * 256);
+    const finalRed = Math.floor(red * 256);
+    const finalGreen = Math.floor(green * 256);
+    const finalBlue = Math.floor(blue * 256);
 
     return [finalRed, finalGreen, finalBlue];
 }
 
-function generateDistinctRgbColors(maxColorsNeeded: number): string[] {
+function generateDistinctRgbColors(colorsNeeded: number): string[] {
     const goldenRatioConjugate = (Math.sqrt(5) - 1) / 2;
     const saturation = 0.5;
     const value = 0.95;
 
-    const colors = Array<string>(maxColorsNeeded);
+    const colors = Array<string>(colorsNeeded);
     let currentHue = Math.random();
 
-    for (let index = 0; index < maxColorsNeeded; ++index) {
+    for (let index = 0; index < colorsNeeded; ++index) {
         const [red, green, blue] = _hsvToRgb(currentHue, saturation, value);
 
         colors[index] = `rgb(${red}, ${green}, ${blue})`;
