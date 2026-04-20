@@ -6,7 +6,7 @@
     "start": "parcel src/index.html --open",
     "build": "parcel build src/index.html"
   },
-  "author": "alexh",
+  "author": "horejsialexander@gmail.com",
   "license": "ISC",
   "overrides": {
     "@smithy/config-resolver": "^4.4.11"
