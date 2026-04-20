@@ -2,6 +2,10 @@
   "name": "sudoku-web",
   "version": "1.0.0",
   "browserslist": "> 0.5%, last 2 versions, not dead",
+  "engines": {
+    "node": "22.14.0",
+    "npm": "10.9.2"
+  },
   "scripts": {
     "start": "parcel src/index.html --open",
     "build": "parcel build src/index.html"
@@ -9,7 +13,11 @@
   "author": "alexh",
   "license": "ISC",
   "overrides": {
-    "@smithy/config-resolver": "^4.4.11"
+    "@smithy/config-resolver": "^4.4.11",
+    "fast-xml-parser": "^5.7.1",
+    "strnum": "^2.2.3",
+    "zod": "^4.3.6",
+    "glob": "^13.0.6"
   },
   "devDependencies": {
     "@aws-amplify/backend": "^1.22.0",
@@ -28,12 +36,10 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
     "aws-amplify": "^6.16.4",
-    "fast-xml-parser": "^4.4.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-redux": "^9.2.0",
     "react-router": "^7.14.1",
-    "react-router-dom": "^7.14.1",
-    "strnum": "^2.2.3"
+    "react-router-dom": "^7.14.1"
   }
 }
