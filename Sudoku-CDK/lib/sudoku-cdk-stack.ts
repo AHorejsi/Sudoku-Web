@@ -7,7 +7,7 @@ export class SudokuCdkStack extends cdk.Stack {
     super(scope, id, props);
     
     const helloWorld = new lambda.Function(this, "HelloWorldFunction", {
-      runtime: lambda.Runtime.NODEJS_20_X, // Provide any supported Node.js runtime
+      runtime: lambda.Runtime.NODEJS_22_X,
       handler: "index.handler",
       code: lambda.Code.fromInline(`
         exports.handler = async function(event) {
