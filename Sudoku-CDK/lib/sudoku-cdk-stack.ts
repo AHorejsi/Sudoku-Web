@@ -23,7 +23,7 @@ export class SudokuCdkStack extends cdk.Stack {
       authType: lambda.FunctionUrlAuthType.NONE,
     });
 
-    new cdk.CfnOutput(this, "myFunctionUrlOutput", {
+    const _ = new cdk.CfnOutput(this, "myFunctionUrlOutput", {
       value: myFunctionUrl.url,
     });
   }
