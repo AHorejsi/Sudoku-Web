@@ -9,12 +9,6 @@ import { UpdatePuzzleInfo } from "./UpdatePuzzleInfo";
 import { DeletePuzzleInfo } from "./DeletePuzzleInfo";
 import { RenewJwtTokenInfo } from "./RenewJwtTokenInfo";
 
-function _ensureOkResponse(response: Response) {
-    if (!response.ok) {
-        throw new Error(`Response Status: ${response.status}. ${response.statusText}`)
-    }
-}
-
 function _headers(xReqId: string, token: string | null): HeadersInit {
     const headers: HeadersInit = {
         "X-Request-ID": xReqId,
@@ -34,6 +28,14 @@ function _headers(xReqId: string, token: string | null): HeadersInit {
     return headers;
 }
 
+async function _handleHttpResponse<TInfoType>(response: Response): Promise<TInfoType> {
+    if (!response.ok) {
+        throw new Error(`Response Status: ${response.status}. ${response.statusText}`)
+    }
+
+    return await response.json() as TInfoType;
+}
+
 async function retrieveBoard(dimension: string, difficulty: string, games: string[], token: string | null): Promise<GenerateInfo> {
     const response = await fetch(URLs.GENERATE, {
         headers: _headers(XRequestIds.GENERATE, token),
@@ -42,11 +44,7 @@ async function retrieveBoard(dimension: string, difficulty: string, games: strin
         credentials: "include"
     });
 
-    _ensureOkResponse(response);
-
-    const json = await response.json() as GenerateInfo;
-    
-    return json;
+    return _handleHttpResponse<GenerateInfo>(response);
 }
 
 async function signup(username: string, email: string, password: string): Promise<SignupInfo> {
@@ -57,11 +55,7 @@ async function signup(username: string, email: string, password: string): Promis
         credentials: "include"
     });
 
-    _ensureOkResponse(response);
-
-    const signup = await response.json() as SignupInfo;
-
-    return signup;
+    return _handleHttpResponse<SignupInfo>(response);
 }
 
 async function loginWithPassword(usernameOrEmail: string, password: string): Promise<LoginInfo> {
@@ -72,11 +66,7 @@ async function loginWithPassword(usernameOrEmail: string, password: string): Pro
         credentials: "include"
     });
 
-    _ensureOkResponse(response);
-
-    const login = await response.json() as LoginInfo;
-
-    return login;
+    return _handleHttpResponse<LoginInfo>(response);
 }
 
 async function loginWithToken(token: string): Promise<LoginInfo> {
@@ -86,11 +76,7 @@ async function loginWithToken(token: string): Promise<LoginInfo> {
         credentials: "include"
     });
 
-    _ensureOkResponse(response);
-
-    const login = await response.json() as LoginInfo;
-
-    return login;
+    return _handleHttpResponse<LoginInfo>(response);
 }
 
 async function updateUser(
@@ -106,11 +92,7 @@ async function updateUser(
         credentials: "include"
     });
 
-    _ensureOkResponse(response);
-
-    const update = await response.json() as UpdateUserInfo;
-
-    return update;
+    return _handleHttpResponse<UpdateUserInfo>(response);
 }
 
 async function deleteUser(userId: number, token: string | null): Promise<DeleteUserInfo> {
@@ -121,11 +103,7 @@ async function deleteUser(userId: number, token: string | null): Promise<DeleteU
         credentials: "include"
     });
 
-    _ensureOkResponse(response);
-
-    const info = await response.json() as DeleteUserInfo;
-
-    return info;
+    return _handleHttpResponse<DeleteUserInfo>(response);
 }
 
 async function createPuzzle(json: string, userId: number, token: string | null): Promise<CreatePuzzleInfo> {
@@ -136,11 +114,7 @@ async function createPuzzle(json: string, userId: number, token: string | null):
         credentials: "include"
     });
 
-    _ensureOkResponse(response)
-
-    const info = await response.json() as CreatePuzzleInfo;
-
-    return info;
+    return _handleHttpResponse<CreatePuzzleInfo>(response);
 }
 
 async function updatePuzzle(puzzleId: number, json: string, token: string | null): Promise<UpdatePuzzleInfo> {
@@ -151,11 +125,7 @@ async function updatePuzzle(puzzleId: number, json: string, token: string | null
         credentials: "include"
     });
 
-    _ensureOkResponse(response);
-
-    const info = await response.json() as UpdatePuzzleInfo;
-
-    return info;
+    return _handleHttpResponse<UpdatePuzzleInfo>(response);
 }
 
 async function deletePuzzle(puzzleId: number, token: string | null): Promise<DeletePuzzleInfo> {
@@ -166,11 +136,7 @@ async function deletePuzzle(puzzleId: number, token: string | null): Promise<Del
         credentials: "include"
     });
 
-    _ensureOkResponse(response);
-
-    const info = await response.json() as DeletePuzzleInfo;
-
-    return info;
+    return _handleHttpResponse<DeletePuzzleInfo>(response);
 }
 
 async function renewJwtToken(user: User, token: string): Promise<RenewJwtTokenInfo> {
@@ -181,11 +147,7 @@ async function renewJwtToken(user: User, token: string): Promise<RenewJwtTokenIn
         credentials: "include"
     });
 
-    _ensureOkResponse(response);
-
-    const info = await response.json() as RenewJwtTokenInfo;
-
-    return info;
+    return _handleHttpResponse<RenewJwtTokenInfo>(response);
 }
 
 export { retrieveBoard, signup, loginWithPassword, loginWithToken, updateUser, deleteUser, createPuzzle, updatePuzzle, deletePuzzle, renewJwtToken };
