@@ -34,9 +34,7 @@ function _attemptSignup(
 
     signup(username, email, password).then((info) => {
         _checkSignup(info, setSignup, nav);
-    }).catch((error) => {
-        nav(Endpoints.ERROR, { state: error });
-    })
+    });
 }
 
 export default function SignUpPage(): React.JSX.Element {
