@@ -16,7 +16,6 @@
     "@smithy/config-resolver": "^4.4.11",
     "fast-xml-parser": "^5.7.2",
     "strnum": "^2.2.3",
-    "zod": "^4.3.6",
     "glob": "^13.0.6",
     "json-schema-to-ts": "^3.1.1",
     "ts-algebra": "^2.0.0",
