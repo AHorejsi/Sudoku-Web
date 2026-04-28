@@ -8,10 +8,10 @@ function getItemFromStorage(name: string): string | null {
     return item;
 }
 
-function setItemInStorage(name: string, value: string | null) {
-    if (value) {
-        localStorage.setItem(name, value);
-        sessionStorage.setItem(name, value);
+function setItemInStorage(name: string, item: string | null) {
+    if (undefined === item) {
+        localStorage.setItem(name, item);
+        sessionStorage.setItem(name, item);
     }
 }
 

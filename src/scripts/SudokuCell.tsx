@@ -1,6 +1,7 @@
 import "../styles/SudokuCell.css";
 import { useRef } from "react";
 import { Cell } from "./GenerateInfo";
+import { RgbColor } from "./ColorGeneration";
 
 interface SudokuCellProps {
     cell: Cell;
@@ -11,7 +12,7 @@ interface SudokuCellProps {
 
     column: number;
 
-    color: string;
+    color: RgbColor;
 
     dashes: string;
 
@@ -21,13 +22,13 @@ interface SudokuCellProps {
 }
 
 interface _BorderThickness {
-    top: "thin" | "thick";
+    top: string;
 
-    bottom: "thin" | "thick";
+    bottom: string;
 
-    left: "thin" | "thick";
+    left: string;
 
-    right: "thin" | "thick";
+    right: string;
 }
 
 function _determineBorders(props: SudokuCellProps): string {
@@ -43,32 +44,35 @@ function _determineBorders(props: SudokuCellProps): string {
 }
 
 function _decideThickness(props: SudokuCellProps): _BorderThickness {
+    const THIN_SIDE = "thin";
+    const THICK_SIDE = "thick";
+
     const boxLength = Math.sqrt(props.dimensions);
-    const borderThickness: _BorderThickness = {
-        top: "thin",
-        bottom: "thin",
-        left: "thin",
-        right: "thin"
+    const borderThickness = {
+        top: THIN_SIDE,
+        bottom: THIN_SIDE,
+        left: THIN_SIDE,
+        right: THIN_SIDE
     };
 
     switch (props.row % boxLength) {
     case 0:
-        borderThickness.top = "thick";
+        borderThickness.top = THICK_SIDE;
 
         break;
     case boxLength - 1:
-        borderThickness.bottom = "thick";
+        borderThickness.bottom = THICK_SIDE;
 
         break;
     }
 
     switch (props.column % boxLength) {
     case 0:
-        borderThickness.left = "thick";
+        borderThickness.left = THICK_SIDE;
 
         break;
     case boxLength - 1:
-        borderThickness.right = "thick";
+        borderThickness.right = THICK_SIDE;
 
         break;
     }
@@ -114,14 +118,15 @@ export default function SudokuCell(props: SudokuCellProps): React.JSX.Element {
 
     const cellType = cell.editable ? "mutable-cell" : "immutable-cell";
     const cellMargin = props.killerSum ? "top-negative" : null;
-    const borders = _determineBorders(props);
     const dashes = `inner ${props.dashes}`.trimEnd();
+    const borders = _determineBorders(props);
 
     const div = useRef<HTMLDivElement>(null);
+    const bgColor = props.color.toString();
 
     return (
-        <div className={borders} style={{ backgroundColor: props.color }}>
-            { props.killerSum ? <div className="killer-sum-box">{props.killerSum}</div> : null }
+        <div className={borders} style={{ backgroundColor: bgColor }}>
+            { props.killerSum ? <div className="killer-sum-box">{ props.killerSum }</div> : null }
 
             <div 
                 className={`${cellType} ${cellMargin} ${dashes} all-cell`} 

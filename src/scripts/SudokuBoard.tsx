@@ -7,7 +7,7 @@ import { User } from "./LoginInfo";
 import { useAppDispatch, useAppSelector } from "./Hooks";
 import { AppDispatch } from "./Store";
 import { save, load, selectUser, selectLoad } from "./UserState";
-import { generateDistinctRgbColors } from "./ColorGeneration";
+import { generateDistinctRgbColors, RgbColor } from "./ColorGeneration";
 import { Endpoints, StorageNames } from "./StringConstants";
 import { getItemFromStorage } from "./Storage";
 import { NavigateFunction, useNavigate } from "react-router";
@@ -16,9 +16,13 @@ interface SudokuBoardProps {
     info: GenerateInfo | string | Error;
 }
 
+function _digitCount(value: number): number {
+    return Math.floor(Math.log10(value)) + 1;
+}
+
 function _createCells(sudoku: Sudoku): Array<React.JSX.Element> {
     const grid = Array<React.JSX.Element>();
-    const maxLength = sudoku.length.toString().length;
+    const maxLength = _digitCount(sudoku.length);
     const colorMap = _determineColorsOfCages(sudoku);
     const hyperBorders = _determineHyperBorders(sudoku.boxes, sudoku.length);
     const killerSums = _determinePositionsOfKillerSums(sudoku.cages, sudoku.length);
@@ -66,11 +70,11 @@ function _findCageNeighbors(sudoku: Sudoku, boardDimensions: number): Map<Cage, 
     return adjacentMap;
 }
 
-function _determineColorsOfCages(sudoku: Sudoku): string[][] {
+function _determineColorsOfCages(sudoku: Sudoku): RgbColor[][] {
     const boardDimensions = sudoku.length;
 
     const adjacentMap = _findCageNeighbors(sudoku, boardDimensions);
-    const colorMap = Array.from({ length: boardDimensions }, () => Array<string>(boardDimensions));
+    const colorMap = Array.from({ length: boardDimensions }, () => Array<RgbColor>(boardDimensions));
 
     const maxColorsNeeded = _findMaxNumberOfColorsNeeded(adjacentMap);
     const colors = generateDistinctRgbColors(maxColorsNeeded);
@@ -162,11 +166,11 @@ function _findMaxNumberOfColorsNeeded(adjacentMap: Map<Cage, Cage[]>): number {
 }
 
 function _assignColors(
-    colors: string[],
+    colors: RgbColor[],
     adjacentMap: Map<Cage, Cage[]>,
     currentCage: Cage,
     colorIndex: number,
-    colorMap: string[][]
+    colorMap: RgbColor[][]
 ) {
     for (const pos of currentCage.positions) {
         colorMap[pos.rowIndex]![pos.colIndex] = colors[colorIndex % colors.length]!;
@@ -317,7 +321,7 @@ function _saveCleanup(button: HTMLButtonElement, message: string) {
 }
 
 function _getErrorComponent(message: string, textClass: string): React.JSX.Element {
-    return <p id={textClass} className="all-text">{ message }</p>
+    return (<p id={textClass} className="all-text">{ message }</p>);
 }
 
 function _getSudokuComponent(info: GenerateInfo): React.JSX.Element {

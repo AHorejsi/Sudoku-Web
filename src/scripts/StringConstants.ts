@@ -1,24 +1,24 @@
 const Endpoints = {
-    MAIN: process.env.ENDPOINT_MAIN,
-    SIGNUP: process.env.ENDPOINT_SIGNUP,
-    LOGIN: process.env.ENDPOINT_LOGIN,
-    GAMEPLAY: process.env.ENDPOINT_GAMEPLAY,
-    LOADER: process.env.ENDPOINT_LOADER,
-    SETTINGS: process.env.ENDPOINT_SETTINGS,
-    ERROR: process.env.ENDPOINT_ERROR
+    MAIN: process.env.ENDPOINT_MAIN!,
+    SIGNUP: process.env.ENDPOINT_SIGNUP!,
+    LOGIN: process.env.ENDPOINT_LOGIN!,
+    GAMEPLAY: process.env.ENDPOINT_GAMEPLAY!,
+    LOADER: process.env.ENDPOINT_LOADER!,
+    SETTINGS: process.env.ENDPOINT_SETTINGS!,
+    ERROR: process.env.ENDPOINT_ERROR!
 };
 
 const URLs = {
-    GENERATE: process.env.GENERATE,
-    CREATE_USER: process.env.CREATE_USER,
-    READ_USER: process.env.READ_USER,
-    UPDATE_USER: process.env.UPDATE_USER,
-    DELETE_USER: process.env.DELETE_USER,
-    CREATE_PUZZLE: process.env.CREATE_PUZZLE,
-    UPDATE_PUZZLE: process.env.UPDATE_PUZZLE,
-    DELETE_PUZZLE: process.env.DELETE_PUZZLE,
-    TOKEN_LOGIN: process.env.TOKEN_LOGIN,
-    RENEW_TOKEN: process.env.RENEW_TOKEN
+    GENERATE: process.env.GENERATE!,
+    CREATE_USER: process.env.CREATE_USER!,
+    READ_USER: process.env.READ_USER!,
+    UPDATE_USER: process.env.UPDATE_USER!,
+    DELETE_USER: process.env.DELETE_USER!,
+    CREATE_PUZZLE: process.env.CREATE_PUZZLE!,
+    UPDATE_PUZZLE: process.env.UPDATE_PUZZLE!,
+    DELETE_PUZZLE: process.env.DELETE_PUZZLE!,
+    TOKEN_LOGIN: process.env.TOKEN_LOGIN!,
+    RENEW_TOKEN: process.env.RENEW_TOKEN!
 };
 
 const XRequestIds = {
@@ -35,7 +35,7 @@ const XRequestIds = {
 };
 
 const StorageNames = {
-    JWT_TOKEN: process.env.JWT_STORAGE
+    JWT_TOKEN: process.env.JWT_STORAGE!
 };
 
 export { Endpoints, URLs, XRequestIds, StorageNames };
