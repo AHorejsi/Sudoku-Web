@@ -43,3 +43,6 @@ typings/
 .amplify
 amplify_outputs*
 amplifyconfiguration*
+
+# Miscellaneous
+temp.txt
