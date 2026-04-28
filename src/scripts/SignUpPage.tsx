@@ -1,6 +1,7 @@
 import "../styles/SignupPage.css";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Endpoints } from "./StringConstants";
+import { handleError } from "./ErrorHandling";
 import { signup } from "./Fetch";
 import { SignupInfo } from "./SignupInfo";
 import { NavigateFunction, useNavigate } from "react-router";
@@ -34,6 +35,8 @@ function _attemptSignup(
 
     signup(username, email, password).then((info) => {
         _checkSignup(info, setSignup, nav);
+    }).catch((error) => {
+        handleError(error, nav);
     });
 }
 

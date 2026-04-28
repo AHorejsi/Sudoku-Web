@@ -1,3 +1,5 @@
+const ENVIRONMENT_MODE = process.env.NODE_ENV!;
+
 const Endpoints = {
     MAIN: process.env.ENDPOINT_MAIN!,
     SIGNUP: process.env.ENDPOINT_SIGNUP!,
@@ -38,4 +40,4 @@ const StorageNames = {
     JWT_TOKEN: process.env.JWT_STORAGE!
 };
 
-export { Endpoints, URLs, XRequestIds, StorageNames };
+export { ENVIRONMENT_MODE, Endpoints, URLs, XRequestIds, StorageNames };
