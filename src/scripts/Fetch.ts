@@ -45,7 +45,7 @@ async function retrieveBoard(dimension: string, difficulty: string, games: strin
         credentials: "include"
     });
 
-    return _handleHttpResponse<GenerateInfo>(response);
+    return await _handleHttpResponse<GenerateInfo>(response);
 }
 
 async function signup(username: string, email: string, password: string): Promise<SignupInfo> {
@@ -56,7 +56,7 @@ async function signup(username: string, email: string, password: string): Promis
         credentials: "include"
     });
 
-    return _handleHttpResponse<SignupInfo>(response);
+    return await _handleHttpResponse<SignupInfo>(response);
 }
 
 async function loginWithPassword(usernameOrEmail: string, password: string): Promise<LoginInfo> {
@@ -67,7 +67,7 @@ async function loginWithPassword(usernameOrEmail: string, password: string): Pro
         credentials: "include"
     });
 
-    return _handleHttpResponse<LoginInfo>(response);
+    return await _handleHttpResponse<LoginInfo>(response);
 }
 
 async function loginWithToken(token: string): Promise<LoginInfo> {
@@ -77,7 +77,7 @@ async function loginWithToken(token: string): Promise<LoginInfo> {
         credentials: "include"
     });
 
-    return _handleHttpResponse<LoginInfo>(response);
+    return await _handleHttpResponse<LoginInfo>(response);
 }
 
 async function updateUser(
@@ -93,7 +93,7 @@ async function updateUser(
         credentials: "include"
     });
 
-    return _handleHttpResponse<UpdateUserInfo>(response);
+    return await _handleHttpResponse<UpdateUserInfo>(response);
 }
 
 async function deleteUser(userId: number, token: string | null): Promise<DeleteUserInfo> {
@@ -106,7 +106,7 @@ async function deleteUser(userId: number, token: string | null): Promise<DeleteU
         credentials: "include"
     });
 
-    return _handleHttpResponse<DeleteUserInfo>(response);
+    return await _handleHttpResponse<DeleteUserInfo>(response);
 }
 
 async function createPuzzle(json: string, userId: number, token: string | null): Promise<CreatePuzzleInfo> {
@@ -117,7 +117,7 @@ async function createPuzzle(json: string, userId: number, token: string | null):
         credentials: "include"
     });
 
-    return _handleHttpResponse<CreatePuzzleInfo>(response);
+    return await _handleHttpResponse<CreatePuzzleInfo>(response);
 }
 
 async function updatePuzzle(puzzleId: number, json: string, token: string | null): Promise<UpdatePuzzleInfo> {
@@ -128,7 +128,7 @@ async function updatePuzzle(puzzleId: number, json: string, token: string | null
         credentials: "include"
     });
 
-    return _handleHttpResponse<UpdatePuzzleInfo>(response);
+    return await _handleHttpResponse<UpdatePuzzleInfo>(response);
 }
 
 async function deletePuzzle(puzzleId: number, token: string | null): Promise<DeletePuzzleInfo> {
@@ -139,7 +139,7 @@ async function deletePuzzle(puzzleId: number, token: string | null): Promise<Del
         credentials: "include"
     });
 
-    return _handleHttpResponse<DeletePuzzleInfo>(response);
+    return await _handleHttpResponse<DeletePuzzleInfo>(response);
 }
 
 async function renewJwtToken(user: User, token: string): Promise<RenewJwtTokenInfo> {
@@ -150,7 +150,7 @@ async function renewJwtToken(user: User, token: string): Promise<RenewJwtTokenIn
         credentials: "include"
     });
 
-    return _handleHttpResponse<RenewJwtTokenInfo>(response);
+    return await _handleHttpResponse<RenewJwtTokenInfo>(response);
 }
 
 export { retrieveBoard, signup, loginWithPassword, loginWithToken, updateUser, deleteUser, createPuzzle, updatePuzzle, deletePuzzle, renewJwtToken };
