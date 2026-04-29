@@ -9,7 +9,7 @@ import { UpdatePuzzleInfo } from "./UpdatePuzzleInfo";
 import { DeletePuzzleInfo } from "./DeletePuzzleInfo";
 import { RenewJwtTokenInfo } from "./RenewJwtTokenInfo";
 
-function _headers(xReqId: string, token: string | null): HeadersInit {
+function _makeHeaders(xReqId: string, token: string | null): HeadersInit {
     const headers: HeadersInit = {
         "X-Request-ID": xReqId,
         "Accept": "application/json",
@@ -29,7 +29,24 @@ function _headers(xReqId: string, token: string | null): HeadersInit {
     return headers;
 }
 
-async function _handleHttpResponse<TInfoType>(response: Response): Promise<TInfoType> {
+function _makeRequest(httpMethod: string, xReqId: string, jwtToken: string | null, json: any): RequestInit {
+    const bodyJson = json ? JSON.stringify(json) : null;
+
+    return {
+        headers: _makeHeaders(xReqId, jwtToken),
+        method: httpMethod,
+        body: bodyJson,
+        credentials: "include",
+        cache: "default",
+        mode: "cors",
+        redirect: "error",
+        keepalive: true
+    };
+}
+
+async function _handleHttp<TInfoType>(url: string, request: RequestInit): Promise<TInfoType> {
+    const response = await fetch(url, request);
+
     if (!response.ok) {
         throw new Error(`Response Status: ${response.status}. ${response.statusText}`)
     }
@@ -37,118 +54,78 @@ async function _handleHttpResponse<TInfoType>(response: Response): Promise<TInfo
     return await response.json() as TInfoType;
 }
 
-async function retrieveBoard(dimension: string, difficulty: string, games: string[], token: string | null): Promise<GenerateInfo> {
-    const response = await fetch(URLs.GENERATE, {
-        headers: _headers(XRequestIds.GENERATE, token),
-        method: "POST",
-        body: JSON.stringify({ dimension, difficulty, games }),
-        credentials: "include"
-    });
+async function retrieveBoard(dimension: string, difficulty: string, games: string[], jwtToken: string | null): Promise<GenerateInfo> {
+    const body = { dimension, difficulty, games };
+    const request = _makeRequest("POST", XRequestIds.GENERATE, jwtToken, body);
 
-    return await _handleHttpResponse<GenerateInfo>(response);
+    return await _handleHttp<GenerateInfo>(URLs.GENERATE, request);
 }
 
 async function signup(username: string, email: string, password: string): Promise<SignupInfo> {
-    const response = await fetch(URLs.CREATE_USER, {
-        headers: _headers(XRequestIds.CREATE_USER, null),
-        method: "PUT",
-        body: JSON.stringify({ username, email, password }),
-        credentials: "include"
-    });
-
-    return await _handleHttpResponse<SignupInfo>(response);
+    const body = { username, email, password };
+    const request = _makeRequest("PUT", XRequestIds.CREATE_USER, null, body);
+    
+    return await _handleHttp<SignupInfo>(URLs.CREATE_USER, request);
 }
 
 async function loginWithPassword(usernameOrEmail: string, password: string): Promise<LoginInfo> {
-    const response = await fetch(URLs.READ_USER, {
-        headers: _headers(XRequestIds.READ_USER, null),
-        method: "POST",
-        body: JSON.stringify({ usernameOrEmail, password }),
-        credentials: "include"
-    });
+    const body = { usernameOrEmail, password };
+    const request = _makeRequest("POST", XRequestIds.READ_USER, null, body);
 
-    return await _handleHttpResponse<LoginInfo>(response);
+    return await _handleHttp<LoginInfo>(URLs.READ_USER, request);
 }
 
-async function loginWithToken(token: string): Promise<LoginInfo> {
-    const response = await fetch(URLs.TOKEN_LOGIN, {
-        headers: _headers(XRequestIds.TOKEN_LOGIN, token),
-        method: "GET",
-        credentials: "include"
-    });
+async function loginWithToken(jwtToken: string): Promise<LoginInfo> {
+    const request = _makeRequest("GET", XRequestIds.TOKEN_LOGIN, jwtToken, undefined);
 
-    return await _handleHttpResponse<LoginInfo>(response);
+    return await _handleHttp<LoginInfo>(URLs.TOKEN_LOGIN, request);
 }
 
 async function updateUser(
     userId: number,
     newUsername: string,
     newEmail: string,
-    token: string | null
+    jwtToken: string | null
 ): Promise<UpdateUserInfo> {
-    const response = await fetch(URLs.UPDATE_USER, {
-        headers: _headers(XRequestIds.UPDATE_USER, token),
-        method: "PUT",
-        body: JSON.stringify({ userId, newUsername, newEmail }),
-        credentials: "include"
-    });
+    const body = { userId, newUsername, newEmail };
+    const request = _makeRequest("PUT", XRequestIds.UPDATE_USER, jwtToken, body);
 
-    return await _handleHttpResponse<UpdateUserInfo>(response);
+    return await _handleHttp<UpdateUserInfo>(URLs.UPDATE_USER, request);
 }
 
-async function deleteUser(userId: number, token: string | null): Promise<DeleteUserInfo> {
-    const response = await fetch(URLs.DELETE_USER, {
-        headers: _headers(XRequestIds.DELETE_USER, token),
-        method: "DELETE",
-        body: JSON.stringify({ userId }),
-        credentials: "include"
-    });
+async function deleteUser(userId: number, jwtToken: string | null): Promise<DeleteUserInfo> {
+    const body = { userId };
+    const request = _makeRequest("DELETE", XRequestIds.DELETE_USER, jwtToken, body);
 
-    return await _handleHttpResponse<DeleteUserInfo>(response);
+    return await _handleHttp<DeleteUserInfo>(URLs.DELETE_USER, request);
 }
 
-async function createPuzzle(json: string, userId: number, token: string | null): Promise<CreatePuzzleInfo> {
-    const response = await fetch(URLs.CREATE_PUZZLE, {
-        headers: _headers(XRequestIds.CREATE_PUZZLE, token),
-        method: "PUT",
-        body: JSON.stringify({ json, userId }),
-        credentials: "include"
-    });
+async function createPuzzle(json: string, userId: number, jwtToken: string | null): Promise<CreatePuzzleInfo> {
+    const body = { json, userId };
+    const request = _makeRequest("PUT", XRequestIds.CREATE_PUZZLE, jwtToken, body);
 
-    return await _handleHttpResponse<CreatePuzzleInfo>(response);
+    return await _handleHttp<CreatePuzzleInfo>(URLs.CREATE_PUZZLE, request);
 }
 
-async function updatePuzzle(puzzleId: number, json: string, token: string | null): Promise<UpdatePuzzleInfo> {
-    const response = await fetch(URLs.UPDATE_PUZZLE, {
-        headers: _headers(XRequestIds.UPDATE_PUZZLE, token),
-        method: "PUT",
-        body: JSON.stringify({ puzzleId, json }),
-        credentials: "include"
-    });
+async function updatePuzzle(puzzleId: number, json: string, jwtToken: string | null): Promise<UpdatePuzzleInfo> {
+    const body = { puzzleId, json };
+    const request = _makeRequest("PUT", XRequestIds.UPDATE_PUZZLE, jwtToken, body);
 
-    return await _handleHttpResponse<UpdatePuzzleInfo>(response);
+    return await _handleHttp<UpdatePuzzleInfo>(URLs.UPDATE_PUZZLE, request);
 }
 
-async function deletePuzzle(puzzleId: number, token: string | null): Promise<DeletePuzzleInfo> {
-    const response = await fetch(URLs.DELETE_PUZZLE, {
-        headers: _headers(XRequestIds.DELETE_PUZZLE, token),
-        method: "DELETE",
-        body: JSON.stringify({ puzzleId }),
-        credentials: "include"
-    });
+async function deletePuzzle(puzzleId: number, jwtToken: string | null): Promise<DeletePuzzleInfo> {
+    const body = { puzzleId };
+    const request = _makeRequest("DELETE", XRequestIds.DELETE_PUZZLE, jwtToken, body);
 
-    return await _handleHttpResponse<DeletePuzzleInfo>(response);
+    return await _handleHttp<DeletePuzzleInfo>(URLs.DELETE_PUZZLE, request);
 }
 
-async function renewJwtToken(user: User, token: string): Promise<RenewJwtTokenInfo> {
-    const response = await fetch(URLs.RENEW_TOKEN, {
-        headers: _headers(XRequestIds.RENEW_TOKEN, token),
-        method: "PUT",
-        body: JSON.stringify({ user }),
-        credentials: "include"
-    });
+async function renewJwtToken(user: User, jwtToken: string): Promise<RenewJwtTokenInfo> {
+    const body = { user };
+    const request = _makeRequest("PUT", XRequestIds.RENEW_TOKEN, jwtToken, body);
 
-    return await _handleHttpResponse<RenewJwtTokenInfo>(response);
+    return await _handleHttp<RenewJwtTokenInfo>(URLs.RENEW_TOKEN, request);
 }
 
 export { retrieveBoard, signup, loginWithPassword, loginWithToken, updateUser, deleteUser, createPuzzle, updatePuzzle, deletePuzzle, renewJwtToken };
