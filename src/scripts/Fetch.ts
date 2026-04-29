@@ -15,7 +15,7 @@ function _headers(xReqId: string, token: string | null): HeadersInit {
         "Accept": "application/json",
         "Accept-Charset": "ISO-8859-1",
         "Accept-Encoding": "gzip",
-        "Allow": "OPTIONS, POST, PUT, DELETE",
+        "Allow": "OPTIONS, GET, POST, PUT, DELETE",
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
         "Connection": "keep-alive",
