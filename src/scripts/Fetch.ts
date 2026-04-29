@@ -97,8 +97,6 @@ async function updateUser(
 }
 
 async function deleteUser(userId: number, token: string | null): Promise<DeleteUserInfo> {
-    alert(token);
-
     const response = await fetch(URLs.DELETE_USER, {
         headers: _headers(XRequestIds.DELETE_USER, token),
         method: "DELETE",
