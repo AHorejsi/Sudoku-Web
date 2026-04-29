@@ -1,11 +1,31 @@
-function getItemFromStorage(name: string): string | null {
-    let item = localStorage.getItem(name);
-
-    if (undefined === item) {
-        item = sessionStorage.getItem(name);
+function _isLocalStorageEnabled(): boolean {
+    if ("undefined" === typeof localStorage) {
+        return false;
     }
 
-    return item;
+    try {
+        const testKey = "featureTest";
+        const testValue = "featureVal";
+
+        localStorage.setItem(testKey, testValue);
+
+        if (testValue === localStorage.getItem(testKey)) {
+            localStorage.removeItem(testKey);
+
+            return true;
+        }
+    } finally {
+        return false;
+    }
+}
+
+function getItemFromStorage(name: string): string | null {
+    if (_isLocalStorageEnabled()) {
+        return localStorage.getItem(name);
+    }
+    else {
+        return sessionStorage.getItem(name);
+    }
 }
 
 function setItemInStorage(name: string, item: string | null) {

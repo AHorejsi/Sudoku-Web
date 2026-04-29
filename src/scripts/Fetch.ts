@@ -15,6 +15,7 @@ function _headers(xReqId: string, token: string | null): HeadersInit {
         "Accept": "application/json",
         "Accept-Charset": "ISO-8859-1",
         "Accept-Encoding": "gzip",
+        "Allow": "OPTIONS, POST, PUT, DELETE",
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
         "Connection": "keep-alive",
@@ -96,6 +97,8 @@ async function updateUser(
 }
 
 async function deleteUser(userId: number, token: string | null): Promise<DeleteUserInfo> {
+    alert(token);
+
     const response = await fetch(URLs.DELETE_USER, {
         headers: _headers(XRequestIds.DELETE_USER, token),
         method: "DELETE",

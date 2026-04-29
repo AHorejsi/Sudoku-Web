@@ -37,7 +37,7 @@ const XRequestIds = {
 };
 
 const StorageNames = {
-    JWT_TOKEN: process.env.JWT_STORAGE!
+    JWT_TOKEN: process.env.JWT_TOKEN!
 };
 
 export { ENVIRONMENT_MODE, Endpoints, URLs, XRequestIds, StorageNames };
