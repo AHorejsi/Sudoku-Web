@@ -29,9 +29,9 @@ function _getInfo(puzzleSet: Puzzle[], targetId: number | null): GenerateInfo | 
     return undefined;
 }
 
-function _setUpJwtAutoRenewal(ref: { jwt: string }, dbUser: User, nav: NavigateFunction) {
+function _setUpJwtAutoRenewal(ref: { token: string }, dbUser: User, nav: NavigateFunction) {
     setInterval(() => {
-        renewJwtToken(dbUser, ref.jwt).then((info) => {
+        renewJwtToken(dbUser, ref.token).then((info) => {
             if (info.type.endsWith("Success")) {
                 setItemInStorage(StorageNames.JWT_TOKEN, info.newToken!);
             }
@@ -61,8 +61,8 @@ export default function GameplayPage(): React.JSX.Element {
 
     const dispatch = useAppDispatch();
 
-    const jwt = getItemFromStorage(StorageNames.JWT_TOKEN)!;
-    _setUpJwtAutoRenewal({ jwt }, dbUser, nav);
+    const token = getItemFromStorage(StorageNames.JWT_TOKEN)!;
+    _setUpJwtAutoRenewal({ token: token }, dbUser, nav);
 
     const info = _getInfo(dbUser.puzzles, puzzleId);
     const [board, setBoard] = useState<GenerateInfo | string | Error>(info ?? "No Puzzle");

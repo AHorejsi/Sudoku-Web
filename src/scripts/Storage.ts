@@ -1,6 +1,8 @@
-function _isLocalStorageEnabled(): boolean {
+const correctStorage = _getCorrectStorage();
+
+function _getCorrectStorage(): Storage {
     if ("undefined" === typeof localStorage) {
-        return false;
+        return sessionStorage;
     }
 
     try {
@@ -12,26 +14,27 @@ function _isLocalStorageEnabled(): boolean {
         if (testValue === localStorage.getItem(testKey)) {
             localStorage.removeItem(testKey);
 
-            return true;
+            return localStorage;
         }
     } finally {
-        return false;
+        return sessionStorage;
     }
 }
 
 function getItemFromStorage(name: string): string | null {
-    if (_isLocalStorageEnabled()) {
-        return localStorage.getItem(name);
-    }
-    else {
-        return sessionStorage.getItem(name);
-    }
+    return correctStorage.getItem(name);
 }
 
-function setItemInStorage(name: string, item: string | null) {
+function setItemInStorage(name: string, item: string | null): void {
     if (undefined === item) {
-        localStorage.setItem(name, item);
-        sessionStorage.setItem(name, item);
+        return;
+    }
+
+    if (null == item) {
+        correctStorage.removeItem(name);
+    }
+    else {
+        correctStorage.setItem(name, item);
     }
 }
 
