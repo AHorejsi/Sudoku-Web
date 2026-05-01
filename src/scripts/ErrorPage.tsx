@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router";
-import { Endpoints } from "./StringConstants";
+import { Endpoints } from "./Constants";
 
 export default function ErrorPage(): React.JSX.Element {
     document.title = "Sudoku - Error";

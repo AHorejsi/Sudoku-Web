@@ -8,7 +8,7 @@ import SelectionCheckbox from "./SelectionCheckbox";
 import { load } from "./UserState";
 import { useAppDispatch } from "./Hooks";
 import { AppDispatch } from "./Store";
-import { Endpoints, StorageNames } from "./StringConstants";
+import { Endpoints, StorageNames } from "./Constants";
 import { getItemFromStorage } from "./Storage";
 
 interface SelectionCardProps {

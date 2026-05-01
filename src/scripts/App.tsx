@@ -1,6 +1,6 @@
 import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router";
-import { Endpoints } from "./StringConstants";
+import { Endpoints } from "./Constants";
 import GameplayPage from "./GameplayPage";
 import LoginPage from "./LoginPage";
 import SignUpPage from "./SignUpPage";

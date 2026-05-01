@@ -1,12 +1,12 @@
 import "../styles/BoardLoader.css";
 import { NavigateFunction, useNavigate } from "react-router";
 import { Sudoku } from "./GenerateInfo";
-import { Endpoints } from "./StringConstants";
+import { Endpoints } from "./Constants";
 import { useAppDispatch } from "./Hooks";
 import { AppDispatch } from "./Store";
 import { deletePuzzle } from "./Fetch";
 import { load, save } from "./UserState";
-import { StorageNames } from "./StringConstants";
+import { StorageNames } from "./Constants";
 import { getItemFromStorage } from "./Storage";
 
 interface BoardLoaderProps {

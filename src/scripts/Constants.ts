@@ -1,5 +1,11 @@
 const ENVIRONMENT_MODE = process.env.NODE_ENV!;
 
+enum Environment {
+    DEV = "development",
+    TEST = "testing",
+    PROD = "production"
+};
+
 const Endpoints = {
     MAIN: process.env.ENDPOINT_MAIN!,
     SIGNUP: process.env.ENDPOINT_SIGNUP!,
@@ -40,4 +46,8 @@ const StorageNames = {
     JWT_TOKEN: process.env.JWT_TOKEN!
 };
 
-export { ENVIRONMENT_MODE, Endpoints, URLs, XRequestIds, StorageNames };
+function hasEnv(desired: Environment): boolean {
+    return desired === ENVIRONMENT_MODE;
+}
+
+export { ENVIRONMENT_MODE, Endpoints, URLs, XRequestIds, StorageNames, Environment, hasEnv };

@@ -1,7 +1,7 @@
 import "../styles/GameplayPage.css";
 import { useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
-import { Endpoints, StorageNames } from "./StringConstants";
+import { Endpoints, StorageNames } from "./Constants";
 import { GenerateInfo } from "./GenerateInfo";
 import { Puzzle, User } from "./LoginInfo";
 import SelectionCard from "./SelectionCard";

@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "./Hooks";
 import { AppDispatch } from "./Store";
 import { save, load, selectUser, selectLoad } from "./UserState";
 import { generateDistinctRgbColors, RgbColor } from "./ColorGeneration";
-import { Endpoints, StorageNames } from "./StringConstants";
+import { Endpoints, StorageNames } from "./Constants";
 import { getItemFromStorage } from "./Storage";
 import { NavigateFunction, useNavigate } from "react-router";
 

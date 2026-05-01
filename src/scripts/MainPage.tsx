@@ -1,6 +1,6 @@
 import "../styles/MainPage.css";
 import { NavigateFunction, useNavigate } from "react-router";
-import { Endpoints, StorageNames } from "./StringConstants";
+import { Endpoints, StorageNames } from "./Constants";
 import { loginWithToken } from "./Fetch";
 import { useAppDispatch } from "./Hooks";
 import { AppDispatch } from "./Store";

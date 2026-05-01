@@ -1,4 +1,4 @@
-import { URLs, XRequestIds } from "./StringConstants";
+import { Environment, hasEnv, URLs, XRequestIds } from "./Constants";
 import { GenerateInfo } from "./GenerateInfo";
 import { LoginInfo, User } from "./LoginInfo";
 import { SignupInfo } from "./SignupInfo";
@@ -47,7 +47,10 @@ function _makeRequest(httpMethod: string, xReqId: string, jwtToken: string | nul
 }
 
 async function _handleHttp<TInfoType>(url: string, request: RequestInit): Promise<TInfoType> {
-    alert(url);
+    if (hasEnv(Environment.DEV) || hasEnv(Environment.TEST)) {
+        alert(url);
+    }
+
     const response = await fetch(url, request);
 
     if (!response.ok) {

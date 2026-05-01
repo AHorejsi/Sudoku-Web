@@ -1,6 +1,6 @@
 import "../styles/SignupPage.css";
 import { Dispatch, SetStateAction, useState } from "react";
-import { Endpoints } from "./StringConstants";
+import { Endpoints } from "./Constants";
 import { signup } from "./Fetch";
 import { SignupInfo } from "./SignupInfo";
 import { NavigateFunction, useNavigate } from "react-router";

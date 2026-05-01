@@ -1,5 +1,5 @@
 import { NavigateFunction, useNavigate } from "react-router";
-import { Endpoints, StorageNames } from "./StringConstants";
+import { Endpoints, StorageNames } from "./Constants";
 import { updateUser, deleteUser } from "./Fetch";
 import { User } from "./LoginInfo";
 import { UpdateUserInfo } from "./UpdateUserInfo";

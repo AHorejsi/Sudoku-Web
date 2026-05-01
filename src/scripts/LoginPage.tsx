@@ -1,7 +1,7 @@
 import "../styles/LoginPage.css";
 import { Dispatch, SetStateAction, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
-import { Endpoints, StorageNames } from "./StringConstants";
+import { Endpoints, StorageNames } from "./Constants";
 import { loginWithPassword } from "./Fetch";
 import { LoginInfo } from "./LoginInfo";
 import InputField from "./InputField";
