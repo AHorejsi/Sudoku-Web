@@ -80,7 +80,7 @@ function _decideThickness(props: SudokuCellProps): _BorderThickness {
     return borderThickness;
 }
 
-function _checkInput(div: HTMLDivElement, cell: Cell, maxLength: number) {
+function _checkInput(div: HTMLDivElement, cell: Cell, maxLength: number): void {
     const text = div.textContent;
     const last = text[text.length - 1]; // undefined means that the text is empty
 
@@ -105,7 +105,7 @@ function _validChar(key: string | undefined): boolean {
     return key.localeCompare("1") >= 0 && key.localeCompare("9") <= 0;
 }
 
-function _deleteLastChars(div: HTMLDivElement, text: string) {
+function _deleteLastChars(div: HTMLDivElement, text: string): void {
     div.textContent = text.substring(0, text.length - 1);
     
     const sel = window.getSelection()!;

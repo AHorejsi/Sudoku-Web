@@ -17,19 +17,23 @@ function _getInfo(puzzleSet: Puzzle[], targetId: number | null): GenerateInfo | 
         return null;
     }
 
+    let info: GenerateInfo | undefined;
+
     for (const puzzle of puzzleSet) {
         if (puzzle.id === targetId) {
-            return {
+            info = {
                 type: "Success",
                 sudoku: JSON.parse(puzzle.json)
             };
+
+            break;
         }
     }
 
-    return undefined;
+    return info;
 }
 
-function _setUpJwtAutoRenewal(ref: { token: string }, dbUser: User, nav: NavigateFunction) {
+function _setUpJwtAutoRenewal(ref: { token: string }, dbUser: User, nav: NavigateFunction): void {
     setInterval(() => {
         renewJwtToken(dbUser, ref.token).then((info) => {
             if (info.type.endsWith("Success")) {
@@ -44,7 +48,7 @@ function _setUpJwtAutoRenewal(ref: { token: string }, dbUser: User, nav: Navigat
     }, 3600000); // 1 hour
 }
 
-function _logout(dispatch: AppDispatch, nav: NavigateFunction) {
+function _logout(dispatch: AppDispatch, nav: NavigateFunction): void {
     dispatch(user(null));
     dispatch(load(null));
 

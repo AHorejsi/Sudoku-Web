@@ -6,28 +6,33 @@ import { useAppDispatch } from "./Hooks";
 import { AppDispatch } from "./Store";
 import { user } from "./UserState";
 import { getItemFromStorage, setItemInStorage } from "./Storage";
+import { LoginInfo } from "./LoginInfo";
 
-function _checkJwtToken(token: string | null, nav: NavigateFunction, dispatch: AppDispatch) {
+function _checkJwtToken(token: string | null, nav: NavigateFunction, dispatch: AppDispatch): void {
     if (!token) {
         nav(Endpoints.LOGIN);
     }
     else {
         loginWithToken(token).then((info) => {
-            if (!info.type.endsWith("Success")) {
-                nav(Endpoints.LOGIN);
-            }
-            else {
-                const dbUser = info.user!;
-                const jwtToken = info.token!;
-
-                dispatch(user(dbUser));
-                setItemInStorage(StorageNames.JWT_TOKEN, jwtToken);
-
-                nav(Endpoints.GAMEPLAY);
-            }
+            _checkJwtTokenHelper(info, nav, dispatch);
         }).catch((error) => {
             nav(Endpoints.ERROR, { state: error });
         });
+    }
+}
+
+function _checkJwtTokenHelper(info: LoginInfo, nav: NavigateFunction, dispatch: AppDispatch): void {
+    if (!info.type.endsWith("Success")) {
+        nav(Endpoints.LOGIN);
+    }
+    else {
+        const dbUser = info.user!;
+        const jwtToken = info.token!;
+
+        dispatch(user(dbUser));
+        setItemInStorage(StorageNames.JWT_TOKEN, jwtToken);
+
+        nav(Endpoints.GAMEPLAY);
     }
 }
 

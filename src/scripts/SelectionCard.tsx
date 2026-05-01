@@ -23,27 +23,34 @@ function _generate(
     nav: NavigateFunction,
     dispatch: AppDispatch,
     button: HTMLInputElement
-) {
+): void {
     creator("Retrieving...");
+    button.disabled = true;
 
     const token = getItemFromStorage(StorageNames.JWT_TOKEN);
 
-    button.disabled = true;
-
     retrieveBoard(dimension, difficulty, games, token).then((info) => {
-        if (info.type.endsWith("Success")) {
-            creator(info);
-        }
-        else if (info.type.endsWith("UnfilledFields")) {
-            creator(new Error("PLEASE FILL FIELDS"));
-        }
-
-        button.disabled = false;
+        _generateHelper(info, creator, button);
     }).catch((error) => {
         nav(Endpoints.ERROR, { state: error });
     }).finally(() => {
         dispatch(load(null));
     });
+}
+
+function _generateHelper(
+    info: GenerateInfo,
+    creator: Dispatch<SetStateAction<GenerateInfo | string | Error>>,
+    button: HTMLInputElement
+): void {
+    if (info.type.endsWith("Success")) {
+        creator(info);
+    }
+    else if (info.type.endsWith("UnfilledFields")) {
+        creator(new Error("PLEASE FILL FIELDS"));
+    }
+
+    button.disabled = false;
 }
 
 export default function SelectionCard(props: SelectionCardProps): React.JSX.Element {

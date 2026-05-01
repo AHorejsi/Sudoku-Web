@@ -14,12 +14,22 @@ interface _SignupAttemptState {
     style: string;
 }
 
-function _checkSignup(info: SignupInfo, setSignup: Dispatch<SetStateAction<_SignupAttemptState>>, nav: NavigateFunction) {
+function _attemptSignupHelper(
+    info: SignupInfo,
+    setSignup: Dispatch<SetStateAction<_SignupAttemptState>>,
+    nav: NavigateFunction
+): void {
     if (info.type.endsWith("Success")) {
         nav(Endpoints.LOGIN);
     }
     else {
-        setSignup({ borders: "failed-sign-up" , text: "Username/Email or Password not valid", style: "failed-signup-text" });    
+        const FAILED_SIGNUP_STATE = {
+            borders: "failed-sign-up",
+            text: "Username/Email or Password not valid",
+            style: "failed-signup-text"
+        };
+
+        setSignup(FAILED_SIGNUP_STATE);    
     }
 }
 
@@ -29,11 +39,11 @@ function _attemptSignup(
     password: string,
     setSignup: Dispatch<SetStateAction<_SignupAttemptState>>,
     nav: NavigateFunction
-) {
+): void {
     setSignup({ borders: "sign-up-not-attempted", text: "Registering...", style: "signup-text" });
 
     signup(username, email, password).then((info) => {
-        _checkSignup(info, setSignup, nav);
+        _attemptSignupHelper(info, setSignup, nav);
     }).catch((error) => {
         nav(Endpoints.ERROR, { state: error });
     });

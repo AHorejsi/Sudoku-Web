@@ -171,7 +171,7 @@ function _assignColors(
     currentCage: Cage,
     colorIndex: number,
     colorMap: RgbColor[][]
-) {
+): void {
     for (const pos of currentCage.positions) {
         colorMap[pos.rowIndex]![pos.colIndex] = colors[colorIndex % colors.length]!;
     }
@@ -275,7 +275,7 @@ function _savePuzzle(
     nav: NavigateFunction,
     dispatch: AppDispatch,
     button: HTMLButtonElement
-) {
+): void {
     const json = JSON.stringify(sudoku);
     const token = getItemFromStorage(StorageNames.JWT_TOKEN);
 
@@ -312,7 +312,7 @@ function _savePuzzle(
     }
 }
 
-function _saveCleanup(button: HTMLButtonElement, message: string) {
+function _saveCleanup(button: HTMLButtonElement, message: string): void {
     if (!message.endsWith("Success")) {
         alert("Sudoku Failed to Save");
     }

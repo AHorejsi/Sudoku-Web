@@ -13,7 +13,7 @@ interface SelectionCheckboxProps {
     setter: Dispatch<SetStateAction<string[]>>;
 }
 
-function _changeSelection(ev: FormEvent<HTMLInputElement>, props: SelectionCheckboxProps) {
+function _changeSelection(ev: FormEvent<HTMLInputElement>, props: SelectionCheckboxProps): void {
     const current = props.current;
     const value = props.value;
 

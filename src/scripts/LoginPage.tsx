@@ -20,19 +20,31 @@ interface _LoginAttemptState {
     padding: string;
 }
 
-function _checkLogin(info: LoginInfo, setLogin: Dispatch<SetStateAction<_LoginAttemptState>>, nav: NavigateFunction, dispatch: AppDispatch) {
+function _attemptUserLoginHelper(
+    info: LoginInfo,
+    setLogin: Dispatch<SetStateAction<_LoginAttemptState>>,
+    nav: NavigateFunction,
+    dispatch: AppDispatch
+): void {
     const dbUser = info.user;
 
-    if (!dbUser) {
-        setLogin({ borders: "failed-login" , text: "Username or Password not authenticated", style: "failed-login-text", padding: "0em" });
-    }
-    else {
+    if (dbUser) {
         const jwtToken = info.token!;
 
         dispatch(user(dbUser));
         setItemInStorage(StorageNames.JWT_TOKEN, jwtToken);
 
         nav(Endpoints.GAMEPLAY);
+    }
+    else {
+        const FAILED_AUTH_STATE = {
+            borders: "failed-login" ,
+            text: "Username or Password not authenticated",
+            style: "failed-login-text",
+            padding: "0em"
+        };
+
+        setLogin(FAILED_AUTH_STATE);
     }
 }
 
@@ -42,11 +54,11 @@ function _attemptUserLogin(
     setLogin: Dispatch<SetStateAction<_LoginAttemptState>>,
     nav: NavigateFunction,
     dispatch: AppDispatch
-) {
+): void {
     setLogin({ borders: "login-not-attempted", text: "Authenticating...", style: "login-text", padding: "0em" });
 
     loginWithPassword(usernameOrEmail, password).then((info) => {
-        _checkLogin(info, setLogin, nav, dispatch);
+        _attemptUserLoginHelper(info, setLogin, nav, dispatch);
     }).catch((error) => {
         nav(Endpoints.ERROR, { state: error })
     });
@@ -55,9 +67,16 @@ function _attemptUserLogin(
 export default function LoginPage(): React.JSX.Element {
     document.title = "Sudoku - Login";
 
+    const INITIAL_AUTH_STATE = {
+        borders: "login-not-attempted",
+        text: "",
+        style: "",
+        padding: "1.5em"
+    };
+
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [login, setLogin] = useState<_LoginAttemptState>({ borders: "login-not-attempted", text: "", style: "", padding: "1.5em" });
+    const [login, setLogin] = useState<_LoginAttemptState>(INITIAL_AUTH_STATE);
     
     const nav = useNavigate();
 

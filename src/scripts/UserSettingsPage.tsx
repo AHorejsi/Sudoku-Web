@@ -10,7 +10,7 @@ import { user, load, selectUser } from "./UserState";
 import InputField from "./InputField";
 import { getItemFromStorage } from "./Storage";
 
-function _checkUpdate(info: UpdateUserInfo, dbUser: User, newUsername: string, newEmail: string, nav: NavigateFunction, dispatch: AppDispatch) {
+function _attemptUpdateHelper(info: UpdateUserInfo, dbUser: User, newUsername: string, newEmail: string, nav: NavigateFunction, dispatch: AppDispatch) {
     if (!info.type.endsWith("Success")) {
         nav(Endpoints.ERROR, { state: new Error("Failed to update") });
     }
@@ -26,7 +26,7 @@ function _checkUpdate(info: UpdateUserInfo, dbUser: User, newUsername: string, n
     }
 }
 
-function _checkDelete(info: DeleteUserInfo, nav: NavigateFunction, dispatch: AppDispatch) {
+function _attemptDeleteHelper(info: DeleteUserInfo, nav: NavigateFunction, dispatch: AppDispatch) {
     if (!info.type.endsWith("Success")) {
         nav(Endpoints.ERROR, { state: new Error("Failed to delete") });
     }
@@ -52,7 +52,7 @@ function _attemptUpdate(
     const token = getItemFromStorage(StorageNames.JWT_TOKEN);
 
     updateUser(dbUser.id, newUsername, newEmail, token).then((info: UpdateUserInfo) => {
-        _checkUpdate(info, dbUser, newUsername, newEmail, nav, dispatch);
+        _attemptUpdateHelper(info, dbUser, newUsername, newEmail, nav, dispatch);
     }).catch((error) => {
         nav(Endpoints.ERROR, { state: error });
     });
@@ -62,7 +62,7 @@ function _attemptDelete(userId: number, dispatch: AppDispatch, nav: NavigateFunc
     const token = getItemFromStorage(StorageNames.JWT_TOKEN);
 
     deleteUser(userId, token).then((info: DeleteUserInfo) => {
-        _checkDelete(info, nav, dispatch);
+        _attemptDeleteHelper(info, nav, dispatch);
     }).catch((error) => {
         nav(Endpoints.ERROR, { state: error });
     });
