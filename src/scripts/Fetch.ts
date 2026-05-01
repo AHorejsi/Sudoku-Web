@@ -9,6 +9,7 @@ import { UpdatePuzzleInfo } from "./UpdatePuzzleInfo";
 import { DeletePuzzleInfo } from "./DeletePuzzleInfo";
 import { RenewJwtTokenInfo } from "./RenewJwtTokenInfo";
 
+
 function _makeHeaders(xReqId: string, token: string | null): HeadersInit {
     const headers: HeadersInit = {
         "X-Request-ID": xReqId,
@@ -31,9 +32,10 @@ function _makeHeaders(xReqId: string, token: string | null): HeadersInit {
 
 function _makeRequest(httpMethod: string, xReqId: string, jwtToken: string | null, json: any): RequestInit {
     const bodyJson = json ? JSON.stringify(json) : null;
+    const headerJson = _makeHeaders(xReqId, jwtToken);
 
     return {
-        headers: _makeHeaders(xReqId, jwtToken),
+        headers: headerJson,
         method: httpMethod,
         body: bodyJson,
         credentials: "include",
