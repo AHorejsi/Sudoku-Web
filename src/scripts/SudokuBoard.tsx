@@ -324,15 +324,14 @@ function _getErrorComponent(message: string, textClass: string): React.JSX.Eleme
     return (<p id={textClass} className="all-text">{ message }</p>);
 }
 
-function _getSudokuComponent(info: GenerateInfo): React.JSX.Element {
-    const puzzleId = useAppSelector(selectLoad);
-    const user = useAppSelector(selectUser)!;
-
-    const dispatch = useAppDispatch();
-
-    const button = useRef<HTMLButtonElement>(null);
-    const nav = useNavigate();
-
+function _getSudokuComponent(
+    info: GenerateInfo,
+    button: React.RefObject<HTMLButtonElement | null>,
+    nav: NavigateFunction,
+    puzzleId: number | null,
+    user: User,
+    dispatch: AppDispatch
+): React.JSX.Element {
     const sudoku = info.sudoku;
     const cells = _createCells(sudoku);
 
@@ -359,11 +358,19 @@ export default function SudokuBoard(props: SudokuBoardProps): React.JSX.Element 
     const isError = info instanceof Error;
     const isString = "string" === typeof info;
 
+    const button = useRef<HTMLButtonElement>(null);
+    const nav = useNavigate();
+
+    const puzzleId = useAppSelector(selectLoad);
+    const user = useAppSelector(selectUser)!;
+
+    const dispatch = useAppDispatch();
+
     return (
         <>
             {isError && _getErrorComponent(info.message, "error-text")}
             {isString && _getErrorComponent(info, "info-text")}
-            {!(isError || isString) && _getSudokuComponent(info)}
+            {!(isError || isString) && _getSudokuComponent(info, button, nav, puzzleId, user, dispatch)}
         </>
     )
 }
