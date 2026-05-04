@@ -47,9 +47,9 @@ function _makeRequest(httpMethod: string, xReqId: string, jwtToken: string | nul
 }
 
 async function _handleHttp<TInfoType>(url: string, request: RequestInit): Promise<TInfoType> {
-    if (hasEnv(Environment.DEV) || hasEnv(Environment.TEST)) {
+    /*if (hasEnv(Environment.DEV) || hasEnv(Environment.TEST)) {
         alert(url);
-    }
+    }*/
 
     const response = await fetch(url, request);
 
