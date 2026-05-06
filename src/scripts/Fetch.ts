@@ -13,7 +13,7 @@ import { RenewJwtTokenInfo } from "./RenewJwtTokenInfo";
 function _makeHeaders(xReqId: string, authType: AuthType, token: string): HeadersInit {
     const authHeader = (authType === AuthType.BASIC) ? `Basic ${token}` : `Bearer ${token}`;
 
-    const headers: HeadersInit = {
+    return {
         "X-Request-ID": xReqId,
         "Authorization": authHeader,
         "Accept": "application/json",
@@ -25,10 +25,6 @@ function _makeHeaders(xReqId: string, authType: AuthType, token: string): Header
         "Connection": "keep-alive",
         "User-Agent": "Mozilla/5.0"
     };
-
-    
-
-    return headers;
 }
 
 function _makeRequest(httpMethod: string, xReqId: string, authType: AuthType, token: string, json: any): RequestInit {
