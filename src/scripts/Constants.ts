@@ -48,8 +48,8 @@ const XRequestIds = {
 };
 
 const BasicAuths = {
-    NAME: process.env.SUDOKU_BASIC_NAME,
-    PASS: process.env.SUDOKU_BASIC_PASS
+    NAME: process.env.BASIC_NAME!,
+    PASS: process.env.BASIC_PASS!
 };
 
 const StorageNames = {
