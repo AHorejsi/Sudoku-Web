@@ -1,7 +1,7 @@
 import "../styles/LoginPage.css";
 import { Dispatch, SetStateAction, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router";
-import { Endpoints, StorageNames } from "./Constants";
+import { Endpoints, StorageNames, getBasicToken } from "./Constants";
 import { loginWithPassword } from "./Fetch";
 import { LoginInfo } from "./LoginInfo";
 import InputField from "./InputField";
@@ -57,7 +57,9 @@ function _attemptUserLogin(
 ): void {
     setLogin({ borders: "login-not-attempted", text: "Authenticating...", style: "login-text", padding: "0em" });
 
-    loginWithPassword(usernameOrEmail, password).then((info) => {
+    const token = getBasicToken();
+
+    loginWithPassword(usernameOrEmail, password, token).then((info) => {
         _attemptUserLoginHelper(info, setLogin, nav, dispatch);
     }).catch((error) => {
         nav(Endpoints.ERROR, { state: error })

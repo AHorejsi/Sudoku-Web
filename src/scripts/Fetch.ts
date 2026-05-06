@@ -1,4 +1,4 @@
-import { Environment, hasEnv, URLs, XRequestIds } from "./Constants";
+import { AuthType, Environment, hasEnv, URLs, XRequestIds } from "./Constants";
 import { GenerateInfo } from "./GenerateInfo";
 import { LoginInfo, User } from "./LoginInfo";
 import { SignupInfo } from "./SignupInfo";
@@ -10,29 +10,30 @@ import { DeletePuzzleInfo } from "./DeletePuzzleInfo";
 import { RenewJwtTokenInfo } from "./RenewJwtTokenInfo";
 
 
-function _makeHeaders(xReqId: string, token: string | null): HeadersInit {
+function _makeHeaders(xReqId: string, authType: AuthType, token: string): HeadersInit {
+    const authHeader = (authType === AuthType.BASIC) ? `Basic ${token}` : `Bearer ${token}`;
+
     const headers: HeadersInit = {
         "X-Request-ID": xReqId,
+        "Authorization": authHeader,
         "Accept": "application/json",
         "Accept-Charset": "ISO-8859-1",
         "Accept-Encoding": "gzip",
         "Allow": "OPTIONS, GET, POST, PUT, DELETE",
-        "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
         "Connection": "keep-alive",
         "User-Agent": "Mozilla/5.0"
     };
 
-    if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
-    }
+    
 
     return headers;
 }
 
-function _makeRequest(httpMethod: string, xReqId: string, jwtToken: string | null, json: any): RequestInit {
+function _makeRequest(httpMethod: string, xReqId: string, authType: AuthType, token: string, json: any): RequestInit {
     const bodyJson = json ? JSON.stringify(json) : null;
-    const headerJson = _makeHeaders(xReqId, jwtToken);
+    const headerJson = _makeHeaders(xReqId, authType, token);
 
     return {
         headers: headerJson,
@@ -47,9 +48,9 @@ function _makeRequest(httpMethod: string, xReqId: string, jwtToken: string | nul
 }
 
 async function _handleHttp<TInfoType>(url: string, request: RequestInit): Promise<TInfoType> {
-    /*if (hasEnv(Environment.DEV) || hasEnv(Environment.TEST)) {
+    if (hasEnv(Environment.DEV) || hasEnv(Environment.TEST)) {
         alert(url);
-    }*/
+    }
 
     const response = await fetch(url, request);
 
@@ -60,29 +61,29 @@ async function _handleHttp<TInfoType>(url: string, request: RequestInit): Promis
     return await response.json() as TInfoType;
 }
 
-async function retrieveBoard(dimension: string, difficulty: string, games: string[], jwtToken: string | null): Promise<GenerateInfo> {
+async function retrieveBoard(dimension: string, difficulty: string, games: string[], jwtToken: string): Promise<GenerateInfo> {
     const body = { dimension, difficulty, games };
-    const request = _makeRequest("POST", XRequestIds.GENERATE, jwtToken, body);
+    const request = _makeRequest("POST", XRequestIds.GENERATE, AuthType.JWT, jwtToken, body);
 
     return await _handleHttp<GenerateInfo>(URLs.GENERATE, request);
 }
 
-async function signup(username: string, email: string, password: string): Promise<SignupInfo> {
+async function signup(username: string, email: string, password: string, basicToken: string): Promise<SignupInfo> {
     const body = { username, email, password };
-    const request = _makeRequest("PUT", XRequestIds.CREATE_USER, null, body);
+    const request = _makeRequest("PUT", XRequestIds.CREATE_USER, AuthType.BASIC, basicToken, body);
     
     return await _handleHttp<SignupInfo>(URLs.CREATE_USER, request);
 }
 
-async function loginWithPassword(usernameOrEmail: string, password: string): Promise<LoginInfo> {
+async function loginWithPassword(usernameOrEmail: string, password: string, basicToken: string): Promise<LoginInfo> {
     const body = { usernameOrEmail, password };
-    const request = _makeRequest("POST", XRequestIds.READ_USER, null, body);
+    const request = _makeRequest("POST", XRequestIds.READ_USER, AuthType.BASIC, basicToken, body);
 
     return await _handleHttp<LoginInfo>(URLs.READ_USER, request);
 }
 
 async function loginWithToken(jwtToken: string): Promise<LoginInfo> {
-    const request = _makeRequest("GET", XRequestIds.TOKEN_LOGIN, jwtToken, undefined);
+    const request = _makeRequest("GET", XRequestIds.TOKEN_LOGIN, AuthType.JWT, jwtToken, undefined);
 
     return await _handleHttp<LoginInfo>(URLs.TOKEN_LOGIN, request);
 }
@@ -91,45 +92,45 @@ async function updateUser(
     userId: number,
     newUsername: string,
     newEmail: string,
-    jwtToken: string | null
+    jwtToken: string
 ): Promise<UpdateUserInfo> {
     const body = { userId, newUsername, newEmail };
-    const request = _makeRequest("PUT", XRequestIds.UPDATE_USER, jwtToken, body);
+    const request = _makeRequest("PUT", XRequestIds.UPDATE_USER, AuthType.JWT, jwtToken, body);
 
     return await _handleHttp<UpdateUserInfo>(URLs.UPDATE_USER, request);
 }
 
-async function deleteUser(userId: number, jwtToken: string | null): Promise<DeleteUserInfo> {
+async function deleteUser(userId: number, jwtToken: string): Promise<DeleteUserInfo> {
     const body = { userId };
-    const request = _makeRequest("DELETE", XRequestIds.DELETE_USER, jwtToken, body);
+    const request = _makeRequest("DELETE", XRequestIds.DELETE_USER, AuthType.JWT, jwtToken, body);
 
     return await _handleHttp<DeleteUserInfo>(URLs.DELETE_USER, request);
 }
 
-async function createPuzzle(json: string, userId: number, jwtToken: string | null): Promise<CreatePuzzleInfo> {
+async function createPuzzle(json: string, userId: number, jwtToken: string): Promise<CreatePuzzleInfo> {
     const body = { json, userId };
-    const request = _makeRequest("PUT", XRequestIds.CREATE_PUZZLE, jwtToken, body);
+    const request = _makeRequest("PUT", XRequestIds.CREATE_PUZZLE, AuthType.JWT, jwtToken, body);
 
     return await _handleHttp<CreatePuzzleInfo>(URLs.CREATE_PUZZLE, request);
 }
 
-async function updatePuzzle(puzzleId: number, json: string, jwtToken: string | null): Promise<UpdatePuzzleInfo> {
+async function updatePuzzle(puzzleId: number, json: string, jwtToken: string): Promise<UpdatePuzzleInfo> {
     const body = { puzzleId, json };
-    const request = _makeRequest("PUT", XRequestIds.UPDATE_PUZZLE, jwtToken, body);
+    const request = _makeRequest("PUT", XRequestIds.UPDATE_PUZZLE, AuthType.JWT, jwtToken, body);
 
     return await _handleHttp<UpdatePuzzleInfo>(URLs.UPDATE_PUZZLE, request);
 }
 
-async function deletePuzzle(puzzleId: number, jwtToken: string | null): Promise<DeletePuzzleInfo> {
+async function deletePuzzle(puzzleId: number, jwtToken: string): Promise<DeletePuzzleInfo> {
     const body = { puzzleId };
-    const request = _makeRequest("DELETE", XRequestIds.DELETE_PUZZLE, jwtToken, body);
+    const request = _makeRequest("DELETE", XRequestIds.DELETE_PUZZLE, AuthType.JWT, jwtToken, body);
 
     return await _handleHttp<DeletePuzzleInfo>(URLs.DELETE_PUZZLE, request);
 }
 
 async function renewJwtToken(user: User, jwtToken: string): Promise<RenewJwtTokenInfo> {
     const body = { user };
-    const request = _makeRequest("PUT", XRequestIds.RENEW_TOKEN, jwtToken, body);
+    const request = _makeRequest("PUT", XRequestIds.RENEW_TOKEN, AuthType.JWT, jwtToken, body);
 
     return await _handleHttp<RenewJwtTokenInfo>(URLs.RENEW_TOKEN, request);
 }

@@ -277,7 +277,7 @@ function _savePuzzle(
     button: HTMLButtonElement
 ): void {
     const json = JSON.stringify(sudoku);
-    const token = getItemFromStorage(StorageNames.JWT_TOKEN);
+    const token = getItemFromStorage(StorageNames.JWT_TOKEN) ?? "";
 
     button.disabled = true;
 

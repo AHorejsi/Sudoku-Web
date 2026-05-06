@@ -6,6 +6,11 @@ enum Environment {
     PROD = "production"
 };
 
+enum AuthType {
+    BASIC = "basic",
+    JWT = "jwt"
+};
+
 const Endpoints = {
     MAIN: process.env.ENDPOINT_MAIN!,
     SIGNUP: process.env.ENDPOINT_SIGNUP!,
@@ -42,6 +47,11 @@ const XRequestIds = {
     RENEW_TOKEN: "Renew-Token"
 };
 
+const BasicAuths = {
+    NAME: process.env.SUDOKU_BASIC_NAME,
+    PASS: process.env.SUDOKU_BASIC_PASS
+};
+
 const StorageNames = {
     JWT_TOKEN: process.env.JWT_TOKEN!
 };
@@ -50,4 +60,8 @@ function hasEnv(desired: Environment): boolean {
     return desired === ENVIRONMENT_MODE;
 }
 
-export { ENVIRONMENT_MODE, Endpoints, URLs, XRequestIds, StorageNames, Environment, hasEnv };
+function getBasicToken(): string {
+    return window.btoa(`${BasicAuths.NAME}:${BasicAuths.PASS}`);
+}
+
+export { ENVIRONMENT_MODE, Endpoints, URLs, XRequestIds, StorageNames, AuthType, Environment, hasEnv, getBasicToken };

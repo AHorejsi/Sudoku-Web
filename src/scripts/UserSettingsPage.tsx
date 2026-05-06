@@ -49,7 +49,7 @@ function _attemptUpdate(
         return;
     }
     
-    const token = getItemFromStorage(StorageNames.JWT_TOKEN);
+    const token = getItemFromStorage(StorageNames.JWT_TOKEN) ?? "";
 
     updateUser(dbUser.id, newUsername, newEmail, token).then((info: UpdateUserInfo) => {
         _attemptUpdateHelper(info, dbUser, newUsername, newEmail, nav, dispatch);
@@ -59,7 +59,7 @@ function _attemptUpdate(
 }
 
 function _attemptDelete(userId: number, dispatch: AppDispatch, nav: NavigateFunction) {
-    const token = getItemFromStorage(StorageNames.JWT_TOKEN);
+    const token = getItemFromStorage(StorageNames.JWT_TOKEN) ?? "";
 
     deleteUser(userId, token).then((info: DeleteUserInfo) => {
         _attemptDeleteHelper(info, nav, dispatch);

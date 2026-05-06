@@ -1,6 +1,6 @@
 import "../styles/SignupPage.css";
 import { Dispatch, SetStateAction, useState } from "react";
-import { Endpoints } from "./Constants";
+import { Endpoints, getBasicToken } from "./Constants";
 import { signup } from "./Fetch";
 import { SignupInfo } from "./SignupInfo";
 import { NavigateFunction, useNavigate } from "react-router";
@@ -42,7 +42,9 @@ function _attemptSignup(
 ): void {
     setSignup({ borders: "sign-up-not-attempted", text: "Registering...", style: "signup-text" });
 
-    signup(username, email, password).then((info) => {
+    const token = getBasicToken();
+
+    signup(username, email, password, token).then((info) => {
         _attemptSignupHelper(info, setSignup, nav);
     }).catch((error) => {
         nav(Endpoints.ERROR, { state: error });

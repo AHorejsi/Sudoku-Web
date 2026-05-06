@@ -22,7 +22,7 @@ function _reloadSudoku(puzzleId: number, nav: NavigateFunction, dispatch: AppDis
 }
 
 function _deleteSudoku(puzzleId: number, nav: NavigateFunction, dispatch: AppDispatch) {
-    const token = getItemFromStorage(StorageNames.JWT_TOKEN);
+    const token = getItemFromStorage(StorageNames.JWT_TOKEN) ?? "";
 
     deletePuzzle(puzzleId, token).then((info) => {
         if (info.type.endsWith("Success")) {

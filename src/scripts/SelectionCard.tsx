@@ -27,7 +27,7 @@ function _generate(
     creator("Retrieving...");
     button.disabled = true;
 
-    const token = getItemFromStorage(StorageNames.JWT_TOKEN);
+    const token = getItemFromStorage(StorageNames.JWT_TOKEN) ?? "";
 
     retrieveBoard(dimension, difficulty, games, token).then((info) => {
         _generateHelper(info, creator, button);
