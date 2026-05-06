@@ -66,7 +66,7 @@ export default function GameplayPage(): React.JSX.Element {
     const dispatch = useAppDispatch();
 
     const token = getItemFromStorage(StorageNames.JWT_TOKEN)!;
-    _setUpJwtAutoRenewal({ token: token }, dbUser, nav);
+    _setUpJwtAutoRenewal({ token }, dbUser, nav);
 
     const info = _getInfo(dbUser.puzzles, puzzleId);
     const [board, setBoard] = useState<GenerateInfo | string | Error>(info ?? "No Puzzle");
