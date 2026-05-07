@@ -11,11 +11,11 @@ import { RenewJwtTokenInfo } from "./RenewJwtTokenInfo";
 
 
 function _makeHeaders(xReqId: string, authType: AuthType, token: string): HeadersInit {
-    const authHeader = (authType === AuthType.BASIC) ? `Basic ${token}` : `Bearer ${token}`;
+    const authScheme = (authType === AuthType.BASIC) ? "Basic" : "Bearer";
 
     return {
         "X-Request-ID": xReqId,
-        "Authorization": authHeader,
+        "Authorization": `${authScheme} ${token}`,
         "Accept": "application/json",
         "Accept-Charset": "ISO-8859-1",
         "Accept-Encoding": "gzip",
