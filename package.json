@@ -7,7 +7,7 @@
     "npm": "10.9.3"
   },
   "scripts": {
-    "start": "parcel src/index.html --open",
+    "start": "parcel src/index.html --port 3000 --open",
     "build": "parcel build src/index.html"
   },
   "author": "alexh",
