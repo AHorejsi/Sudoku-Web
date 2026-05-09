@@ -60,8 +60,4 @@ function hasEnv(desired: Environment): boolean {
     return desired === ENVIRONMENT_MODE;
 }
 
-function getBasicToken(): string {
-    return window.btoa(`${BasicAuths.NAME}:${BasicAuths.PASS}`);
-}
-
-export { ENVIRONMENT_MODE, Endpoints, URLs, XRequestIds, StorageNames, AuthType, Environment, hasEnv, getBasicToken };
+export { ENVIRONMENT_MODE, Endpoints, URLs, XRequestIds, StorageNames, AuthType, Environment, hasEnv };

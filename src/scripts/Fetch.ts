@@ -10,12 +10,9 @@ import { DeletePuzzleInfo } from "./DeletePuzzleInfo";
 import { RenewJwtTokenInfo } from "./RenewJwtTokenInfo";
 
 
-function _makeHeaders(xReqId: string, authType: AuthType, token: string): HeadersInit {
-    const authScheme = (authType === AuthType.BASIC) ? "Basic" : "Bearer";
-
-    return {
+function _makeHeaders(xReqId: string, authType: AuthType, token: string | null): HeadersInit {
+    const headers: HeadersInit = {
         "X-Request-ID": xReqId,
-        "Authorization": `${authScheme} ${token}`,
         "Accept": "application/json",
         "Accept-Charset": "ISO-8859-1",
         "Accept-Encoding": "gzip",
@@ -25,9 +22,15 @@ function _makeHeaders(xReqId: string, authType: AuthType, token: string): Header
         "Connection": "keep-alive",
         "User-Agent": "Mozilla/5.0"
     };
+
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    return headers;
 }
 
-function _makeRequest(httpMethod: string, xReqId: string, authType: AuthType, token: string, json: any): RequestInit {
+function _makeRequest(httpMethod: string, xReqId: string, authType: AuthType, token: string | null, json: any): RequestInit {
     const bodyJson = json ? JSON.stringify(json) : null;
     const headerJson = _makeHeaders(xReqId, authType, token);
 
@@ -64,16 +67,16 @@ async function retrieveBoard(dimension: string, difficulty: string, games: strin
     return await _handleHttp<GenerateInfo>(URLs.GENERATE, request);
 }
 
-async function signup(username: string, email: string, password: string, basicToken: string): Promise<SignupInfo> {
+async function signup(username: string, email: string, password: string): Promise<SignupInfo> {
     const body = { username, email, password };
-    const request = _makeRequest("PUT", XRequestIds.CREATE_USER, AuthType.BASIC, basicToken, body);
+    const request = _makeRequest("PUT", XRequestIds.CREATE_USER, AuthType.BASIC, null, body);
     
     return await _handleHttp<SignupInfo>(URLs.CREATE_USER, request);
 }
 
-async function loginWithPassword(usernameOrEmail: string, password: string, basicToken: string): Promise<LoginInfo> {
+async function loginWithPassword(usernameOrEmail: string, password: string): Promise<LoginInfo> {
     const body = { usernameOrEmail, password };
-    const request = _makeRequest("POST", XRequestIds.READ_USER, AuthType.BASIC, basicToken, body);
+    const request = _makeRequest("POST", XRequestIds.READ_USER, AuthType.BASIC, null, body);
 
     return await _handleHttp<LoginInfo>(URLs.READ_USER, request);
 }
