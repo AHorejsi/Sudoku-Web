@@ -19,6 +19,8 @@ function _attemptSignupHelper(
     setSignup: Dispatch<SetStateAction<_SignupAttemptState>>,
     nav: NavigateFunction
 ): void {
+    setSignup({ borders: "sign-up-not-attempted", text: "Registering...", style: "signup-text" });
+
     if (info.type.endsWith("Success")) {
         nav(Endpoints.LOGIN);
     }
@@ -40,8 +42,6 @@ function _attemptSignup(
     setSignup: Dispatch<SetStateAction<_SignupAttemptState>>,
     nav: NavigateFunction
 ): void {
-    setSignup({ borders: "sign-up-not-attempted", text: "Registering...", style: "signup-text" });
-
     const token = getBasicToken();
 
     signup(username, email, password, token).then((info) => {
