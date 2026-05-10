@@ -11,7 +11,8 @@ export default function ErrorPage(): React.JSX.Element {
 
     return (
         <div className="container">
-            <h1>{ error.message }</h1>
+            <h1>{ error.name }</h1>
+            <h2>{ error.message }</h2>
             <p>{ error.stack }</p>
 
             <button className="btn btn-danger" onClick={(_) => nav(Endpoints.MAIN)}>To Main Page</button>
