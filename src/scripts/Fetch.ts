@@ -18,7 +18,6 @@ function _makeHeaders(httpMethod: string, xReqId: string, authType: AuthType, to
         "Accept-Encoding": "gzip",
         "Allow": "OPTIONS, GET, POST, PUT, DELETE",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Request-Headers": "access-control-allow-origin,allow,content-type,x-request-id",
         "Access-Control-Request-Method": httpMethod,
         "Content-Type": "application/json",
         "Connection": "keep-alive",
@@ -28,6 +27,11 @@ function _makeHeaders(httpMethod: string, xReqId: string, authType: AuthType, to
     if (token) {
         headers["Authorization"] = `Bearer ${token}`;
     }
+
+    const requestHeaders = Object.keys(headers);
+    requestHeaders.push("Access-Control-Request-Headers");
+
+    headers["Access-Control-Request-Headers"] = requestHeaders.join(",").toLowerCase()
 
     return headers;
 }
