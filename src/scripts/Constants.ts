@@ -47,11 +47,6 @@ const XRequestIds = {
     RENEW_TOKEN: "Renew-Token"
 };
 
-const BasicAuths = {
-    NAME: process.env.BASIC_NAME!,
-    PASS: process.env.BASIC_PASS!
-};
-
 const StorageNames = {
     JWT_TOKEN: process.env.JWT_TOKEN!
 };
