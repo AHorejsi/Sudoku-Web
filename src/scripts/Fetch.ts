@@ -10,7 +10,7 @@ import { DeletePuzzleInfo } from "./DeletePuzzleInfo";
 import { RenewJwtTokenInfo } from "./RenewJwtTokenInfo";
 
 
-function _makeHeaders(xReqId: string, authType: AuthType, token: string | null): HeadersInit {
+function _makeHeaders(httpMethod: string, xReqId: string, authType: AuthType, token: string | null): HeadersInit {
     const headers: HeadersInit = {
         "X-Request-ID": xReqId,
         "Accept": "application/json",
@@ -18,6 +18,8 @@ function _makeHeaders(xReqId: string, authType: AuthType, token: string | null):
         "Accept-Encoding": "gzip",
         "Allow": "OPTIONS, GET, POST, PUT, DELETE",
         "Access-Control-Allow-Origin": "*",
+        "Access-Control-Request-Headers": "access-control-allow-origin,allow,content-type,x-request-id",
+        "Access-Control-Request-Method": httpMethod,
         "Content-Type": "application/json",
         "Connection": "keep-alive",
         "User-Agent": "Mozilla/5.0"
@@ -32,7 +34,7 @@ function _makeHeaders(xReqId: string, authType: AuthType, token: string | null):
 
 function _makeRequest(httpMethod: string, xReqId: string, authType: AuthType, token: string | null, json: any): RequestInit {
     const bodyJson = json ? JSON.stringify(json) : null;
-    const headerJson = _makeHeaders(xReqId, authType, token);
+    const headerJson = _makeHeaders(httpMethod, xReqId, authType, token);
 
     return {
         headers: headerJson,
